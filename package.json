@@ -1,0 +1,54 @@
+{
+  "name": "web_new",
+  "private": true,
+  "version": "0.9.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview"
+  },
+  "resolutions": {
+    "@types/react": "17.0.2",
+    "@types/react-dom": "17.0.2"
+  },
+  "dependencies": {
+    "@reduxjs/toolkit": "^1.9.2",
+    "@types/node": "^18.11.18",
+    "@types/react-virtualized": "^9.21.21",
+    "classnames": "^2.3.2",
+    "framer-motion": "^9.0.1",
+    "i18next": "^22.4.9",
+    "i18next-browser-languagedetector": "^7.0.1",
+    "i18next-http-backend": "^2.1.1",
+    "ky": "^0.33.2",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-i18next": "^12.1.5",
+    "react-redux": "^8.0.5",
+    "react-router-dom": "^6.8.0",
+    "react-virtualized-auto-sizer": "^1.0.7",
+    "react-window": "^1.8.8",
+    "react-window-infinite-loader": "^1.0.8",
+    "ws": "^8.12.0"
+  },
+  "devDependencies": {
+    "@tailwindcss/line-clamp": "^0.4.2",
+    "@types/json-stringify-safe": "^5.0.0",
+    "@types/react": "^18.0.27",
+    "@types/react-dom": "^18.0.10",
+    "@types/react-virtualized-auto-sizer": "^1.0.1",
+    "@types/react-window": "^1.8.5",
+    "@types/react-window-infinite-loader": "^1.0.6",
+    "@types/ws": "^8.5.4",
+    "@vitejs/plugin-react-swc": "^3.0.0",
+    "autoprefixer": "^10.4.13",
+    "class-variance-authority": "^0.4.0",
+    "json-stringify-safe": "^5.0.1",
+    "postcss": "^8.4.21",
+    "react-intersection-observer": "^9.4.1",
+    "tailwindcss": "^3.2.4",
+    "typescript": "^4.9.3",
+    "vite": "^4.1.0"
+  }
+}

@@ -1,0 +1,88 @@
+@font-face {
+    font-family: "Alata";
+    src: url("../font/regular.ttf");
+    font-weight: 400;
+    font-style: normal;
+}
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html,
+body {
+    padding: 0;
+    margin: 0;
+    font-family: "Alata", sans-serif;
+    overflow: hidden;
+    -webkit-font-smoothing: subpixel-antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-weight: 400;
+}
+
+path {
+    vector-effect: non-scaling-stroke;
+}
+
+body ::-webkit-scrollbar {
+    width: 4px;
+    transition: all 0.25s;
+}
+
+body ::-webkit-scrollbar-track {
+    background: #E5E5E5;
+    @apply rounded;
+}
+
+body.dark ::-webkit-scrollbar-track {
+    background: #52525220;
+    @apply rounded;
+}
+
+body ::-webkit-scrollbar-thumb {
+    background: #BBBBBB;
+    @apply rounded;
+}
+
+body.dark ::-webkit-scrollbar-thumb {
+    background: #686868;
+    @apply rounded;
+}
+
+body ::-webkit-scrollbar-thumb:hover {
+    background: #888888;
+}
+
+body.dark ::-webkit-scrollbar-thumb:hover {
+    background: #7B7B7B;
+}
+
+.no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+    display: none;
+}
+
+img {
+    width: auto
+}
+
+.sidebar-list__body {
+    display: grid;
+    grid-template-rows: auto 2fr;
+    overflow: hidden;
+}
+
+.sidebar-left__content {
+    display: grid;
+    grid-template-rows: auto 1fr;
+    overflow: hidden;
+}
+
+.scroll-y-overlay {
+    overflow-y: overlay;
+    transition: background-color 0.25s ease;
+}

@@ -1,0 +1,265 @@
+{
+  "global": {
+    "title": "Chat | Fly Messenger",
+    "loading": "Loading...",
+    "everyone": "Everyone",
+    "refresh": "Refresh",
+    "no-one": "No one",
+    "no-dialogs": {
+      "title": "You have no dialogues yet",
+      "message": "Find people you know and start a conversation with them."
+    }
+  },
+  "search": {
+    "search": "Search",
+    "dialogs": {
+      "title": "Dialogues",
+        "empty": "No dialogues found"
+    },
+    "users": {
+      "title": "Users",
+      "empty": "No users found"
+    },
+    "messages": {
+      "title": "Messages",
+      "empty": "No messages found"
+    },
+    "searchMessagesIn": "Search messages in"
+  },
+  "button": {
+    "cancel": "Cancel",
+    "save": "Save",
+    "finish": "Finish",
+    "delete": "Delete",
+    "forbidden": "Forbidden"
+  },
+  "users": {
+    "name": "Name",
+    "lastName": "Last name",
+    "email": "Email",
+    "username": "Username",
+    "password": "Password",
+    "passwordConfirm": "Confirm password",
+    "block": "Block",
+    "unblock": "Unblock",
+    "status": {
+      "online": "Online",
+      "typing": "Typing..."
+    }
+  },
+  "sidebar": {
+    "links": {
+      "dialogs": "Dialogues",
+      "conversations": "Conversations",
+      "groups": "Groups",
+      "support": "Support",
+      "settings": "Settings",
+      "darkMode": "Dark mode",
+      "lightMode": "Light mode",
+      "logout": "Logout"
+    }
+  },
+  "messages": {
+    "writeAMessage": "Write a message...",
+    "selectChat": "Select a chat to start messaging",
+    "file": "Image",
+    "first": "Send a message to start a conversation",
+    "empty": {
+      "title": "Looks like you don't have any messages yet",
+      "subtitle": "Send a message to start a conversation"
+    }
+  },
+  "lastSeenForALongTime": "Last seen a long time ago",
+  "lastSeenRecently": "Last seen recently",
+  "lastSeenJustNow": "Last seen just now",
+  "lastSeenMinutesAgo": "Last seen {{value}} minutes ago",
+  "lastSeenHoursAgo": "Last seen {{value}} hours ago",
+  "lastSeenDaysAgo": "Last seen {{value}} days ago",
+  "lastSeenAt": "Last seen at {{value}}",
+  "dialog": {
+    "pin": "Pin",
+    "unpin": "Unpin",
+    "notifications": {
+      "mute": "Mute notifications",
+      "unmute": "Unmute notifications"
+    },
+    "sound": {
+      "mute": "Mute sound",
+      "unmute": "Unmute sound"
+    },
+    "modal": {
+      "delete": {
+        "title": "Are you sure you want to delete this dialog?"
+      }
+    },
+    "block": "Block",
+    "unblock": "Unblock",
+    "delete": "Delete"
+  },
+  "settings": {
+    "title": "Settings",
+    "usernameCopied": "Username copied",
+    "links": {
+      "profile": "Profile",
+      "notifications": "Notifications",
+      "privacy": "Privacy",
+      "blockedUsers": "Blocked users",
+      "language": "Language",
+      "deleteAccount": "Delete account",
+      "sessionManagement": "Session management"
+    },
+    "account": {
+      "deleteAccount": {
+        "title": "Kas olete kindel, et soovite oma konto kustutada?"
+      }
+    },
+    "notifications": {
+      "title": "Notifications",
+      "notify": {
+        "title": "Notifications"
+      },
+      "sounds": {
+        "title": "Sound"
+      },
+      "chats": "Chats",
+      "conversations": "Conversations",
+      "groups": "Groups"
+    },
+    "privacy": {
+      "title": "Privacy",
+      "lastActivity": {
+        "title": "Last activity"
+      },
+      "messageForwarding": {
+        "title": "Message forwarding"
+      },
+      "groupsAndConversations": {
+        "title": "Groups and conversations"
+      },
+      "sessionManagement": {
+        "title": "Session management"
+      },
+      "twoFactor": {
+        "title": "Two-factor authentication"
+      }
+    },
+    "sessions": {
+      "title": "Session management",
+      "empty": "You don't have any sessions.",
+      "error": "An error occurred while fetching the sessions. Please try again later.",
+      "count": "{{count}} sessions",
+      "current": "Current session",
+      "deleteAll": "Delete all sessions",
+      "delete": {
+        "title": "Delete this session?"
+      }
+    },
+    "blockedUsers": {
+      "title": "Blocked users",
+      "label": "{{count}} blocked users",
+      "empty": "You don't have any blocked users.",
+      "error": "An error occurred while fetching the blocked users. Please try again later."
+    },
+    "profile": {
+      "title": "Profile",
+      "modal": {
+        "name": {
+          "title": "Edit name"
+        },
+        "email": {
+          "title": "Edit email"
+        }
+      }
+    },
+    "language": {
+      "title": "Language"
+    }
+  },
+  "auth": {
+    "login": {
+      "title": "Login",
+      "submit": "Login",
+      "signup": "Sign up",
+      "success": "Congratulations! You have successfully logged in. Please check your email to verify your account.",
+      "forgotPassword": "Forgot password?"
+    },
+    "signup": {
+      "title": "Sign up",
+      "description": "Sign up to start messaging",
+      "submit": "Sign up",
+      "haveAccount": "Already have an account?"
+    },
+    "forgot-password": {
+      "title": "Forgot password",
+      "description": "Enter your email address to reset your password",
+      "submit": "Send",
+      "backToLogin": "Back to login",
+      "email": "Email",
+      "success": "An email has been sent to your email address. Please check your inbox."
+    },
+    "reset-password": {
+      "title": "Reset password",
+      "description": "Enter your new password to continue.",
+      "submit": "Reset password",
+      "backToLogin": "Back to login",
+      "newPassword": "New password",
+      "passwordConfirm": "Confirm password"
+    },
+    "activate": {
+      "title": "Activate account",
+      "description": "Your account has been successfully activated. You can now login.",
+      "submit": "Activate",
+      "code": "Activation code",
+      "resend": "Resend activation code",
+      "activating": "Activating...",
+      "emptyToken": "You need to provide token to activate your account.",
+      "backToLogin": "Back to login",
+      "success": "Your account has been successfully activated. You can now login."
+    },
+    "two-factor": {
+      "title": "Two-factor authentication",
+      "description": "Enter the code from your authenticator app.",
+      "submit": "Verify",
+      "code": "Code"
+    },
+    "new-device": {
+      "title": "New device confirmation",
+      "description": "You are signed in from a new device. Please enter the code we sent you by email.",
+      "submit": "Verify",
+      "code": "Code"
+    }
+  },
+  "errors": {
+    "unexpectedError": "Oops! An unexpected error occurred.",
+    "userNotFound": "We couldn't find an account with that username or email. Please check your credentials and try again.",
+    "incorrectPassword": "Wrong password. Check your credentials and try again.",
+    "incorrectUsernameOrPassword": "Incorrect username or password.",
+    "resetPasswordTokenIsNotValid": "The reset password token is not valid.",
+    "userNotActive": "The user is not active.",
+    "userNotActiveCheckEmail": "The user is not active. Please check your email.",
+    "usernameOrEmailIsTaken": "The username or email is already taken.",
+    "twoFactorCodeIsNotValid": "The two-factor code is not valid.",
+    "twoFactorIsNotEnabled": "The two-factor is not enabled.",
+    "newDeviceCodeIsEmpty": "The new device confirmation code is empty.",
+    "newDeviceCodeIsNotValid": "The new device confirmation code is not valid.",
+    "cannotUseSamePassword": "You cannot use the same password.",
+    "invalidActivationCode": "The activation code is not valid.",
+    "activationCodeIsExpired": "The activation code is expired.",
+    "accountIsAlreadyActivated": "The account is already activated."
+  },
+  "validation": {
+    "errors": {
+      "usernameHasIncorrectLength": "Username must be at least 3 and not more than 50 characters long.",
+      "emailIsNotValidType": "Email address must be valid.",
+      "emailHasIncorrectLength": "The email has incorrect length. It should be between 3 and 254 characters.",
+      "passwordHasIncorrectLength": "Password must be at least 8 and not more than 32 characters.",
+      "passwordConfirmHasIncorrectLength": "Password confirmation must be at least 8 and not more than 32 characters.",
+      "passwordsDoNotMatch": "Passwords do not match.",
+      "emailHasIncorrectDomain": "Email address must be valid.",
+      "usernameAlreadyTaken": "Username is already taken.",
+      "emailAlreadyTaken": "Email address is already taken.",
+      "emailIsNotValid": "Email address must be valid.",
+      "firstNameHasIncorrectLength": "First name must be at least 3 and not more than 50 characters long."
+    }
+  }
+}
