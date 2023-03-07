@@ -1,5 +1,5 @@
 import {FC, ReactNode, useEffect} from "react";
-import { SidebarNavigation } from "./items/SidebarNavigation";
+import { SidebarNavigation } from "./items/messanger/SidebarNavigation";
 import { MessagingWindow } from "../window/MessagingWindow";
 import {useStateSelector} from "../../stores/hooks";
 import {createPortal} from "react-dom";

@@ -1,5 +1,5 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {SidebarItemProps} from "../../../../components/layout/items/SidebarItem";
+import {SidebarItemProps} from "../../../../components/layout/items/messanger/SidebarItem";
 
 interface InitialState {
     isSidebarOpened: boolean;

@@ -261,5 +261,178 @@
       "emailIsNotValid": "E-posti aadress on vale.",
       "firstNameHasIncorrectLength": "Eesnimi peab olema vähemalt 1 ja mitte rohkem kui 50 tähemärki pikk."
     }
+  },
+  "navbar": {
+    "home": "Pealeht",
+    "faq": "FAQ",
+    "privacy": "Privaatsuspoliitika",
+    "themes": {
+      "dark": "Tume teema",
+      "light": "Hele teema"
+    }
+  },
+  "footer": {
+    "description": "Fly Messenger - on turvaline ja tasuta vestlusrakendus. Tänu lihtsale ja intuitiivsele liidesele võimaldab see mugavalt suhelda. Fly Messengeriga suhtlemise kogemus saab olema täiesti uus ja põnev.",
+    "sections": {
+      "about": {
+        "title": "Saidi kohta",
+        "privacy": "Privaatsuspoliitika",
+        "terms": "Kasutustingimused"
+      },
+      "apps": {
+        "title": "Rakendused",
+        "windows": "Windows",
+        "web": "Veebileht"
+      },
+      "contact": {
+        "title": "Võta meiega ühendust",
+        "github": "Github"
+      }
+    }
+  },
+  "pages": {
+    "main": {
+      "title": "Avatud lähtekoodiga vestlusrakendus",
+      "apps": {
+        "title": "Rakendused",
+        "web": {
+          "open": "Ava {{name}}"
+        },
+        "desktop": {
+          "open": "Laadi alla {{name}}"
+        }
+      },
+      "functions": {
+        "title": "Funktsioonid",
+        "anonymity": {
+          "title": "Anonüümsus",
+          "description": "Keegi ei saa teada teie e-posti aadressi ega muid andmeid, kui te neid ise ei esita."
+        },
+        "ease_of_use": {
+          "title": "Kasutusmugavus",
+          "description": "Intuitiivne kasutajaliides. Pole midagi segada."
+        },
+        "confidentiality": {
+          "title": "Konfidentsiaalsus",
+          "description": "Me ei kogu rohkem teavet, kui on vaja."
+        },
+        "without_a_trace": {
+          "title": "Jäljetult",
+          "description": "Pärast konto kustutamist me andmeid ei salvesta."
+        },
+        "free_of_charge": {
+          "title": "Tasuta",
+          "description": "Meie toode on täiesti tasuta ilma reklaamideta."
+        },
+        "no_packaging": {
+          "title": "Pakkimine puudub",
+          "description": "Me ei suru fotosid kokku, nende kvaliteet jääb samaks."
+        }
+      }
+    },
+    "faq": {
+      "title": "FAQ",
+      "subtitle": "Sellelt lehelt leiate korduma kippuvad küsimused.",
+      "questions": [
+        {
+          "title": "Miks mu sõnum hangub või ei saadeta, kui proovin sõnumit saata? (Desktop)",
+          "content": "Sõnumid saadetakse pistikupesade kaudu. Pistikupesad lülituvad lõpuks välja ja programm loob uuesti ühenduse. Selle intervalli jooksul saadetakse teade tühja pesa."
+        },
+        {
+          "title": "Kuidas registreeruda?",
+          "content": "Registreerumiseks peate alla laadima meie rakenduse Windowsis või lubama meie veebikliendi ja klõpsama nuppu \"Registreeri\"."
+        }
+      ]
+    },
+    "privacy": {
+      "title": "Privaatsuspoliitika",
+      "subtitle": "Kui otsustate meie teenuseid kasutada, nõustute teabe kogumise ja kasutamisega. Selle poliitika kohta. Kogume seda isikuandmete edastamiseks ja teenuste täiustamiseks. Selle privaatsuspoliitika osana ei kasuta me ega jaga me teie teavet teistega.",
+      "policy": [
+        {
+          "title": "Sissejuhatus",
+          "content": "See privaatsuspoliitika reguleerib seda, kuidas meie rakendus Fly Messenger kasutab ja kaitseb isikuandmeid, mille meile esitate või mille me saame seoses teie pilveandmete kasutamisega. Selle privaatsuspoliitika tähenduses viitavad mõisted \"mina\", \"meie\" ja \"meie\" Fly Messengerile ning \"teie\" viitavad teile, teenuse kasutajale.",
+          "children": [
+            {
+              "title": "Privaatsuspoliitika",
+              "content": [
+                "Me ei müü teie andmeid.",
+                "Me ei kasuta oma vestlust teile reklaamide näitamiseks.",
+                "Salvestame ainult neid andmeid, mis on vajalikud Fly Messengeri turvalise ja funktsioonirikka sõnumiteenusena toimimiseks.",
+                "Kui postitate ebaseaduslikku sisu, mis mõjutab platvormi tavapärast tööd, saab platvorm segaduse ära koristada."
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Milliseid isikuandmeid me kasutame",
+          "children": [
+            {
+              "title": "Teie emaili aadress",
+              "content": "Teie e-posti aadressi kasutatakse registreerimise ja/või autoriseerimise peamise vahendina.\nKui olete oma parooli unustanud, saate oma parooli lihtsalt oma e-posti aadressi kasutades lähtestada.\nMe ei avalikusta seda.\nMe ei saada turundusmaterjale teie e-posti aadressile."
+            },
+            {
+              "title": "Asukohaandmed",
+              "content": "Me kasutame teie IP-aadressi teie ligikaudse asukoha määramiseks, mis võimaldab teil hõlpsalt vaadata kõiki aktiivseid seansse ja muuta oma parooli, kui teie kontole volitamata pääsete.\nKui märkame katset teie kontole tundmatust seadmest sisse logida, saadame teie meilile teate, et saaksite oma kontot volitamata juurdepääsu korral õigeaegselt kaitsta.\nMe ei müü, rendi ega avalda teie IP-aadressi kolmandatele isikutele ega kasuta seda väljaspool meie platvormi."
+            },
+            {
+              "title": "Sisselogimisandmed",
+              "content": "Kogume teavet teie sisselogimise kohta, sealhulgas kliendi tüüp (laua- või veebiklient), esmaregistreerimise aeg, viimane autentimise aeg ja sisselogimisel kasutatud IP-aadress. Seda teavet ei jagata kolmandate osapooltega ja seda kasutatakse ainult teie konto turvalisuse tagamiseks ja meie platvormi optimeerimiseks."
+            }
+          ]
+        },
+        {
+          "title": "Teie isikuandmete töötlemine",
+          "children": [
+            {
+              "title": "Keelatud sisuga töötamine",
+              "content": "Oleme pühendunud olema eetilised ning pakkuma kõigile oma kasutajatele turvalist ja külalislahke keskkonda. Seetõttu võitleme aktiivselt keelatud sisu, sealhulgas lapsporno, vägivaldse terrorismi, lastevastase vägivalla, pettuste ja muude vastuvõetamatu käitumise vastu. Jälgime sisu, mis meie platvormile üles laetakse, ja kui leiame keelatud sisu, eemaldame selle koheselt. Lisateabe saamiseks vaadake meie \"Kasutustingimused\"."
+            }
+          ]
+        },
+        {
+          "title": "Andmete kustutamine",
+          "children": [
+            {
+              "title": "Konto üksikasjad",
+              "content": "Saate oma konto igal ajal kustutada, minnes rakenduse seadete jaotisesse. Konto kustutamisel kustutatakse täielikult kogu selle kontoga seotud teave, mis on salvestatud meie serveritesse, sealhulgas kõik vestlused, milles olete osalenud."
+            },
+            {
+              "title": "Dialoogi andmed",
+              "content": "Kui valite dialoogi kontekstimenüüst funktsiooni \"Kustuta\", kustutab server dialoogi mõlemalt poolelt täielikult, ilma et oleks võimalik naasta. Kogu dialoog kõigi kirjadega kustutatakse serverist. Samuti kustutatakse see kliendi tasemel mõlemalt pooltelt kasutajatelt, kes vastasid selle dialoogi kaudu. Me ei salvesta serverisse ega muudesse seadmetesse kaugvestluste sisu kohta teavet. Rakendame kõik vajalikud meetmed kasutajate teabe kaitsmiseks ja nende konfidentsiaalsete andmete turvalisuse tagamiseks."
+            }
+          ]
+        },
+        {
+          "title": "Muu",
+          "content": "Võime oma privaatsuspoliitikat aeg-ajalt värskendada, seega soovitame teil seda lehte regulaarselt kontrollida.\nKui teil on meie privaatsuspoliitika kohta küsimusi või ettepanekuid, võtke meiega ühendust."
+        }
+      ]
+    },
+    "terms": {
+      "title": "Kasutustingimused",
+      "content": {
+        "agreement": {
+          "title": "Teenus- ja privaatsusleping",
+          "content": "Enne meie toodete või teenuste kasutamist lugege käesolev teenuseleping läbi ja mõistke seda täielikult.\nRegistreerimis-/sisselogimisprotseduuri lõpuleviimine tähendab, et olete konfidentsiaalsuslepingu kogu sisuga täielikult tutvunud, sellest aru saanud ja sellega nõustunud ning nõustute järgmiste reeglitega:"
+        },
+        "uses_it": {
+          "title": "Kui kasutaja seda kasutab, nõustub ta mitte saatma.",
+          "content": [
+            "Lastepornograafia, mis hõlmab alla 18-aastaste laste otsest alastust.",
+            "Julgustada või õhutada sisu, mis toetab vägivaldset terrorismi, ekstremismi või teiste kahjustamist.",
+            "Esitada valeteavet, esineda teistena või petka teisi rahalise ja/või muu kasu saamiseks.",
+            "Laste väärkohtlemise või lapspornoga seotud sisu levitamine või reklaamimine.",
+            "Teiste isikute õiguste ja privaatsuse, sealhulgas intellektuaalomandi õiguste rikkumine, eraandmete avaldamine jne."
+          ]
+        },
+        "fair": {
+          "title": "Õiglase kasutamise protseduurid, järgige kõiki järgmisi seadusi ja määrusi.",
+          "content": [
+            "Teie kodakondsusriigi asjakohased juriidilised nõuded.",
+            "Teie praeguse asukoha ja võrguoperaatori asjakohased juriidilised nõuded."
+          ]
+        }
+      }
+    }
   }
 }

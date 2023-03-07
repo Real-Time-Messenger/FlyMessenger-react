@@ -1,4 +1,4 @@
-import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
+import {ActionReducerMapBuilder, createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {sendNotification} from "../../../helpers/helpers";
 import {IDialogMessage, ISession, ISettings, IUser} from "../../../entities";
 import {$api} from "../../../http";
@@ -228,14 +228,12 @@ const userSlice = createSlice({
         notify(state, action: PayloadAction<{ message: IDialogMessage, dialogData: { isNotificationsEnabled: boolean, isSoundEnabled: boolean }, fileTranslation: string }>) {
             if (!state.current.settings.chatsNotificationsEnabled || !action.payload.dialogData.isNotificationsEnabled) return;
 
-            const silent = !state.current.settings.chatsSoundEnabled || !action.payload.dialogData.isSoundEnabled;
-
             sendNotification(state.current.id, {
                 body: action.payload.message.text || action.payload.fileTranslation,
                 icon: state.current.photoURL,
             })
 
-            if (silent) return;
+            if (!state.current.settings.chatsSoundEnabled || !action.payload.dialogData.isSoundEnabled) return;
 
             const notifySound = new Audio("/src/sounds/notification.mp3");
             notifySound.volume = 0.5;
@@ -248,6 +246,10 @@ const userSlice = createSlice({
         deleteBlacklistedUser(state, action: PayloadAction<{ id: string }>) {
             state.current.blacklist = state.current.blacklist.filter((user) => user.id !== action.payload.id);
         },
+        removeSession(state, action: PayloadAction<{ sessionId: string }>) {
+            const sessionIndex = state.current.sessions.findIndex((session) => session.id === action.payload.sessionId);
+            state.current.sessions.splice(sessionIndex, 1);
+        }
     },
     extraReducers: (builder) => {
         createExtraReducers(builder);

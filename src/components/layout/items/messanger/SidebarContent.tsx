@@ -1,10 +1,10 @@
-import { LogoIcon } from "../../icons";
+import { LogoIcon } from "../../../icons";
 import {motion} from "framer-motion";
-import {useActionsCreators, useStateSelector} from "../../../stores/hooks";
+import {useActionsCreators, useStateSelector} from "../../../../stores/hooks";
 import { SidebarLinks } from "./SidebarLinks";
-import { Avatar } from "../../ui/Avatar";
-import { concatenate } from "../../../helpers/helpers";
-import {settingsActions} from "../../../stores/slices/ui/settings/settings";
+import { Avatar } from "../../../ui/Avatar";
+import { concatenate } from "../../../../helpers/helpers";
+import {settingsActions} from "../../../../stores/slices/ui/settings/settings";
 
 export const textSwipe = {
     hidden: {

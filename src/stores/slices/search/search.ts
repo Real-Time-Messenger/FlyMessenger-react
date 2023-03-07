@@ -20,14 +20,14 @@ const initialState: InitialState = {
 export const sendSearch = createAsyncThunk(
     "search/sendSearch",
     async (searchQuery: string) => {
-        return await $api.get(`search/${searchQuery}`).json<ISearchResult>();
+        return await $api.get(`search?query=${searchQuery}`).json<ISearchResult>();
     });
 
 export const sendSearchByDialogId = createAsyncThunk(
     "search/sendSearchByDialogId",
     async (payload: { dialogId: string, searchQuery: string }) => {
         const {dialogId, searchQuery} = payload;
-        return await $api.get(`search/${dialogId}/${searchQuery}`).json<ISearchResult>();
+        return await $api.get(`search/${dialogId}?query=${searchQuery}`).json<ISearchResult>();
     });
 
 export const searchSlice = createSlice({

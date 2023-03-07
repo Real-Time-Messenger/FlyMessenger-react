@@ -1,4 +1,4 @@
-import {FC, useContext, useEffect, useState} from "react";
+import {FC, useEffect, useState} from "react";
 import {useTranslation} from "react-i18next";
 import {SessionItem} from "../../items";
 import {useAppDispatch, useStateSelector} from "../../../../stores/hooks";

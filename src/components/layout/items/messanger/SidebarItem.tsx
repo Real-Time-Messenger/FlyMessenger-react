@@ -1,7 +1,7 @@
 import {ComponentType, SVGProps, useRef} from "react";
-import {useHover} from "../../../hooks/useHover";
-import {sidebarActions} from "../../../stores/slices/ui/sidebar/sidebar";
-import {useActionsCreators, useStateSelector} from "../../../stores/hooks";
+import {useHover} from "../../../../hooks/useHover";
+import {sidebarActions} from "../../../../stores/slices/ui/sidebar/sidebar";
+import {useActionsCreators, useStateSelector} from "../../../../stores/hooks";
 import classNames from "classnames";
 import {motion} from "framer-motion";
 import {textSwipe} from "./SidebarContent";

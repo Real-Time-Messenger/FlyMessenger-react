@@ -1,7 +1,7 @@
 import {useNavigate} from "react-router-dom";
 import {useAppDispatch, useStateSelector} from "../stores/hooks";
 import {ChildrenProps} from "../interfaces/ChildrenProps";
-import {useEffect, useState} from "react";
+import {useCallback, useEffect, useState} from "react";
 import {getCurrentUser} from "../stores/slices/user/user";
 import {SmoothSpawn} from "../components/pages/auth/layouts/SmoothSpawn";
 import {Loader} from "../components/ui/Loader";
@@ -11,21 +11,26 @@ import {useOnlineStatus} from "../hooks/useOnlineStatus";
 
 export const ProtectedRoute = ({children}: ChildrenProps) => {
     const [isFetching, setIsFetching] = useState<boolean>(true);
+    const [socketConnected, setSocketConnected] = useState<boolean>(false);
 
     const dispatch = useAppDispatch();
 
     const currentUser = useStateSelector((state) => state.user.current);
     const navigate = useNavigate();
 
-    const {connect, toggleOnlineStatus} = useWebSocket()
+    const {connect, toggleOnlineStatus, socket, isSocketConnected} = useWebSocket()
+
+    const sendOnlineStatus = useCallback((status: boolean) => {
+        if (!isSocketConnected() || !currentUser) return;
+
+        toggleOnlineStatus(status);
+    }, [isSocketConnected, toggleOnlineStatus]);
 
     useEffect(() => {
-        setIsFetching(true);
-
         dispatch(getCurrentUser())
             .unwrap()
             .then(() => {
-                connect(() => toggleOnlineStatus(true));
+                connect(() => setSocketConnected(true));
                 navigate("/m");
             })
             .catch(() => navigate("/m/login"))
@@ -33,18 +38,13 @@ export const ProtectedRoute = ({children}: ChildrenProps) => {
         dispatch(getUserDialogs());
     }, [dispatch, navigate]);
 
-    useEffect(() => {
-        if (!currentUser && !isFetching) {
-            navigate("/m/login");
-        }
-    }, [currentUser, navigate]);
-
     useOnlineStatus({
-        onHide: () => toggleOnlineStatus(false),
-        onShow: () => toggleOnlineStatus(true),
+        onHide: () => sendOnlineStatus(false),
+        onShow: () => sendOnlineStatus(true),
+        onLoad: () => setTimeout(() => sendOnlineStatus(true), 500)
     });
 
-    if (isFetching || !currentUser) {
+    if (isFetching || !currentUser || !socketConnected) {
         return (
             <SmoothSpawn>
                 <Loader className="mx-auto h-[40px] w-[40px]"/>
@@ -53,8 +53,8 @@ export const ProtectedRoute = ({children}: ChildrenProps) => {
     }
 
     return (
-        <>
+        <WebSocketProvider>
             {children}
-        </>
+        </WebSocketProvider>
     )
 }

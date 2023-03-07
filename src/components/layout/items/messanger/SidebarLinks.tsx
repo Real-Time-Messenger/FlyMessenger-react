@@ -1,13 +1,13 @@
 import {SidebarItem, SidebarItemProps} from "./SidebarItem";
-import {useActionsCreators, useAppDispatch, useStateSelector} from "../../../stores/hooks";
-import { DialogIcon, ConversationIcon, GlobeIcon,SupportIcon,SettingsIcon,ToggleLeftIcon,LogoutIcon } from "../../icons";
-import {sidebarActions} from "../../../stores/slices/ui/sidebar/sidebar";
-import { DialogsMenu } from "../../list/pages/DialogsMenu";
-import {settingsActions} from "../../../stores/slices/ui/settings/settings";
-import {logoutUser, updateUser, userActions} from "../../../stores/slices/user/user";
+import {useActionsCreators, useAppDispatch, useStateSelector} from "../../../../stores/hooks";
+import { DialogIcon, ConversationIcon, GlobeIcon,SupportIcon,SettingsIcon,ToggleLeftIcon,LogoutIcon } from "../../../icons";
+import {sidebarActions} from "../../../../stores/slices/ui/sidebar/sidebar";
+import { DialogsMenu } from "../../../list/pages/DialogsMenu";
+import {settingsActions} from "../../../../stores/slices/ui/settings/settings";
+import {logoutUser, updateUser, userActions} from "../../../../stores/slices/user/user";
 import {useNavigate} from "react-router-dom";
-import {dialogsActions} from "../../../stores/slices/dialogs/dialogs";
-import {searchActions} from "../../../stores/slices/search/search";
+import {dialogsActions} from "../../../../stores/slices/dialogs/dialogs";
+import {searchActions} from "../../../../stores/slices/search/search";
 
 export const links = (isDarkMode: boolean): SidebarItemProps[] => {
     const sidebarStore = useActionsCreators(sidebarActions);

@@ -3,7 +3,7 @@ import { FC, useState } from "react";
 import {CloseIcon, GlobeIcon, MonitorIcon } from "../../icons";
 import {ISession} from "../../../entities";
 import {parseDateToTime} from "../../../helpers/helpers";
-import {useWebSocket} from "../../../hooks/useWebSocket";
+import {useWebSocket} from "../../../hoc/WebSocketProvider";
 
 interface SessionItemProps extends ISession {
 	canDelete?: boolean
@@ -12,8 +12,7 @@ interface SessionItemProps extends ISession {
 export const SessionItem: FC<SessionItemProps> = ({ id, location, label, type, createdAt, canDelete = true }: SessionItemProps) => {
 	const [isDeleteModalOpened, setIsDeleteModalOpened] = useState<boolean>(false);
 
-	// const {destroySession} = useWebSocket();
-	const destroySession = (id: string) => {}
+	const {destroySession} = useWebSocket();
 
 	const isDesktop = () => {
 		return type.localeCompare("desktop") === 0;
@@ -27,10 +26,15 @@ export const SessionItem: FC<SessionItemProps> = ({ id, location, label, type, c
 		return <GlobeIcon className="h-10 w-10 stroke-2" />;
 	};
 
+	const destroySessionHandler = () => {
+		destroySession(id);
+		setIsDeleteModalOpened(false);
+	}
+
 	return (
 		<>
 			<SessionDeleteModal
-				onConfirm={() => destroySession(id)}
+				onConfirm={() => destroySessionHandler()}
 				isOpened={isDeleteModalOpened}
 				onClose={() => setIsDeleteModalOpened(false)}
 			/>

@@ -1,17 +1,21 @@
-import {RefObject, useCallback, useContext, useEffect, useMemo, useRef, useState} from "react";
+import {memo, RefObject, useCallback, useEffect, useMemo, useRef, useState} from "react";
 import {useAppDispatch, useStateSelector} from "../../stores/hooks";
 import {useTranslation} from "react-i18next";
 import {Loader} from "../ui/Loader";
 import classNames from "classnames";
 import {AnimatePresence, motion} from "framer-motion";
 import {ChevronDownIcon} from "../icons/ChevronDownIcon";
-import {MessageItem} from "./items/MessageItem";
-import {IDialogMessage} from "../../entities";
+import {IDialog, IDialogMessage} from "../../entities";
 import {getMessages} from "../../stores/slices/dialogs/dialogs";
 import {useWebSocket} from "../../hoc/WebSocketProvider";
+import { MessageItem } from "./items/MessageItem";
 
 interface DialogMessageWithAvatar extends IDialogMessage {
     showAvatar: boolean;
+}
+
+interface MessagesListProps {
+    data: DialogMessageWithAvatar[];
 }
 
 
@@ -62,17 +66,39 @@ const isDifferentDate = (index: number, messages: IDialogMessage[]): boolean => 
     return (currentMessage && previousMessage && new Date(currentMessage.sentAt).toLocaleDateString() !== new Date(previousMessage.sentAt).toLocaleDateString()) || !previousMessage;
 };
 
+
+const Messages = memo(({data}: MessagesListProps) => {
+    return (
+        <>
+            {data.map((message, index) => (
+                <div key={message.id}>
+                    {isDifferentDate(index, data) && (
+                        <div className='flex items-center justify-center'>
+                            <div
+                                className='duration-250 flex items-center rounded-full bg-[#DCE1F0] py-1 px-4 transition-colors dark:bg-[#1F2B49]'>
+                                    <span
+                                        className='select-none text-xs dark:text-white'>{new Date(message.sentAt).toLocaleDateString()}</span>
+                            </div>
+                        </div>
+                    )}
+
+                    <MessageItem {...message}/>
+                </div>
+            ))}
+        </>
+    );
+});
+
 export const MessagesList = () => {
     const {t} = useTranslation();
 
-    const activeDialogId = useStateSelector((state) => state.dialogs.activeDialog?.id);
     const dialogs = useStateSelector((state) => state.dialogs.dialogs);
+    const activeDialogId = useStateSelector((state) => state.dialogs.activeDialog?.id);
     const activeDialog = dialogs.find((dialog) => dialog.id === activeDialogId);
+    const {messages} = activeDialog as IDialog;
 
     const observedDialogId = useStateSelector((state) => state.search.selectedMessageId);
     const userId = useStateSelector((state) => state.user.current.id);
-
-    const {messages} = activeDialog || {messages: []};
 
     const dispatch = useAppDispatch();
 
@@ -80,7 +106,7 @@ export const MessagesList = () => {
     const [isFetching, setFetching] = useState<boolean>(false); // Detect if messages are fetching.
     const [canGoDown, setCanGoDown] = useState<boolean>(false); // Detect if stroll down button should be displayed.
 
-    const hasMore = useMemo(() => messages.length % 100 == 0, [messages.length]) // Detect if there are more messages to fetch.
+    const [hasMore, setHasMore] = useState<boolean>(false);
 
     const scrollRef = useRef<HTMLDivElement>(null);
     const loaderRef = useRef<HTMLDivElement>(null);
@@ -94,15 +120,17 @@ export const MessagesList = () => {
      *     We iterate through all messages and check if the last message was sent by the same user.
      *     If it was, we set `showAvatar` to false, otherwise - true.
      */
-    const sortedMessagesArray = messages.map((message, index) => {
-        const nextMessage = messages[index + 1];
-        const isLastMessageFromUser = nextMessage?.sender.id !== message.sender.id;
+    const sortedMessagesArray = useMemo(() => {
+        return messages.map((message, index) => {
+            const nextMessage = messages[index + 1];
+            const isLastMessageFromUser = nextMessage?.sender.id !== message.sender.id;
 
-        return {
-            ...message,
-            showAvatar: isLastMessageFromUser
-        };
-    }) as DialogMessageWithAvatar[];
+            return {
+                ...message,
+                showAvatar: isLastMessageFromUser
+            };
+        }) as DialogMessageWithAvatar[]
+    }, [messages]);
 
     /**
      * Scroll to the message, which was selected in the search control.
@@ -141,9 +169,11 @@ export const MessagesList = () => {
 
         dispatch(getMessages({dialogId: activeDialog.id, skip: messages.length}))
             .unwrap()
+            .then((messages) => {
+                setHasMore(messages.length === 100)
+            })
             .finally(() => setFetching(false));
-        setFetching(false);
-    }, [hasMore, isFetching, activeDialog, scrollRef.current, messages.length]);
+    }, [hasMore, isFetching, scrollRef.current]);
 
     /**
      * Handles observer intersection.
@@ -161,16 +191,23 @@ export const MessagesList = () => {
     );
 
     const handleScrollToBottom = useCallback(() => {
-        if (!scrollRef.current || !activeDialog) return;
-        scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+        const textarea = document.getElementById('message-footer__textarea');
+        textarea?.focus();
 
-        const unreadMessages = messages.filter(message => message.sender.id !== userId && !message.isRead);
+        if (!scrollRef.current || !activeDialog) return;
+
+        const lastMessage = document.querySelector<HTMLDivElement>(`[id="${activeDialog.messages[activeDialog.messages.length - 1].id}"]`);
+        if (!lastMessage) return;
+
+        lastMessage.scrollIntoView();
+
+        const unreadMessages = sortedMessagesArray.filter(message => message.sender.id !== userId && !message.isRead);
         if (unreadMessages.length === 0) return;
 
         unreadMessages.forEach(message => {
             readMessage(activeDialog.id, message.id);
         });
-    }, [scrollRef.current, readMessage, activeDialog?.id]);
+    }, [scrollRef.current, activeDialog?.messages[activeDialog?.messages.length - 1]?.id, sortedMessagesArray, readMessage, activeDialog?.id]);
 
     /**
      * Bind the observer.
@@ -201,12 +238,18 @@ export const MessagesList = () => {
     }, [isMounted]);
 
     useEffect(() => {
+        if (!scrollRef.current) return;
+
         const ref = scrollRef.current;
-
-        ref?.addEventListener('scroll', handleScroll);
-
-        return () => ref?.removeEventListener('scroll', handleScroll);
+        ref.addEventListener('scroll', handleScroll);
+        return () => ref.removeEventListener('scroll', handleScroll);
     }, []);
+
+    useEffect(() => {
+        if (!activeDialog) return;
+
+        setHasMore(messages.length >= 100);
+    }, [messages.length, activeDialog]);
 
     if (sortedMessagesArray.length === 0) {
         return (
@@ -248,21 +291,7 @@ export const MessagesList = () => {
                     )}
                 </AnimatePresence>
 
-                {sortedMessagesArray.map((message, index) => (
-                    <div key={message.id}>
-                        {isDifferentDate(index, messages) && (
-                            <div className='flex items-center justify-center'>
-                                <div
-                                    className='duration-250 flex items-center rounded-full bg-[#DCE1F0] py-1 px-4 transition-colors dark:bg-[#1F2B49]'>
-                                    <span
-                                        className='select-none text-xs dark:text-white'>{new Date(message.sentAt).toLocaleDateString()}</span>
-                                </div>
-                            </div>
-                        )}
-
-                        <MessageItem {...message}/>
-                    </div>
-                ))}
+                <Messages data={sortedMessagesArray}/>
             </div>
         </div>
     );

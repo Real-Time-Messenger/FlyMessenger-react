@@ -9,12 +9,14 @@
 @tailwind components;
 @tailwind utilities;
 
-html,
+html {
+    overflow-x: hidden;
+}
+
 body {
     padding: 0;
     margin: 0;
     font-family: "Alata", sans-serif;
-    overflow: hidden;
     -webkit-font-smoothing: subpixel-antialiased;
     -moz-osx-font-smoothing: grayscale;
     font-weight: 400;
@@ -86,3 +88,77 @@ img {
     overflow-y: overlay;
     transition: background-color 0.25s ease;
 }
+
+.icon-vector-5 {
+    left: 85%;
+    top: 71.9%;
+}
+.icon-vector-2 {
+    left: 80.9%;
+    top: 34.4%;
+}
+.icon-vector-4 {
+    left: 18.4%;
+    top: 50.6%;
+}
+.icon-vector-3 {
+    left: 49.4%;
+    top: 15.4%;
+}
+.icon-vector-1 {
+    left: 7.4%;
+    top: 77.1%;
+}
+.icon-flat-color-icons_faq {
+    left: 5%;
+    top: 38.6%;
+}
+.icon-flat-color-icons_template {
+    left: 11.7%;
+    top: 62.8%;
+}
+.icon-flat-color-icons_support {
+    left: 78.4%;
+    top: 42.2%;
+}
+.icon-polygon-2 {
+    left: 19.9%;
+    top: 14.1%;
+}
+.icon-flat-color-icons_settings {
+    left: 18.1%;
+    top: 34%;
+}
+.icon-flat-color-icons_comments {
+    left: 79.8%;
+    top: 7.9%;
+}
+.icon-flat-color-icons_doughnut-chart {
+    left: 11.3%;
+    top: 12%;
+}
+.icon-flat-color-icons_approval {
+    left: 31.9%;
+    top: 10.7%;
+}
+.icon-ellipse-2 {
+    left: 50%;
+    top: 85.5%;
+}
+.icon-ellipse-3 {
+    left: 63.1%;
+    top: 13.6%;
+}
+.icon-ellipse-1 {
+    left: 28.3%;
+    top: 87.9%;
+}
+.icon-flat-color-icons_opened-folder {
+    left: 80.4%;
+    top: 84.5%;
+}
+.icon-flat-color-icons_voice-presentation {
+    left: 80%;
+    top: 57.1%;
+}
+

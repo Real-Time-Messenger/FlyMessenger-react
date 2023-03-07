@@ -1,11 +1,11 @@
 import {FC, useEffect, useRef} from "react";
-import {useHover} from "../../../hooks/useHover";
+import {useHover} from "../../../../hooks/useHover";
 import {motion} from 'framer-motion';
-import {useActionsCreators} from "../../../stores/hooks";
-import {sidebarActions} from "../../../stores/slices/ui/sidebar/sidebar";
+import {useActionsCreators} from "../../../../stores/hooks";
+import {sidebarActions} from "../../../../stores/slices/ui/sidebar/sidebar";
 import {SidebarContent} from "./SidebarContent";
-import {DarkenedBackground} from "../extra/DarkenedBackground";
-import {DialogsMenu} from "../../list/pages/DialogsMenu";
+import {DarkenedBackground} from "../../extra/DarkenedBackground";
+import {DialogsMenu} from "../../../list/pages/DialogsMenu";
 
 const sidebarExpansion = {
     expanded: {

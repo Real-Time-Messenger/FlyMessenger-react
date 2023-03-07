@@ -57,28 +57,29 @@ const dialogsSlice = createSlice({
 
             state.activeDialog = dialog;
         },
-        addMessage(state, action: PayloadAction<{ message: IDialogMessage, dialog: IDialog, currentUserId: string }>) {
-            const {message, dialog: newDialog, currentUserId} = action.payload;
+        addMessage(state, action: PayloadAction<{ message: IDialogMessage, dialog: IDialog}>) {
+            const {message, dialog: newDialog} = action.payload;
 
             let dialog = state.dialogs.find((dialog) => dialog.id === newDialog.id);
             if (!dialog) {
                 state.dialogs.push(action.payload.dialog);
                 dialog = action.payload.dialog;
+                dialog.unreadMessages = 0;
             }
 
             dialog.messages.push(message);
             dialog.lastMessage = message;
 
             if (message.file) {
-                dialog.images.push(message.file)
+                dialog.images.push(message.file);
             }
 
-            if (message.sender.id !== currentUserId) {
+            if (message.sender.id === dialog.user.id) {
                 dialog.unreadMessages++;
             }
 
             if (state.activeDialog?.id === dialog.id) {
-                Object.assign(state.activeDialog, dialog);
+                state.activeDialog.messages.push(message);
             }
         },
         reset(state) {
@@ -116,6 +117,10 @@ const dialogsSlice = createSlice({
 
             dialog.user.isOnline = action.payload.isOnline;
             dialog.user.lastActivity = action.payload.lastActivity;
+
+            if (!dialog.user.isOnline) {
+                dialog.user.isTyping = false;
+            }
         },
         toggleTyping(state, action: PayloadAction<{ dialogId: string, isTyping: boolean }>) {
             const dialog = state.dialogs.find((dialog) => dialog.id === action.payload.dialogId);

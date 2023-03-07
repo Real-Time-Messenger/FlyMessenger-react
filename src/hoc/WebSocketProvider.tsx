@@ -1,9 +1,13 @@
 import {ChildrenProps} from "../interfaces/ChildrenProps";
 import {createContext, FC, useCallback, useContext, useEffect, useState} from "react";
 import {dialogsActions} from "../stores/slices/dialogs/dialogs";
-import {useActionsCreators, useStateSelector} from "../stores/hooks";
+import {useActionsCreators, useAppDispatch, useStateSelector} from "../stores/hooks";
 import {userActions} from "../stores/slices/user/user";
 import {useTranslation} from "react-i18next";
+import {sidebarActions} from "../stores/slices/ui/sidebar/sidebar";
+import {settingsActions} from "../stores/slices/ui/settings/settings";
+import {searchActions} from "../stores/slices/search/search";
+import {UserKeys} from "../entities/IUser";
 
 export enum WebSocketEventType {
     SEND_MESSAGE = "SEND_MESSAGE",
@@ -23,6 +27,7 @@ export enum WebSocketResponseType {
     USER_BLOCKED = "USER_BLOCKED",
     USER_LOGOUT = "USER_LOGOUT",
     DELETE_DIALOG = "DELETE_DIALOG",
+    DELETE_USER = "DELETE_USER",
 }
 
 interface SocketMessage {
@@ -43,6 +48,7 @@ interface WebSocketContext {
     destroySession: (sessionId: string) => void | null;
     toggleOnlineStatus: (status: boolean) => void | null;
     readMessage: (dialogId: string, messageId: string) => void | null;
+    isSocketConnected: () => boolean;
 }
 
 const WebSocketContext = createContext<WebSocketContext>({
@@ -53,6 +59,7 @@ const WebSocketContext = createContext<WebSocketContext>({
     destroySession: () => null,
     toggleOnlineStatus: () => null,
     readMessage: () => null,
+    isSocketConnected: () => false,
 });
 
 const WebSocketProvider: FC<ChildrenProps> = ({children}: ChildrenProps) => {
@@ -64,22 +71,24 @@ const WebSocketProvider: FC<ChildrenProps> = ({children}: ChildrenProps) => {
 
     const currentUser = useStateSelector((state) => state.user.current);
 
+    const sidebarStore = useActionsCreators(sidebarActions);
+    const settingsStore = useActionsCreators(settingsActions);
     const dialogsStore = useActionsCreators(dialogsActions);
+    const searchStore = useActionsCreators(searchActions);
     const userStore = useActionsCreators(userActions);
 
     const url = import.meta.env.VITE_WS_URL;
 
-    const isSocketConnected = (): boolean => socket?.readyState === socket?.OPEN;
+    const isSocketConnected = (): boolean => socket && socket.readyState === socket.OPEN || false;
 
-    const connect = (callback?: () => void): void => {
-        if (!url) return;
-        if (socket && isSocketConnected()) {
-            socket.close();
-        }
+    const logout = useCallback(() => {
+        searchStore.reset();
+        settingsStore.reset();
+        sidebarStore.reset();
+        dialogsStore.reset();
 
-        const ws = new WebSocket(url);
-        socketContext.socket = setupSocket(ws, callback);
-    }
+        window.location.reload();
+    }, []);
 
     const setupSocket = (socket: WebSocket, callback?: () => void): WebSocket => {
         socket.onopen = () => {
@@ -87,7 +96,7 @@ const WebSocketProvider: FC<ChildrenProps> = ({children}: ChildrenProps) => {
         };
 
         socket.onclose = () => {
-            connect(callback);
+            // connect(callback);
         };
 
         socket.onerror = () => {
@@ -111,9 +120,8 @@ const WebSocketProvider: FC<ChildrenProps> = ({children}: ChildrenProps) => {
                 dialogsStore.addMessage({
                     message: data.message,
                     dialog: data.dialog,
-                    currentUserId: currentUser.id,
                 });
-                if (currentUser.id === data.message.sender.id) break;
+                if (data.userId === data.message.sender.id) break;
 
                 userStore.notify({
                     message: data.message,
@@ -150,14 +158,17 @@ const WebSocketProvider: FC<ChildrenProps> = ({children}: ChildrenProps) => {
 
             case WebSocketResponseType.USER_LOGOUT:
                 if (!data.success && data.sessionId === data.currentSessionId) {
-                    // logout();
+                    logout();
                     return;
                 }
 
-                userStore.setUser({user: data.user});
+                userStore.removeSession({sessionId: data.sessionId});
                 break;
             case WebSocketResponseType.DELETE_DIALOG:
                 dialogsStore.deleteDialog({dialogId: data.dialogId});
+                break;
+            case WebSocketResponseType.DELETE_USER:
+                logout();
                 break;
             default:
                 break;
@@ -208,7 +219,7 @@ const WebSocketProvider: FC<ChildrenProps> = ({children}: ChildrenProps) => {
             status,
             userId: currentUser.id
         }));
-    }, [socket, currentUser.id])
+    }, [socket])
 
     const readMessage = (dialogId: string, messageId: string): void => {
         if (!socket) {
@@ -222,15 +233,28 @@ const WebSocketProvider: FC<ChildrenProps> = ({children}: ChildrenProps) => {
         }));
     }
 
+    const connect = useCallback((callback?: () => void): void => {
+        if (!url) return;
+
+        socketContext.socket = setupSocket(new WebSocket(url), callback);
+        setSocket(socketContext.socket);
+    }, [socketContext.socket, toggleOnlineStatus, url]);
+
     useEffect(() => {
-        if (!currentUser.id) return;
+        setSocket(socketContext.socket)
+    }, [socketContext.socket]);
+
+    useEffect(() => {
+        if (isSocketConnected()) return;
 
         connect();
-    }, [currentUser.id]);
 
-    useEffect(() => {
-        setSocket(socketContext.socket);
-    }, [socketContext.socket]);
+        return () => {
+            if (socket) {
+                socket.close();
+            }
+        }
+    }, []);
 
     const data = {
         socket,
@@ -239,7 +263,8 @@ const WebSocketProvider: FC<ChildrenProps> = ({children}: ChildrenProps) => {
         connect,
         destroySession,
         toggleOnlineStatus,
-        readMessage
+        readMessage,
+        isSocketConnected
     }
 
     return (

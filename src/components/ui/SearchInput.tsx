@@ -46,7 +46,7 @@ export const SearchInput = () => {
 
     useEffect(() => {
         handleDebouncedValue();
-    }, [debouncedValue]);
+    }, [debouncedValue, isUserSelected]);
 
     return (
         <div className="relative">

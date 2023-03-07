@@ -46,7 +46,9 @@ export const ReadStatusIcon = ({lastMessage, isActive, userId}: ReadStatusIconPr
 export const DialogItem: FC<IDialog> = ({id, label, user, lastMessage, isMeBlocked, messages, ...props}: IDialog) => {
     const {t} = useTranslation();
 
-    const activeDialog = useStateSelector((state) => state.dialogs.activeDialog);
+    const dialogs = useStateSelector((state) => state.dialogs.dialogs);
+    const activeDialogId = useStateSelector((state) => state.dialogs.activeDialog?.id);
+    const activeDialog = dialogs.find(dialog => dialog.id === activeDialogId);
 
     const searchStore = useActionsCreators(searchActions);
     const dialogStore = useActionsCreators(dialogsActions);
@@ -148,7 +150,7 @@ export const DialogItem: FC<IDialog> = ({id, label, user, lastMessage, isMeBlock
                                 initial={{scale: 0}}
                                 animate={{scale: 1}}
                                 exit={{scale: 0}}
-                                className={classNames("absolute bottom-0.5 right-0.5 h-2 w-2 rounded-full ring-2 transition duration-250", isActive ? "bg-[#FFFFFF] ring-[#98BDE7] dark:bg-[#FFFFFF] dark:ring-[#416D9C]" : "bg-[#5B9BD9] ring-[#EAEDFA] group-hover:ring-[#CAD5F2] dark:bg-[#5B9BD9] dark:ring-[#1F2B49] dark:group-hover:ring-[#416D9C50]")}/>
+                                className={classNames("absolute bottom-0.5 right-0.5 h-2 w-2 rounded-full ring-2 transition duration-250", isActive ? "bg-[#FFFFFF] ring-[#98BDE7] dark:bg-[#FFFFFF] dark:ring-[#416D9C]" : "bg-[#5B9BD9] ring-[#EAEDFA] group-hover:ring-[#CAD5F2] dark:bg-[#5B9BD9] dark:ring-[#1F2B49] dark:group-hover:ring-[#223757]")}/>
                         )}
                     </AnimatePresence>
                 </div>

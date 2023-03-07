@@ -1,4 +1,4 @@
-import {ImgHTMLAttributes} from "react";
+import {forwardRef, ImgHTMLAttributes} from "react";
 import {ClassNameProps} from "../../interfaces/ClassNameProps";
 
 type AvatarProps = ClassNameProps & ImgHTMLAttributes<HTMLImageElement>

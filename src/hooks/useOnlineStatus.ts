@@ -2,6 +2,7 @@ import {useCallback, useState} from "react";
 import useEventListener from "./useEventListener";
 
 const visibilityChangeEvent = "visibilitychange";
+const loadEvent = "load";
 const noop = () => {
 };
 
@@ -13,6 +14,7 @@ type StorageLike = {
 export type Config = {
     onHide?: () => void;
     onShow?: (results: ShowResults) => void;
+    onLoad?: (results: ShowResults) => void;
     storageKey?: string;
     shouldReturnResult?: boolean;
     storageProvider?: StorageLike;
@@ -27,6 +29,7 @@ export const useOnlineStatus = (config: Config = {}) => {
     const {
         onHide = noop,
         onShow = noop,
+        onLoad = noop,
         storageKey = "useSaveRestoreState.lastSeenDateUTC",
         shouldReturnResult = onHide === noop && onShow === noop,
         storageProvider = localStorage,
@@ -47,9 +50,19 @@ export const useOnlineStatus = (config: Config = {}) => {
         visibilityChangeEvent,
         () => {
             const isHidden = element.visibilityState === "hidden";
+            // if (isHidden) {
+            //     const sleepDate = new Date().toISOString();
+            //     storageProvider.setItem(storageKey, sleepDate);
+            //     onHide();
+            // } else {
+            //     // callback to have state restored
+            //     const callbackResult = buildResult();
+            //     if (shouldReturnResult) {
+            //         setResult(callbackResult);
+            //     }
+            //     onShow(callbackResult);
+            // }
             if (isHidden) {
-                const sleepDate = new Date().toISOString();
-                storageProvider.setItem(storageKey, sleepDate);
                 onHide();
             } else {
                 // callback to have state restored
@@ -61,6 +74,22 @@ export const useOnlineStatus = (config: Config = {}) => {
             }
         },
         element as any,
+    );
+
+    useEventListener(
+        loadEvent,
+        () => {
+            // callback to have state restored
+            const callbackResult = buildResult();
+            if (shouldReturnResult) {
+                setResult(callbackResult);
+            }
+            onLoad(callbackResult);
+        },
+        element as any,
+        {
+            once: true,
+        }
     );
 
     return result;

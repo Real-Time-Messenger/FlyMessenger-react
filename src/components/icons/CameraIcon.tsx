@@ -1,5 +1,5 @@
-import { ClassNameProps } from "../../interfaces/components/ClassNameProps";
 import { FC } from "react";
+import {ClassNameProps} from "../../interfaces/ClassNameProps";
 
 export const CameraIcon: FC<ClassNameProps> = ({ className }: ClassNameProps) => {
 	return (

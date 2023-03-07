@@ -1,5 +1,5 @@
 import {createBrowserRouter, RouterProvider} from "react-router-dom";
-import {Homepage} from "./pages/Homepage";
+import {HomePage} from "./pages/m/HomePage";
 import {useEffect, useState} from "react";
 import {useActionsCreators, useAppDispatch, useStateSelector} from "./stores/hooks";
 import {LoginPage} from "./pages/m/LoginPage";
@@ -13,15 +13,31 @@ import {sidebarActions} from "./stores/slices/ui/sidebar/sidebar";
 import {useTranslation} from "react-i18next";
 import {WebSocketProvider} from "./hoc/WebSocketProvider";
 import {updateUser} from "./stores/slices/user/user";
+import { MainPage } from "./pages/landing/MainPage";
+import { FaqPage } from "./pages/landing/FaqPage";
+import { PrivacyPage } from "./pages/landing/PrivacyPage";
+import {TermsPage} from "./pages/landing/TermsPage";
 
 const router = createBrowserRouter([
     {
         path: "/",
-        element: <Homepage/>
+        element: <MainPage/>
+    },
+    {
+        path: "/faq",
+        element: <FaqPage/>
+    },
+    {
+        path: "/privacy",
+        element: <PrivacyPage/>
+    },
+    {
+        path: "/terms",
+        element: <TermsPage/>
     },
     {
         path: "/m",
-        element: <Homepage/>
+        element: <HomePage/>
     },
     {
         path: "/m/login",
@@ -53,7 +69,7 @@ const router = createBrowserRouter([
     },
     {
         path: "*",
-        element: <Homepage/>
+        element: <HomePage/>
     }
 ]);
 
@@ -66,12 +82,26 @@ export default function App() {
     useEffect(() => {
         document.title = t("global.title");
 
-        if (!currentUser) return;
-        const darkMode = currentUser.settings.theme === "dark";
-        sidebarStore.toggleDarkMode({state: darkMode});
+        if (currentUser.id) {
+            const darkMode = currentUser.settings.theme === "dark";
+            sidebarStore.toggleDarkMode({state: darkMode});
 
-        const language = currentUser.settings.language;
-        i18n.changeLanguage(language);
+            const language = currentUser.settings.language;
+            i18n.changeLanguage(language);
+
+            return;
+        }
+
+        const cookies = document.cookie.split("; ");
+        const darkModeCookie = cookies.find((cookie) => cookie.includes("darkMode"));
+        if (darkModeCookie) {
+            const isDarkMode = darkModeCookie.split("=")[1];
+            if (isDarkMode === "true") {
+                sidebarStore.toggleDarkMode({state: false});
+            } else {
+                sidebarStore.toggleDarkMode({state: true});
+            }
+        }
     }, [currentUser]);
 
 

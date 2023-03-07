@@ -32,11 +32,8 @@ i18n.use(Backend)
 	.init({
 		resources,
 
-		// Here we set the default language to Estonian.
-		//
-		// It will be used if language inside the localStorage
-		// there is no language set.
-		fallbackLng: "et",
+		// fallbackLng: "et",
+		fallbackLng: "en",
 
 		detection: {
 			order: ["querystring", "cookie"],

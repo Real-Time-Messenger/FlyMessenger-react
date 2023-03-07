@@ -38,9 +38,11 @@ export const MessageItem: FC<MessageItemProps> = ({
                                                       file,
                                                       className,
                                                   }: MessageItemProps) => {
-    const activeDialog = useStateSelector((state) => state.dialogs.activeDialog);
+    // const activeDialog = useStateSelector((state) => state.dialogs.activeDialog);
+    const dialogs = useStateSelector((state) => state.dialogs.dialogs);
+    const activeDialogId = useStateSelector((state) => state.dialogs.activeDialog?.id);
+    const activeDialog = dialogs.find((dialog) => dialog.id === activeDialogId);
 
-    const activeDialogId = activeDialog?.id;
     const images = activeDialog?.images;
 
     const currentUserId = useStateSelector((state) => state.user.current.id);

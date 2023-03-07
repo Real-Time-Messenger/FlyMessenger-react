@@ -14,7 +14,7 @@
     "search": "Search",
     "dialogs": {
       "title": "Dialogues",
-        "empty": "No dialogues found"
+      "empty": "No dialogues found"
     },
     "users": {
       "title": "Users",
@@ -187,6 +187,7 @@
       "title": "Sign up",
       "description": "Sign up to start messaging",
       "submit": "Sign up",
+      "success": "Congratulations! You have successfully signed up. Please check your email to verify your account.",
       "haveAccount": "Already have an account?"
     },
     "forgot-password": {
@@ -260,6 +261,179 @@
       "emailAlreadyTaken": "Email address is already taken.",
       "emailIsNotValid": "Email address must be valid.",
       "firstNameHasIncorrectLength": "First name must be at least 3 and not more than 50 characters long."
+    }
+  },
+  "navbar": {
+    "home": "Home",
+    "faq": "FAQ",
+    "privacy": "Privacy",
+    "themes": {
+      "dark": "Dark theme",
+        "light": "Light theme"
+    }
+  },
+  "footer": {
+    "description": "Fly Messenger - is a secure and free chat app. Thanks to its simple and intuitive interface, it allows you to communicate comfortably. The experience of communicating with Fly Messenger will be completely new and exciting.",
+    "sections": {
+      "about": {
+        "title": "About",
+        "privacy": "Privacy Policy",
+        "terms": "Terms of Use"
+      },
+      "apps": {
+        "title": "Apps",
+        "windows": "Windows",
+        "web": "Web"
+      },
+      "contact": {
+        "title": "Contact us",
+        "github": "Github"
+      }
+    }
+  },
+  "pages": {
+    "main": {
+      "title": "Open source chat app",
+      "apps": {
+        "title": "Apps",
+        "web": {
+          "open": "Open {{name}}"
+        },
+        "desktop": {
+          "open": "Download {{name}}"
+        }
+      },
+      "functions": {
+        "title": "Functions",
+        "anonymity": {
+          "title": "Anonymity",
+          "description": "No one will know your email address or other data, unless you submit them yourself."
+        },
+        "ease_of_use": {
+          "title": "Ease of use",
+          "description": "Intuitive user interface. There is nothing to interfere."
+        },
+        "confidentiality": {
+          "title": "Confidentiality",
+          "description": "We do not collect more information, if needed."
+        },
+        "without_a_trace": {
+          "title": "Without a trace",
+          "description": "After deleting the account we do not store data."
+        },
+        "free_of_charge": {
+          "title": "Free of charge",
+          "description": "Our product is completely free without ads."
+        },
+        "no_packaging": {
+          "title": "No packaging",
+          "description": "We do not compress photos, their quality remains the same."
+        }
+      }
+    },
+    "faq": {
+      "title": "FAQ",
+      "subtitle": "On this page you will find frequently asked questions.",
+      "questions": [
+        {
+          "title": "Why does my message freeze or not send when I try to send a message? (Desktop)",
+          "content": "Messages are sent via sockets. The sockets will eventually shut down and the program will reconnect. During this interval, a message is sent to an empty slot."
+        },
+        {
+          "title": "How to register?",
+          "content": "To register, you need to download our application on Windows or enable our web client and click the \"Register\" button."
+        }
+      ]
+    },
+    "privacy": {
+      "title": "Privacy Policy",
+      "subtitle": "If you choose to use our services, you consent to the collection and use of information. About this policy. We collect it to provide personal information and improve our services. As part of this privacy policy, we do not use or share your information with others.",
+      "policy": [
+        {
+          "title": "Introduction",
+          "content": "This Privacy Policy governs how our Fly Messenger application uses and protects the personal information that you provide to us or that we receive in connection with your use of cloud data. For the purposes of this Privacy Policy, the terms \"I\", \"we\" and \"our\" refer to Fly Messenger and \"you\" refers to you, the user of the Service.",
+          "children": [
+            {
+              "title": "Privacy Policy",
+              "content": [
+                "We do not sell your data.",
+                "We don't use our chat to show you ads.",
+                "We only store data that is necessary for Fly Messenger to function as a secure and feature-rich messaging service.",
+                "If you post illegal content that affects the normal operation of the platform, the platform can clean up the mess."
+              ]
+            }
+          ]
+        },
+        {
+          "title": "What personal data we use",
+          "children": [
+            {
+              "title": "Your email address",
+              "content": "Your email address is used as the primary means of registration and/or authorization.\nIf you have forgotten your password, you can simply reset your password using your email address.\nWe don't disclose it.\nWe do not send marketing materials to your email address."
+            },
+            {
+              "title": "Location data",
+              "content": "We use your IP address to determine your approximate location, which allows you to easily view all active sessions and change your password if your account is accessed by unauthorized persons.\nIf we detect an attempt to log into your account from an unknown device, we will send a notification to your email so that you can protect your account in time in case of unauthorized access.\nWe do not sell, rent, or disclose your IP address to third parties or use it outside of our platform."
+            },
+            {
+              "title": "Login details",
+              "content": "We collect information about your login, including client type (desktop or web client), first registration time, last authentication time, and IP address used to log in. This information is not shared with third parties and is used only to ensure the security of your account and to optimize our platform."
+            }
+          ]
+        },
+        {
+          "title": "Processing of your personal data",
+          "children": [
+            {
+              "title": "Working with prohibited content",
+              "content": "We are committed to being ethical and providing a safe and welcoming environment for all our users. That's why we actively fight against prohibited content, including child pornography, violent terrorism, violence against children, fraud and other unacceptable behaviour. We monitor the content that is uploaded to our platform and if we find any prohibited content we will remove it immediately. Please see our \"Terms of Use\" for more information."
+            }
+          ]
+        },
+        {
+          "title": "Deleting data",
+          "children": [
+            {
+              "title": "Account details",
+              "content": "You can delete your account at any time by going to the settings section of the app. Deleting an account will completely delete all information related to that account that is stored on our servers, including any chats in which you have participated."
+            },
+            {
+              "title": "Dialog data",
+              "content": "If you select the \"Delete\" function from the dialog's context menu, the server will completely delete both sides of the dialog, with no way to return. All dialogue with all messages will be deleted from the server. It will also be deleted at the client level from both sides of users who responded through this dialog. We do not store information about the content of remote conversations on the server or other devices. We take all necessary measures to protect users' information and ensure the security of their confidential data."
+            }
+          ]
+        },
+        {
+          "title": "Other",
+          "content": "We may update our privacy policy from time to time, so we encourage you to check this page regularly.\nIf you have any questions or suggestions about our privacy policy, please contact us."
+        }
+      ]
+    },
+    "terms": {
+      "title": "Terms of use",
+      "content": {
+        "agreement": {
+          "title": "Service and Privacy Agreement",
+          "content": "Please read and fully understand this Service Agreement before using our products or services.\nCompleting the registration/login procedure means that you have fully read, understood and agreed to the entire contents of the confidentiality agreement and agree to the following rules:"
+        },
+        "uses_it": {
+          "title": "If the user uses it, he agrees not to send",
+          "content": [
+            "Child pornography, which includes direct nudity of children under the age of 18.",
+            "Encourage or incite content that supports violent terrorism, extremism or harm to others.",
+            "Submit false information, impersonate or deceive others for financial and/or other gain.",
+            "Distribute or promote content related to child abuse or child pornography.",
+            "Violation of the rights and privacy of others, including intellectual property rights, disclosure of private data, etc."
+          ]
+        },
+        "fair": {
+          "title": "Fair use procedures, comply with all of the following laws and regulations",
+          "content": [
+            "Relevant legal requirements of your country of citizenship.",
+            "Relevant legal requirements for your current location and network operator."
+          ]
+        }
+      }
     }
   }
 }

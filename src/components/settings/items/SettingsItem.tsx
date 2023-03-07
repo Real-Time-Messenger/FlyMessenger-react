@@ -2,7 +2,7 @@ import classNames from "classnames";
 import { FC, ReactElement, useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import {SettingsItemProps} from "../SettingsWindow";
-import {buildBackgroundColors, buildTextColors} from "../../layout/items/SidebarItem";
+import {buildBackgroundColors, buildTextColors} from "../../layout/items/messanger/SidebarItem";
 import {useActionsCreators} from "../../../stores/hooks";
 import {settingsActions} from "../../../stores/slices/ui/settings/settings";
 
