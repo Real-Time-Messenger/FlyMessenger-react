@@ -65,7 +65,8 @@ const arrayOfIcons = [
     voicePresentation
 ]
 
-const AnimatedImage: FC<{ src: string, className?: string, slug: string }> = ({src, className, slug}) => {
+const AnimatedImage: FC<{ src: string, className?: string, slug: string, index: number }> = ({src, className, slug, index}) => {
+    const [isLoaded, setIsLoaded] = useState<boolean>(false)
     const [x, setX] = useState<number>(Math.floor(Math.random() * 40) - 20)
     const [y, setY] = useState<number>(Math.floor(Math.random() * 40) - 20)
 
@@ -75,18 +76,26 @@ const AnimatedImage: FC<{ src: string, className?: string, slug: string }> = ({s
     }
 
     useEffect(() => {
+        if (isLoaded) return;
+
+        setTimeout(() => setIsLoaded(true), 2000)
+    }, [isLoaded])
+
+    useEffect(() => {
+        if (!isLoaded) return;
+
         const interval = setInterval(() => animate(), 1)
         return () => clearInterval(interval)
-    }, [])
+    }, [isLoaded])
 
     return (
         <motion.img
             src={src}
-            initial={{opacity: 0, scale: 0}}
+            initial={{opacity: 0}}
             animate={{opacity: 1, scale: 1}}
-            transition={{duration: 0.2}}
+            transition={{duration: 0.2, delay: index * 0.1}}
             className={classNames("absolute transition-transform duration-[300ms]", `icon-${slug}`, className)}
-            style={{x, y}}
+            style={isLoaded ? {x, y} : {}}
             alt={slug}
         />
     )
@@ -137,7 +146,7 @@ export const MainPage = () => {
                         const name = icon.split("/").pop()?.split(".")[0]
                         const slug = name?.replace(/\s+/g, "-").toLowerCase()
 
-                        return (<AnimatedImage src={icon} slug={slug!} key={index}/>)
+                        return (<AnimatedImage src={icon} slug={slug!} key={index} index={index + 1}/>)
                     })}
                 </div>
 
