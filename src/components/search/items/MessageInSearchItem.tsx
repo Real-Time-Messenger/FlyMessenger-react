@@ -49,6 +49,7 @@ export const MessageInSearchItem = ({ onClick, lastMessage, user, activeId }: Di
                     <div className="flex flex-auto items-start justify-end gap-1">
                         <ReadStatusIcon
                             {...user}
+                            userId={lastMessage?.sender.id!}
                             lastMessage={lastMessage}
                             isActive={isActive}
                         />

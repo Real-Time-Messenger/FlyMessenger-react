@@ -1,4 +1,4 @@
-import { ClassNameProps } from "../../interfaces/components/ClassNameProps";
+import {ClassNameProps} from "../../interfaces/ClassNameProps";
 import { FC } from "react";
 
 export const KeySquareIcon: FC<ClassNameProps> = ({ className }: ClassNameProps) => {

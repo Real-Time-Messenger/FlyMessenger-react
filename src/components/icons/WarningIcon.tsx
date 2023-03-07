@@ -1,5 +1,5 @@
-import { ClassNameProps } from "interfaces/components";
 import { FC } from "react";
+import {ClassNameProps} from "../../interfaces/ClassNameProps";
 
 export const WarningIcon: FC<ClassNameProps> = ({ className }: ClassNameProps) => {
 	return (

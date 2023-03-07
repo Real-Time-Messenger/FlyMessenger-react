@@ -1,4 +1,4 @@
-import { ClassNameProps } from "interfaces/components/ClassNameProps";
+import {ClassNameProps} from "../../interfaces/ClassNameProps";
 import path from "path";
 import { FC } from "react";
 

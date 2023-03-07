@@ -10,6 +10,7 @@ import {dialogsActions} from "../../../../stores/slices/dialogs/dialogs";
 import {searchActions} from "../../../../stores/slices/search/search";
 
 export const links = (isDarkMode: boolean): SidebarItemProps[] => {
+
     const sidebarStore = useActionsCreators(sidebarActions);
     const settingsStore = useActionsCreators(settingsActions);
     const dialogsStore = useActionsCreators(dialogsActions);
@@ -62,7 +63,7 @@ export const links = (isDarkMode: boolean): SidebarItemProps[] => {
             label: isDarkMode ? "sidebar.links.lightMode" : "sidebar.links.darkMode",
             Icon: ToggleLeftIcon,
             callback: () => {
-                sidebarStore.toggleDarkMode();
+                sidebarStore.toggleDarkMode({state: !isDarkMode});
                 dispatch(updateUser({theme: isDarkMode ? "light" : "dark"}));
             },
             className: "dark-mode-button",

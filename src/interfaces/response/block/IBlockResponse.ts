@@ -1,4 +1,4 @@
-import { IBlockedUser } from "../../entities";
+import {IBlockedUser} from "../../../entities";
 
 /**
  * Response model for the User Blacklist.

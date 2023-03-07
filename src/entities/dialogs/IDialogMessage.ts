@@ -6,6 +6,8 @@ export interface IDialogMessage {
 	sender: {
 		id: string;
 		photoURL: string;
+		firstName: string;
+		lastName: string;
 	};
 	text?: string;
 	file?: string;

@@ -11,7 +11,7 @@ export const ThemeToggler = () => {
 	return (
 		<div
 			className="duration-250 flex cursor-pointer items-center justify-center rounded bg-white p-2 transition-colors dark:bg-[#151F38] dark:text-white"
-			onClick={() => sidebarStore.toggleDarkMode()}
+			onClick={() => sidebarStore.toggleDarkMode({ state: !isDarkMode })}
 		>
 			{isDarkMode ? <SunIcon className="h-5 w-5 stroke-[1.5]" /> : <MoonIcon className="h-5 w-5 stroke-[1.5]" />}
 		</div>
