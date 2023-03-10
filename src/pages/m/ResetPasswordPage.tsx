@@ -83,7 +83,7 @@ export function ResetPasswordPage() {
 
                     <div className="flex flex-col">
                         <span
-                            className="text-center text-xl font-semibold dark:text-[#E3E3FA]">{t("errors.unexpectedError")}</span>
+                            className="text-center text-xl dark:text-[#E3E3FA]">{t("errors.unexpectedError")}</span>
 
                         <span
                             className="mt-1 text-center text-gray-500 dark:text-[#AFAFAF]">{error && "translation" in error && error.translation && t(`errors.${error.translation}`)}</span>

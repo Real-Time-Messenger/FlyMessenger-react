@@ -35,7 +35,7 @@ export const Footer = () => {
                         <div className="flex flex-col gap-2">
                             <a download href="/public/FlyMessenger.exe"
                                className="text-[#696969] transition-colors dark:text-[#797D93] hover:text-[#161616] dark:hover:text-white w-fit">{t("footer.sections.apps.windows")}</a>
-                            <Link to="/m"
+                            <Link to="/m" target="_blank"
                                   className="text-[#696969] transition-colors dark:text-[#797D93] hover:text-[#161616] dark:hover:text-white w-fit">{t("footer.sections.apps.web")}</Link>
                         </div>
                     </div>

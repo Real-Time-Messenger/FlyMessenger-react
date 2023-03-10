@@ -233,7 +233,7 @@ export const Navbar = memo(() => {
                                             {isActive && (
                                                 <motion.div
                                                     layoutId="underline"
-                                                    className="absolute bottom-0 left-0 w-full h-1 bg-[#98BDE7] dark:bg-[#1F2B49] transition-colors"
+                                                    className="absolute bottom-0 left-0 w-full h-1 bg-[#98BDE7] dark:bg-[#1F2B49] transition-colors rounded-full"
                                                 />
                                             )}
                                         </Link>

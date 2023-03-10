@@ -1,7 +1,7 @@
 import {createBrowserRouter, RouterProvider} from "react-router-dom";
 import {HomePage} from "./pages/m/HomePage";
-import {useEffect, useState} from "react";
-import {useActionsCreators, useAppDispatch, useStateSelector} from "./stores/hooks";
+import {useEffect} from "react";
+import {useActionsCreators, useStateSelector} from "./stores/hooks";
 import {LoginPage} from "./pages/m/LoginPage";
 import {SignupPage} from "./pages/m/SignupPage";
 import {ForgotPasswordPage} from "./pages/m/ForgotPasswordPage";
@@ -11,11 +11,9 @@ import {NewDevicePage} from "./pages/m/NewDevicePage";
 import {TwoFactorPage} from "./pages/m/TwoFactorPage";
 import {sidebarActions} from "./stores/slices/ui/sidebar/sidebar";
 import {useTranslation} from "react-i18next";
-import {WebSocketProvider} from "./hoc/WebSocketProvider";
-import {updateUser} from "./stores/slices/user/user";
-import { MainPage } from "./pages/landing/MainPage";
-import { FaqPage } from "./pages/landing/FaqPage";
-import { PrivacyPage } from "./pages/landing/PrivacyPage";
+import {MainPage} from "./pages/landing/MainPage";
+import {FaqPage} from "./pages/landing/FaqPage";
+import {PrivacyPage} from "./pages/landing/PrivacyPage";
 import {TermsPage} from "./pages/landing/TermsPage";
 
 const router = createBrowserRouter([
@@ -97,9 +95,9 @@ export default function App() {
         if (darkModeCookie) {
             const isDarkMode = darkModeCookie.split("=")[1];
             if (isDarkMode === "true") {
-                sidebarStore.toggleDarkMode({state: false});
-            } else {
                 sidebarStore.toggleDarkMode({state: true});
+            } else {
+                sidebarStore.toggleDarkMode({state: false});
             }
         }
     }, [currentUser]);

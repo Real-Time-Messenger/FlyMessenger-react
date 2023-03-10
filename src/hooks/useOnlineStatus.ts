@@ -50,22 +50,10 @@ export const useOnlineStatus = (config: Config = {}) => {
         visibilityChangeEvent,
         () => {
             const isHidden = element.visibilityState === "hidden";
-            // if (isHidden) {
-            //     const sleepDate = new Date().toISOString();
-            //     storageProvider.setItem(storageKey, sleepDate);
-            //     onHide();
-            // } else {
-            //     // callback to have state restored
-            //     const callbackResult = buildResult();
-            //     if (shouldReturnResult) {
-            //         setResult(callbackResult);
-            //     }
-            //     onShow(callbackResult);
-            // }
+
             if (isHidden) {
                 onHide();
             } else {
-                // callback to have state restored
                 const callbackResult = buildResult();
                 if (shouldReturnResult) {
                     setResult(callbackResult);
@@ -79,7 +67,6 @@ export const useOnlineStatus = (config: Config = {}) => {
     useEventListener(
         loadEvent,
         () => {
-            // callback to have state restored
             const callbackResult = buildResult();
             if (shouldReturnResult) {
                 setResult(callbackResult);

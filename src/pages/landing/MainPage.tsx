@@ -116,9 +116,9 @@ export const MainPage = () => {
                         className="text-xl text-[#303030] dark:text-white transition-colors text-center">{t("pages.main.title")}</span>
                 </div>
 
-                <div className="my-5 mb-10 relative flex items-center justify-center relative"
+                <div className="my-5 mb-10 relative lg:py-20 md:mb-30"
                      ref={iconsRef}>
-                    <div className="max-w-[1190px] lg:my-20 md:mb-30">
+                    <div className="max-w-[1190px] mx-auto xl:w-[1190px] aspect-video xl:h-[648px]">
                         <AnimatePresence>
                             {isDarkMode ? (
                                 <motion.img
@@ -126,6 +126,7 @@ export const MainPage = () => {
                                     src={bannerDark}
                                     alt="bannerLight"
                                     className="w-full main-image"
+                                    initial={{opacity: 0}}
                                     animate={{opacity: 1}}
                                     transition={{duration: 0.2}}
                                 />
@@ -134,7 +135,8 @@ export const MainPage = () => {
                                     key="anonymous"
                                     src={bannerLight}
                                     alt="bannerLight"
-                                    className="w-full main-image"
+                                    className="main-image"
+                                    initial={{opacity: 0}}
                                     animate={{opacity: 1}}
                                     transition={{duration: 0.2}}
                                 />
@@ -146,7 +148,7 @@ export const MainPage = () => {
                         const name = icon.split("/").pop()?.split(".")[0]
                         const slug = name?.replace(/\s+/g, "-").toLowerCase()
 
-                        return (<AnimatedImage src={icon} slug={slug!} key={index} index={index + 1}/>)
+                        return (<AnimatedImage src={icon} slug={slug!} key={index} index={index + 1} className="hidden md:block"/>)
                     })}
                 </div>
 

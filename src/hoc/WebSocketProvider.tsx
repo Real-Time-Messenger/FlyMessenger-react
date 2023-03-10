@@ -1,13 +1,12 @@
 import {ChildrenProps} from "../interfaces/ChildrenProps";
 import {createContext, FC, useCallback, useContext, useEffect, useState} from "react";
 import {dialogsActions} from "../stores/slices/dialogs/dialogs";
-import {useActionsCreators, useAppDispatch, useStateSelector} from "../stores/hooks";
+import {useActionsCreators} from "../stores/hooks";
 import {userActions} from "../stores/slices/user/user";
 import {useTranslation} from "react-i18next";
 import {sidebarActions} from "../stores/slices/ui/sidebar/sidebar";
 import {settingsActions} from "../stores/slices/ui/settings/settings";
 import {searchActions} from "../stores/slices/search/search";
-import {UserKeys} from "../entities/IUser";
 
 export enum WebSocketEventType {
     SEND_MESSAGE = "SEND_MESSAGE",
@@ -42,16 +41,16 @@ interface SocketMessage {
 
 interface WebSocketContext {
     socket: WebSocket | null;
-    typing: (dialogId: string, status: boolean) => void | null;
-    sendMessage: (dialogId: string, message: SocketMessage) => void | null;
-    connect: (callback?: () => void) => void | null;
-    destroySession: (sessionId: string) => void | null;
-    toggleOnlineStatus: (status: boolean) => void | null;
-    readMessage: (dialogId: string, messageId: string) => void | null;
+    typing: (dialogId: string, status: boolean) => void;
+    sendMessage: (dialogId: string, message: SocketMessage) => void;
+    connect: (callback?: () => void) => void;
+    destroySession: (sessionId: string) => void;
+    toggleOnlineStatus: (status: boolean) => void;
+    readMessage: (dialogId: string, messageId: string) => void;
     isSocketConnected: () => boolean;
 }
 
-const WebSocketContext = createContext<WebSocketContext>({
+export const WebSocketContext = createContext<WebSocketContext>({
     socket: null,
     typing: () => null,
     sendMessage: () => null,
@@ -69,8 +68,6 @@ const WebSocketProvider: FC<ChildrenProps> = ({children}: ChildrenProps) => {
 
     const [socket, setSocket] = useState<WebSocket | null>(socketContext.socket);
 
-    const currentUser = useStateSelector((state) => state.user.current);
-
     const sidebarStore = useActionsCreators(sidebarActions);
     const settingsStore = useActionsCreators(settingsActions);
     const dialogsStore = useActionsCreators(dialogsActions);
@@ -79,7 +76,7 @@ const WebSocketProvider: FC<ChildrenProps> = ({children}: ChildrenProps) => {
 
     const url = import.meta.env.VITE_WS_URL;
 
-    const isSocketConnected = (): boolean => socket && socket.readyState === socket.OPEN || false;
+    const isSocketConnected = useCallback(() => socket && socket.readyState === socket.OPEN || false, [socket]);
 
     const logout = useCallback(() => {
         searchStore.reset();
@@ -93,14 +90,16 @@ const WebSocketProvider: FC<ChildrenProps> = ({children}: ChildrenProps) => {
     const setupSocket = (socket: WebSocket, callback?: () => void): WebSocket => {
         socket.onopen = () => {
             if (callback) callback();
+
+            setTimeout(() => toggleOnlineStatus(true), 1000);
         };
 
         socket.onclose = () => {
-            // connect(callback);
+            connect(callback);
         };
 
         socket.onerror = () => {
-            connect(callback);
+            // connect(callback);
         };
 
         socket.onmessage = (message) => {
@@ -114,6 +113,8 @@ const WebSocketProvider: FC<ChildrenProps> = ({children}: ChildrenProps) => {
 
     const handleSocketMessage = (message: MessageEvent): void => {
         const data = JSON.parse(message.data);
+
+        console.log(data)
 
         switch (data.type) {
             case WebSocketResponseType.RECEIVE_MESSAGE:
@@ -175,18 +176,18 @@ const WebSocketProvider: FC<ChildrenProps> = ({children}: ChildrenProps) => {
         }
     }
 
-    const typing = (dialogId: string, status: boolean): void => {
-        if (!socket) {
-            return;
-        }
+    const typing = useCallback((dialogId: string, status: boolean): void => {
+        if (!socket) return;
 
         socket.send(JSON.stringify({
             type: status ? WebSocketEventType.TYPING : WebSocketEventType.UNTYPING,
             dialogId,
         }));
-    };
+    }, [socket]);
 
     const sendMessage = (dialogId: string, message: SocketMessage): void => {
+        console.log(socket)
+
         if (!socket) {
             return;
         }
@@ -209,22 +210,26 @@ const WebSocketProvider: FC<ChildrenProps> = ({children}: ChildrenProps) => {
         }));
     }
 
-    const toggleOnlineStatus = useCallback((status: boolean): void => {
-        if (!socket) {
+    const toggleOnlineStatus = (status: boolean): void => {
+        if (socketContext.socket && isSocketConnected()) {
+            socketContext.socket.send(JSON.stringify({
+                type: WebSocketEventType.TOGGLE_ONLINE_STATUS,
+                status,
+            }));
             return;
         }
 
-        socket.send(JSON.stringify({
-            type: WebSocketEventType.TOGGLE_ONLINE_STATUS,
-            status,
-            userId: currentUser.id
-        }));
-    }, [socket])
+        if (socket && isSocketConnected()) {
+            socket.send(JSON.stringify({
+                type: WebSocketEventType.TOGGLE_ONLINE_STATUS,
+                status,
+            }));
+            return;
+        }
+    }
 
     const readMessage = (dialogId: string, messageId: string): void => {
-        if (!socket) {
-            return;
-        }
+        if (!socket) return;
 
         socket.send(JSON.stringify({
             type: WebSocketEventType.READ_MESSAGE,
@@ -233,15 +238,16 @@ const WebSocketProvider: FC<ChildrenProps> = ({children}: ChildrenProps) => {
         }));
     }
 
-    const connect = useCallback((callback?: () => void): void => {
+    const connect = (callback?: () => void): void => {
         if (!url) return;
 
         socketContext.socket = setupSocket(new WebSocket(url), callback);
+
         setSocket(socketContext.socket);
-    }, [socketContext.socket, toggleOnlineStatus, url]);
+    }
 
     useEffect(() => {
-        setSocket(socketContext.socket)
+        if (socketContext.socket) setSocket(socketContext.socket);
     }, [socketContext.socket]);
 
     useEffect(() => {
@@ -252,6 +258,11 @@ const WebSocketProvider: FC<ChildrenProps> = ({children}: ChildrenProps) => {
         return () => {
             if (socket) {
                 socket.close();
+            }
+
+            if (socketContext.socket) {
+                socketContext.socket.close();
+                socketContext.socket = null;
             }
         }
     }, []);
@@ -267,8 +278,36 @@ const WebSocketProvider: FC<ChildrenProps> = ({children}: ChildrenProps) => {
         isSocketConnected
     }
 
+    useEffect(() => {
+        socketContext.socket = socket
+        socketContext.typing = typing
+        socketContext.sendMessage = sendMessage
+        socketContext.connect = connect
+        socketContext.destroySession = destroySession
+        socketContext.toggleOnlineStatus = toggleOnlineStatus
+        socketContext.readMessage = readMessage
+        socketContext.isSocketConnected = isSocketConnected
+
+        return () => {
+            socketContext.socket = null
+            socketContext.typing = () => {
+            }
+            socketContext.sendMessage = () => {
+            }
+            socketContext.connect = () => {
+            }
+            socketContext.destroySession = () => {
+            }
+            socketContext.toggleOnlineStatus = () => {
+            }
+            socketContext.readMessage = () => {
+            }
+            socketContext.isSocketConnected = () => false
+        }
+    }, [socket, typing, sendMessage, connect, destroySession, toggleOnlineStatus, readMessage, isSocketConnected]);
+
     return (
-        <WebSocketContext.Provider value={data}>
+        <WebSocketContext.Provider value={{...data}}>
             {children}
         </WebSocketContext.Provider>
     );

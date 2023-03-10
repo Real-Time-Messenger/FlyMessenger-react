@@ -1,36 +1,37 @@
 import {useNavigate} from "react-router-dom";
 import {useAppDispatch, useStateSelector} from "../stores/hooks";
 import {ChildrenProps} from "../interfaces/ChildrenProps";
-import {useCallback, useEffect, useState} from "react";
-import {getCurrentUser} from "../stores/slices/user/user";
+import {useEffect, useState} from "react";
 import {SmoothSpawn} from "../components/pages/auth/layouts/SmoothSpawn";
 import {Loader} from "../components/ui/Loader";
+import {getCurrentUser} from "../stores/slices/user/user";
 import {getUserDialogs} from "../stores/slices/dialogs/dialogs";
-import {useWebSocket, WebSocketProvider} from "./WebSocketProvider";
 import {useOnlineStatus} from "../hooks/useOnlineStatus";
+import {useWebSocket, WebSocketProvider} from "./WebSocketProvider";
 
 export const ProtectedRoute = ({children}: ChildrenProps) => {
     const [isFetching, setIsFetching] = useState<boolean>(true);
-    const [socketConnected, setSocketConnected] = useState<boolean>(false);
 
     const dispatch = useAppDispatch();
 
     const currentUser = useStateSelector((state) => state.user.current);
     const navigate = useNavigate();
 
-    const {connect, toggleOnlineStatus, socket, isSocketConnected} = useWebSocket()
+    const {isSocketConnected, toggleOnlineStatus} = useWebSocket();
 
-    const sendOnlineStatus = useCallback((status: boolean) => {
-        if (!isSocketConnected() || !currentUser) return;
-
+    const setOnlineStatus = async (status: boolean) => {
         toggleOnlineStatus(status);
-    }, [isSocketConnected, toggleOnlineStatus]);
+    };
+
+    useOnlineStatus({
+        onHide: () => setOnlineStatus(false),
+        onShow: () => setOnlineStatus(true),
+    });
 
     useEffect(() => {
         dispatch(getCurrentUser())
             .unwrap()
             .then(() => {
-                connect(() => setSocketConnected(true));
                 navigate("/m");
             })
             .catch(() => navigate("/m/login"))
@@ -38,13 +39,7 @@ export const ProtectedRoute = ({children}: ChildrenProps) => {
         dispatch(getUserDialogs());
     }, [dispatch, navigate]);
 
-    useOnlineStatus({
-        onHide: () => sendOnlineStatus(false),
-        onShow: () => sendOnlineStatus(true),
-        onLoad: () => setTimeout(() => sendOnlineStatus(true), 500)
-    });
-
-    if (isFetching || !currentUser || !socketConnected) {
+    if (isFetching || !currentUser.id || !isSocketConnected) {
         return (
             <SmoothSpawn>
                 <Loader className="mx-auto h-[40px] w-[40px]"/>
@@ -56,5 +51,5 @@ export const ProtectedRoute = ({children}: ChildrenProps) => {
         <WebSocketProvider>
             {children}
         </WebSocketProvider>
-    )
+    );
 }
