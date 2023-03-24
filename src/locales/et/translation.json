@@ -1,6 +1,6 @@
 {
   "global": {
-    "title": "Vestlus | Fly Messenger",
+    "title": "Messenger | Fly Messenger",
     "loading": "Laadimine...",
     "everyone": "Igaüks",
     "refresh": "Värskenda",
@@ -75,7 +75,7 @@
   "lastSeenMinutesAgo": "Nähtud {{value}} minutit tagasi",
   "lastSeenHoursAgo": "Nähtud {{value}} tundi tagasi",
   "lastSeenDaysAgo": "Nähtud {{value}} päeva tagasi",
-  "lastSeenAt": "Nähtud kell {{value}}",
+  "lastSeenAt": "Nähtud {{value}}",
   "dialog": {
     "pin": "Kinnita",
     "unpin": "Eemalda kinnitus",

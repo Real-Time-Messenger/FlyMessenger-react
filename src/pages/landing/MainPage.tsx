@@ -43,6 +43,7 @@ import {DesktopAppIcon, WebAppIcon} from "../../components/icons";
 import {Link} from "react-router-dom";
 import {FC, useEffect, useRef, useState} from "react";
 import classNames from "classnames";
+import {setDocumentTitle} from "../../helpers/helpers";
 
 const arrayOfIcons = [
     vector5,
@@ -84,7 +85,7 @@ const AnimatedImage: FC<{ src: string, className?: string, slug: string, index: 
     useEffect(() => {
         if (!isLoaded) return;
 
-        const interval = setInterval(() => animate(), 1)
+        const interval = setInterval(() => animate(), 50)
         return () => clearInterval(interval)
     }, [isLoaded])
 
@@ -94,7 +95,7 @@ const AnimatedImage: FC<{ src: string, className?: string, slug: string, index: 
             initial={{opacity: 0}}
             animate={{opacity: 1, scale: 1}}
             transition={{duration: 0.2, delay: index * 0.1}}
-            className={classNames("absolute transition-transform duration-[300ms]", `icon-${slug}`, className)}
+            className={classNames("absolute transition-transform duration-[500ms]", `icon-${slug}`, className)}
             style={isLoaded ? {x, y} : {}}
             alt={slug}
         />
@@ -106,6 +107,10 @@ export const MainPage = () => {
 
     const isDarkMode = useStateSelector((state) => state.sidebar.isDarkMode);
     const iconsRef = useRef<HTMLDivElement>(null)
+
+    useEffect(() => {
+        setDocumentTitle("Fly Messenger")
+    })
 
     return (
         <LandingLayout>

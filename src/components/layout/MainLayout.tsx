@@ -8,6 +8,7 @@ import {ProtectedRoute} from "../../hoc/ProtectedRoute";
 import {useTranslation} from "react-i18next";
 import {useOnlineStatus} from "../../hooks/useOnlineStatus";
 import {useWebSocket, WebSocketContext} from "../../hoc/WebSocketProvider";
+import {setDocumentTitle} from "../../helpers/helpers";
 
 interface MainLayoutProps {
     children: ReactNode;
@@ -18,8 +19,9 @@ export const MainLayout: FC<MainLayoutProps> = ({children}: MainLayoutProps) => 
 
     const isSettingsOpened = useStateSelector(state => state.settings.isOpened);
 
+
     useEffect(() => {
-        document.title = t("global.title")
+        setDocumentTitle(t("global.title"))
     }, []);
 
     return (

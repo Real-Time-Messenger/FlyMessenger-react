@@ -1,6 +1,6 @@
 import {UndefinedStrings} from "../interfaces/UndefinedStrings";
 
-const twoWeeks = 1000 * 60 * 60 * 24 * 14;
+const oneWeek = 1000 * 60 * 60 * 24 * 7;
 
 /**
  * Concatenates the String (null possible).
@@ -27,16 +27,13 @@ export const concatenate = (...strings: UndefinedStrings[]): string => {
 export const parseDateToTime = (date: string): string => {
     const dateDifference = new Date().getTime() - new Date(date).getTime();
 
-    if (dateDifference < twoWeeks) {
+    if (dateDifference < oneWeek) {
         return new Date(date).toLocaleTimeString("default", {hour: "2-digit", minute: "2-digit"});
     }
 
     return new Date(date).toLocaleDateString("default", {day: "2-digit", month: "2-digit", year: "numeric"});
 };
 
-/**
- * Interface for the User `LastActivity` property.
- */
 export interface LastSeenDate {
     title: string;
     value?: number | string;
@@ -55,26 +52,23 @@ export const parseDateToLastSeen = (date: string | null): LastSeenDate => {
     const parsedDate = new Date(date);
     const currentDate = new Date();
 
-    if (currentDate.getTime() - parsedDate.getTime() < 60 * 1000) {
-        return {title: "lastSeenJustNow"}
+    if (parsedDate.getTime() + 60000 > currentDate.getTime()) {
+        return {title: "lastSeenRecently"};
     }
-    if (currentDate.getTime() - parsedDate.getTime() < 60 * 60 * 1000) {
-        return {
-            title: "lastSeenMinutesAgo",
-            value: Math.floor((currentDate.getTime() - parsedDate.getTime()) / (60 * 1000))
-        }
+
+    if (parsedDate.getTime() + 3600000 > currentDate.getTime()) {
+        const minutes = Math.floor((currentDate.getTime() - parsedDate.getTime()) / 60000);
+        return {title: "lastSeenMinutesAgo", value: minutes};
     }
-    if (currentDate.getTime() - parsedDate.getTime() < 24 * 60 * 60 * 1000) {
-        return {
-            title: "lastSeenHoursAgo",
-            value: Math.floor((currentDate.getTime() - parsedDate.getTime()) / (60 * 60 * 1000))
-        }
+
+    if (parsedDate.getTime() + 86400000 > currentDate.getTime()) {
+        const hours = Math.floor((currentDate.getTime() - parsedDate.getTime()) / 3600000);
+        return {title: "lastSeenHoursAgo", value: hours};
     }
-    if (currentDate.getTime() - parsedDate.getTime() < twoWeeks) {
-        return {
-            title: "lastSeenDaysAgo",
-            value: Math.floor((currentDate.getTime() - parsedDate.getTime()) / (24 * 60 * 60 * 1000))
-        }
+
+    if (parsedDate.getTime() + 604800000 > currentDate.getTime()) {
+        const days = Math.floor((currentDate.getTime() - parsedDate.getTime()) / 86400000);
+        return {title: "lastSeenDaysAgo", value: days};
     }
 
     return {title: "lastSeenAt", value: parseDateToTime(date)};
@@ -100,10 +94,6 @@ export const parseMessageTime = (date: string): string => new Date(date).toLocal
  *
  * @returns {string} - The Image URL.
  */
-// export const parseBase64 = (base64: string): string => {
-//     const [, data] = base64.split(",");
-//     return data;
-// };
 export const parseBase64 = (base64: string | ArrayBuffer): string => {
     if (typeof base64 === "string") {
         const [, data] = base64.split(",");
@@ -134,3 +124,14 @@ export const sendNotification = (title: string, options: NotificationOptions): v
         });
     }
 };
+
+/**
+ * Set the document title.
+ *
+ * @param {string} title - The title to set.
+ */
+export const setDocumentTitle = (title: string): void => {
+    if (typeof window === "undefined") return;
+
+    document.title = title;
+}

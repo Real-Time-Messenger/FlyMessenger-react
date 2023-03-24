@@ -10,6 +10,7 @@ import {SmoothSpawn} from "./SmoothSpawn";
 import {LanguageToggler} from "../items/LanguageToggler";
 import {ThemeToggler} from "../items/ThemeToggler";
 import {getCurrentUser} from "../../../../stores/slices/user/user";
+import {setDocumentTitle} from "../../../../helpers/helpers";
 
 interface OnSubmitEvent {
     onSubmit?: (event: FormEvent<HTMLFormElement>) => void;
@@ -76,7 +77,7 @@ export const AuthLayout = ({children, onSubmit, title, width = 400}: AuthLayoutP
     }, [checkIfUserExist]);
 
     useEffect(() => {
-        document.title = `${title} | Fly Messenger`;
+        setDocumentTitle(`${title} | Fly Messenger`);
     }, [title]);
 
     if (loading === "pending" || isFetching) {

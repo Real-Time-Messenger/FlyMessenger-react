@@ -4,6 +4,8 @@ import {infoDark, infoLight} from "../../components/layout/items/landing/images"
 import {ScrollReader, ScrollReaderData} from "../../components/layout/items/landing/ScrollReader";
 import {AnimatePresence, motion} from "framer-motion";
 import {useStateSelector} from "../../stores/hooks";
+import {useEffect} from "react";
+import {setDocumentTitle} from "../../helpers/helpers";
 
 const privacy: ScrollReaderData[] = [
     {
@@ -71,9 +73,13 @@ export const PrivacyPage = () => {
 
     const isDarkMode = useStateSelector((state) => state.sidebar.isDarkMode);
 
+    useEffect(() => {
+        setDocumentTitle(`${t("pages.privacy.title")} | FlyMessenger`);
+    })
+
     return (
         <LandingLayout>
-            <div className="flex flex-col gap-10">
+            <div className="flex flex-col gap-20">
                 <div className="flex justify-around">
                     <div className="flex flex-col gap-5 mt-10 max-w-2xl">
                         <span className="text-5xl transition-colors text-[#161616] dark:text-white">{t("pages.privacy.title")}</span>

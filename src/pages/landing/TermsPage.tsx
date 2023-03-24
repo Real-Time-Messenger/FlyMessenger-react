@@ -1,8 +1,14 @@
 import { LandingLayout } from "../../components/layout/LandingLayout"
 import {useTranslation} from "react-i18next";
+import {useEffect} from "react";
+import {setDocumentTitle} from "../../helpers/helpers";
 
 export const TermsPage = () => {
     const {t} = useTranslation();
+
+    useEffect(() => {
+        setDocumentTitle(`${t("pages.terms.title")} | FlyMessenger`)
+    })
 
     return (
         <LandingLayout>

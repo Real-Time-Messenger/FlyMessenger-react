@@ -15,6 +15,7 @@ import {MainPage} from "./pages/landing/MainPage";
 import {FaqPage} from "./pages/landing/FaqPage";
 import {PrivacyPage} from "./pages/landing/PrivacyPage";
 import {TermsPage} from "./pages/landing/TermsPage";
+import {setDocumentTitle} from "./helpers/helpers";
 
 const router = createBrowserRouter([
     {
@@ -72,20 +73,17 @@ const router = createBrowserRouter([
 ]);
 
 export default function App() {
-    const {t, i18n} = useTranslation();
+    const {t} = useTranslation();
 
     const sidebarStore = useActionsCreators(sidebarActions);
     const currentUser = useStateSelector((state) => state.user.current);
 
     useEffect(() => {
-        document.title = t("global.title");
+        setDocumentTitle(t("global.title"));
 
         if (currentUser.id) {
             const darkMode = currentUser.settings.theme === "dark";
             sidebarStore.toggleDarkMode({state: darkMode});
-
-            const language = currentUser.settings.language;
-            i18n.changeLanguage(language);
 
             return;
         }

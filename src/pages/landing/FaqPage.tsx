@@ -4,6 +4,8 @@ import {infoDark, infoLight, puzzle, puzzleDark} from "../../components/layout/i
 import {ScrollReader, ScrollReaderData} from "../../components/layout/items/landing/ScrollReader";
 import {useStateSelector} from "../../stores/hooks";
 import {AnimatePresence, motion} from "framer-motion";
+import {useEffect} from "react";
+import {setDocumentTitle} from "../../helpers/helpers";
 
 const faq: ScrollReaderData[] = [
     {
@@ -20,6 +22,10 @@ export const FaqPage = () => {
     const {t} = useTranslation();
 
     const isDarkMode = useStateSelector((state) => state.sidebar.isDarkMode)
+
+    useEffect(() => {
+        setDocumentTitle(`${t("pages.faq.title")} | FlyMessenger`)
+    })
 
     return (
         <LandingLayout>

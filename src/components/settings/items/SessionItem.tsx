@@ -4,6 +4,8 @@ import {CloseIcon, GlobeIcon, MonitorIcon } from "../../icons";
 import {ISession} from "../../../entities";
 import {parseDateToTime} from "../../../helpers/helpers";
 import {useWebSocket} from "../../../hoc/WebSocketProvider";
+import {useActionsCreators} from "../../../stores/hooks";
+import {userActions} from "../../../stores/slices/user/user";
 
 interface SessionItemProps extends ISession {
 	canDelete?: boolean
@@ -11,6 +13,8 @@ interface SessionItemProps extends ISession {
 
 export const SessionItem: FC<SessionItemProps> = ({ id, location, label, type, createdAt, canDelete = true }: SessionItemProps) => {
 	const [isDeleteModalOpened, setIsDeleteModalOpened] = useState<boolean>(false);
+
+	const userStore = useActionsCreators(userActions);
 
 	const {destroySession} = useWebSocket();
 
@@ -29,6 +33,8 @@ export const SessionItem: FC<SessionItemProps> = ({ id, location, label, type, c
 	const destroySessionHandler = () => {
 		destroySession(id);
 		setIsDeleteModalOpened(false);
+
+		userStore.deleteSession({sessionId: id});
 	}
 
 	return (

@@ -44,7 +44,7 @@ export const SessionManagementPage: FC = () => {
     if (error) {
         return (
             <div className="my-5 flex h-full flex-col items-center justify-center">
-                <span className="text-center text-[#303030] dark:text-[#B8BAF2]">{t("sessions.error")}</span>
+                <span className="text-center text-[#303030] dark:text-[#B8BAF2]">{t("settings.sessions.error")}</span>
             </div>
         );
     }
