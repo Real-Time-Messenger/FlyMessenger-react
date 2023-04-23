@@ -1,15 +1,15 @@
-import {UndefinedStrings} from "../interfaces/UndefinedStrings";
-
 const oneWeek = 1000 * 60 * 60 * 24 * 7;
 
 /**
  * Concatenates the String (null possible).
  *
- * @param {UndefinedStrings[]} strings - The Strings to concatenate.
+ * @param {(string | undefined)[]} strings - The Strings to concatenate.
  *
  * @returns {string} - The concatenated String.
  */
-export const concatenate = (...strings: UndefinedStrings[]): string => {
+export const concatenate = (...strings: (string | undefined)[]): string => {
+    if (!strings) return "";
+
     return strings.filter((string) => string).join(" ");
 };
 
@@ -28,12 +28,20 @@ export const parseDateToTime = (date: string): string => {
     const dateDifference = new Date().getTime() - new Date(date).getTime();
 
     if (dateDifference < oneWeek) {
-        return new Date(date).toLocaleTimeString("default", {hour: "2-digit", minute: "2-digit"});
+        return new Date(date).toLocaleTimeString("default", { hour: "2-digit", minute: "2-digit" });
     }
 
-    return new Date(date).toLocaleDateString("default", {day: "2-digit", month: "2-digit", year: "numeric"});
+    return new Date(date).toLocaleDateString("default", { day: "2-digit", month: "2-digit", year: "numeric" });
 };
 
+/**
+ * Interface for the last activity date of the user in pretty format.
+ *
+ * @interface LastSeenDate
+ *
+ * @property {string} title - The title of the date.
+ * @property {number | string} [value] - The value of the date.
+ */
 export interface LastSeenDate {
     title: string;
     value?: number | string;
@@ -47,33 +55,32 @@ export interface LastSeenDate {
  * @returns {LastSeenDate} - Object with the title and value of the `LastActivity` Date.
  */
 export const parseDateToLastSeen = (date: string | null): LastSeenDate => {
-    if (!date) return {title: "lastSeenRecently"};
+    if (!date) return { title: "lastSeenRecently" };
 
     const parsedDate = new Date(date);
     const currentDate = new Date();
 
     if (parsedDate.getTime() + 60000 > currentDate.getTime()) {
-        return {title: "lastSeenRecently"};
+        return { title: "lastSeenJustNow" };
     }
 
     if (parsedDate.getTime() + 3600000 > currentDate.getTime()) {
         const minutes = Math.floor((currentDate.getTime() - parsedDate.getTime()) / 60000);
-        return {title: "lastSeenMinutesAgo", value: minutes};
+        return { title: "lastSeenMinutesAgo", value: minutes };
     }
 
     if (parsedDate.getTime() + 86400000 > currentDate.getTime()) {
         const hours = Math.floor((currentDate.getTime() - parsedDate.getTime()) / 3600000);
-        return {title: "lastSeenHoursAgo", value: hours};
+        return { title: "lastSeenHoursAgo", value: hours };
     }
 
     if (parsedDate.getTime() + 604800000 > currentDate.getTime()) {
         const days = Math.floor((currentDate.getTime() - parsedDate.getTime()) / 86400000);
-        return {title: "lastSeenDaysAgo", value: days};
+        return { title: "lastSeenDaysAgo", value: days };
     }
 
-    return {title: "lastSeenAt", value: parseDateToTime(date)};
+    return { title: "lastSeenAt", value: parseDateToTime(date) };
 };
-
 
 /**
  * Converts the `CreatedAt` Date of the Message to "HH:MM" format.
@@ -82,10 +89,11 @@ export const parseDateToLastSeen = (date: string | null): LastSeenDate => {
  *
  * @returns {string} - Date in the format "HH:MM".
  */
-export const parseMessageTime = (date: string): string => new Date(date).toLocaleTimeString("default", {
-    hour: "2-digit",
-    minute: "2-digit"
-});
+export const parseMessageTime = (date: string): string =>
+    new Date(date).toLocaleTimeString("default", {
+        hour: "2-digit",
+        minute: "2-digit",
+    });
 
 /**
  * Parse the Base64 Image.
@@ -101,7 +109,7 @@ export const parseBase64 = (base64: string | ArrayBuffer): string => {
     }
 
     return base64.toString();
-}
+};
 
 /**
  * Show a Notification with the Given Title and Message
@@ -124,14 +132,3 @@ export const sendNotification = (title: string, options: NotificationOptions): v
         });
     }
 };
-
-/**
- * Set the document title.
- *
- * @param {string} title - The title to set.
- */
-export const setDocumentTitle = (title: string): void => {
-    if (typeof window === "undefined") return;
-
-    document.title = title;
-}

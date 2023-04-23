@@ -1,12 +1,20 @@
-import {AuthLayout} from "../../components/pages/auth/layouts/AuthLayout";
-import {useTranslation} from "react-i18next";
-import {useState} from "react";
-import {IAPIError, IResponseValidationError} from "../../interfaces/response/error";
-import {useNavigate} from "react-router-dom";
-import {Button, Input } from "../../components/pages/auth/items";
-import {useAppDispatch} from "../../stores/hooks";
-import {newDeviceLogin} from "../../stores/slices/user/user";
+import { useTranslation } from "react-i18next";
+import { useState } from "react";
+import { IAPIError, IResponseValidationError } from "@/interfaces/response/error";
+import { useAppDispatch } from "@/stores/hooks";
+import { useNavigate } from "react-router-dom";
+import { newDeviceLogin } from "@/stores/slices/user/user";
+import { AuthLayout } from "@/components/layouts/AuthLayout";
+import { Button, Input } from "@/components/ui/auth";
 
+/**
+ * New device activation page in the authorization process.
+ *
+ * @author Winicred (Kirill Goritski)
+ *
+ * @since 0.9.0
+ * @version 0.9.0
+ */
 export const NewDevicePage = () => {
     const { t } = useTranslation();
 
@@ -17,6 +25,9 @@ export const NewDevicePage = () => {
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
 
+    /**
+     * Handler for success registration.
+     */
     const successCallback = () => {
         setError(null);
         setIsSubmitting(false);
@@ -24,10 +35,13 @@ export const NewDevicePage = () => {
         navigate("/m");
     };
 
+    /**
+     * Form handler for signup.
+     */
     const newDevice = async () => {
         setIsSubmitting(true);
 
-        dispatch(newDeviceLogin({code: newDeviceCode}))
+        dispatch(newDeviceLogin({ code: newDeviceCode }))
             .unwrap()
             .then(() => successCallback())
             .catch((error) => setError(error))
@@ -67,4 +81,4 @@ export const NewDevicePage = () => {
             </AuthLayout.Form>
         </AuthLayout>
     );
-}
+};

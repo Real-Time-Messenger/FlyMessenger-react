@@ -1,50 +1,50 @@
-import {useCallback, useState} from "react";
+import { RefObject, useCallback, useState } from "react";
 import useEventListener from "./useEventListener";
 
 const visibilityChangeEvent = "visibilitychange";
 const loadEvent = "load";
-const noop = () => {
-};
 
-type StorageLike = {
-    getItem: (key: string) => string | null;
-    setItem: (key: string, value: string) => void;
-};
+const noop = () => {};
 
-export type Config = {
+export interface Config {
     onHide?: () => void;
-    onShow?: (results: ShowResults) => void;
-    onLoad?: (results: ShowResults) => void;
+    onShow?: (result?: ShowResults) => void;
+    onLoad?: (result?: ShowResults) => void;
     storageKey?: string;
     shouldReturnResult?: boolean;
-    storageProvider?: StorageLike;
     element?: Document;
-};
+}
 
-type ShowResults = {
+interface ShowResults {
     lastSeenDate: Date | null;
-};
+}
 
+/**
+ * React hook that toggles the online status of a user depending on the visibility of the page.
+ * It returns an object containing the last-seen date.
+ *
+ * @param {Config} config - The config object.
+ *
+ * @returns {ShowResults} - The last-seen date.
+ */
 export const useOnlineStatus = (config: Config = {}) => {
     const {
         onHide = noop,
         onShow = noop,
         onLoad = noop,
-        storageKey = "useSaveRestoreState.lastSeenDateUTC",
         shouldReturnResult = onHide === noop && onShow === noop,
-        storageProvider = localStorage,
-        element = document
+        element = document,
     } = config;
 
     const buildResult = useCallback((): ShowResults => {
-        const lastSeenStr = storageProvider.getItem(storageKey);
-        return {
-            lastSeenDate: lastSeenStr ? new Date(lastSeenStr) : null,
-        };
-    }, [storageKey, storageProvider]);
+        const lastSeenDate = new Date();
+        return { lastSeenDate };
+    }, []);
 
     const initialValue = (shouldReturnResult && buildResult) || undefined;
     const [result, setResult] = useState(initialValue);
+
+    const elementRef = element as unknown as RefObject<Document>;
 
     useEventListener(
         visibilityChangeEvent,
@@ -53,15 +53,17 @@ export const useOnlineStatus = (config: Config = {}) => {
 
             if (isHidden) {
                 onHide();
-            } else {
-                const callbackResult = buildResult();
-                if (shouldReturnResult) {
-                    setResult(callbackResult);
-                }
-                onShow(callbackResult);
+                return;
             }
+
+            const callbackResult = buildResult();
+            if (shouldReturnResult) {
+                setResult(callbackResult);
+            }
+
+            onShow(callbackResult);
         },
-        element as any,
+        elementRef,
     );
 
     useEventListener(
@@ -71,12 +73,10 @@ export const useOnlineStatus = (config: Config = {}) => {
             if (shouldReturnResult) {
                 setResult(callbackResult);
             }
+
             onLoad(callbackResult);
         },
-        element as any,
-        {
-            once: true,
-        }
+        elementRef,
     );
 
     return result;

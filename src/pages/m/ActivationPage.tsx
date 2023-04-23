@@ -1,14 +1,22 @@
-import { AuthLayout } from "../../components/pages/auth/layouts/AuthLayout";
-import {useTranslation} from "react-i18next";
-import {useSearchParams} from "react-router-dom";
-import {useCallback, useEffect, useState} from "react";
-import {IAPIError, IResponseValidationError} from "../../interfaces/response/error";
-import { RedirectLink } from "../../components/pages/auth/items";
-import {SuccessIcon, WarningIcon } from "../../components/icons";
-import { Loader } from "../../components/ui/Loader";
-import {useAppDispatch} from "../../stores/hooks";
-import {activateUser} from "../../stores/slices/user/user";
+import { useTranslation } from "react-i18next";
+import { useSearchParams } from "react-router-dom";
+import { useCallback, useEffect, useState } from "react";
+import { IAPIError, IResponseValidationError } from "@/interfaces/response/error";
+import { useAppDispatch } from "@/stores/hooks";
+import { activateUser } from "@/stores/slices/user/user";
+import { AuthLayout } from "@/components/layouts/AuthLayout";
+import { SuccessIcon, WarningIcon } from "@/components/icons";
+import { RedirectLink } from "@/components/ui/auth";
+import { Loader } from "@/components/ui/messenger/Loader";
 
+/**
+ * Activation page in the authorization process.
+ *
+ * @author Winicred (Kirill Goritski)
+ *
+ * @since 0.9.0
+ * @version 0.9.0
+ */
 export const ActivationPage = () => {
     const { t } = useTranslation();
 
@@ -29,18 +37,20 @@ export const ActivationPage = () => {
     }, []);
 
     /**
-     * Function to activate account.
+     * Function to activate an account.
      */
     const activate = useCallback(() => {
         if (!token) return;
 
-        dispatch(activateUser({token}))
+        dispatch(activateUser({ token }))
             .unwrap()
             .then(() => successActivation())
             .catch((error) => setError(error));
-    }, [successActivation, token]);
+    }, [dispatch, successActivation, token]);
 
-    // Call activate function on mount.
+    /**
+     * Attempt to activate an account on mount.
+     */
     useEffect(() => {
         activate();
     }, [activate]);
@@ -53,26 +63,19 @@ export const ActivationPage = () => {
 
                     <span className="my-5 text-center dark:text-[#E3E3FA]">{t("auth.activate.emptyToken")}</span>
 
-                    <RedirectLink
-                        to="/m/login"
-                        label={t("auth.activate.backToLogin")}
-                        variant="primary"
-                    />
+                    <RedirectLink to="/m/login" label={t("auth.activate.backToLogin")} variant="primary" />
                 </div>
             </AuthLayout>
         );
     }
 
-    /**
-     * Our request is still in progress.
-     */
     if (!isSuccess && !error) {
         return (
             <AuthLayout title={t("auth.activate.activating")}>
                 <div className="my-5 flex flex-col items-center justify-center gap-3">
                     <Loader className="h-10 w-10" />
 
-                    <span className="my-5 text-center dark:text-[#E3E3FA]">{t("auth.activate.activating")}</span>
+                    <span className="mt-5 text-center dark:text-[#E3E3FA]">{t("auth.activate.activating")}</span>
                 </div>
             </AuthLayout>
         );
@@ -81,25 +84,21 @@ export const ActivationPage = () => {
     if (error) {
         return (
             <AuthLayout title={t("errors.unexpectedError")}>
-                    <div className="flex flex-col items-center justify-center gap-3 py-5">
-                        <WarningIcon className="h-16 w-16 stroke-2 text-[#E86C6C]"/>
+                <div className="flex flex-col items-center justify-center gap-3 py-5">
+                    <WarningIcon className="h-16 w-16 stroke-2 text-[#E86C6C]" />
 
-                        <div className="flex flex-col">
-                        <span
-                            className="text-center text-xl dark:text-[#E3E3FA]">{t("errors.unexpectedError")}</span>
+                    <div className="flex flex-col">
+                        <span className="text-center text-xl dark:text-[#E3E3FA]">{t("errors.unexpectedError")}</span>
 
-                            <span
-                                className="mt-1 text-center text-gray-500 dark:text-[#AFAFAF]">{error && "translation" in error && error.translation && t(`errors.${error.translation}`)}</span>
+                        <span className="mt-1 text-center text-gray-500 dark:text-[#AFAFAF]">
+                            {error && "translation" in error && error.translation && t(`errors.${error.translation}`)}
+                        </span>
 
-                            <div className="mt-5 flex items-center justify-center">
-                                <RedirectLink
-                                    to="/m/login"
-                                    label={t("auth.activate.backToLogin")}
-                                    variant="primary"
-                                />
-                            </div>
+                        <div className="mt-5 flex items-center justify-center">
+                            <RedirectLink to="/m/login" label={t("auth.activate.backToLogin")} variant="primary" />
                         </div>
                     </div>
+                </div>
             </AuthLayout>
         );
     }
@@ -111,12 +110,8 @@ export const ActivationPage = () => {
 
                 <span className="my-5 text-center dark:text-[#E3E3FA]">{t("auth.activate.success")}</span>
 
-                <RedirectLink
-                    to="/m/login"
-                    label={t("auth.activate.backToLogin")}
-                    variant="primary"
-                />
+                <RedirectLink to="/m/login" label={t("auth.activate.backToLogin")} variant="primary" />
             </div>
         </AuthLayout>
     );
-}
+};

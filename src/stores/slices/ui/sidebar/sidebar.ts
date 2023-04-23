@@ -1,26 +1,43 @@
-import {createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {SidebarItemProps} from "../../../../components/layout/items/messanger/SidebarItem";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
+/**
+ * Default state for sidebar initial state.
+ *
+ * @interface InitialState
+ *
+ * @property {boolean} isSidebarOpened - Determines if sidebar is opened.
+ * @property {boolean} isDarkMode - Determines if dark mode is enabled.
+ * @property {string | undefined} activeLink - Active link.
+ * @property {boolean} isMobileSidebarOpened - Determines if mobile sidebar is opened.
+ */
 interface InitialState {
     isSidebarOpened: boolean;
     isDarkMode: boolean;
     activeLink?: string;
+    isMobileSidebarOpened: boolean;
 }
 
+/**
+ * Initial state for sidebar slice.
+ */
 const initialState: InitialState = {
     isSidebarOpened: false,
     isDarkMode: false,
     activeLink: undefined,
-}
+    isMobileSidebarOpened: true,
+};
 
+/**
+ * Sidebar slice.
+ */
 const sidebarSlice = createSlice({
     name: "sidebar",
     initialState,
     reducers: {
-        toggleSidebar(state, action: PayloadAction<{state: boolean}>) {
+        toggleSidebar(state, action: PayloadAction<{ state: boolean }>) {
             state.isSidebarOpened = action.payload.state;
         },
-        toggleDarkMode(state, action: PayloadAction<{state?: boolean}>) {
+        toggleDarkMode(state, action: PayloadAction<{ state?: boolean }>) {
             state.isDarkMode = action.payload?.state ?? !state.isDarkMode;
 
             if (state.isDarkMode) document.body.classList.add("dark");
@@ -35,8 +52,12 @@ const sidebarSlice = createSlice({
             state.isSidebarOpened = false;
             state.isDarkMode = false;
             state.activeLink = undefined;
-        }
-    }
+            state.isMobileSidebarOpened = true;
+        },
+        toggleMobileSidebar(state, action: PayloadAction<{ state: boolean }>) {
+            state.isMobileSidebarOpened = action.payload.state;
+        },
+    },
 });
 
-export const {reducer: sidebarReducer, actions: sidebarActions} = sidebarSlice;
+export const { reducer: sidebarReducer, actions: sidebarActions } = sidebarSlice;

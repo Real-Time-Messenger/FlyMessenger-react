@@ -1,25 +1,38 @@
-import {FC, useState} from "react";
-import {useActionsCreators, useAppDispatch, useStateSelector} from "../../stores/hooks";
-import {useTranslation} from "react-i18next";
-import {searchActions} from "../../stores/slices/search/search";
-import {Avatar} from "../ui/Avatar";
-import {concatenate} from "../../helpers/helpers";
-import {CloseIcon} from "../icons";
-import {DialogItem} from "../ui/DialogItem";
-import {UserInSearchItem} from "./items/UserInSearchItem";
-import {MessageInSearchItem} from "./items/MessageInSearchItem";
-import {createDialog, dialogsActions} from "../../stores/slices/dialogs/dialogs";
-import {ISearchResult} from "../../interfaces/response";
+import { ISearchResult } from "@/interfaces/response";
+import { FC, useState } from "react";
+import { useTranslation } from "react-i18next";
+import { useActionCreators, useAppDispatch, useStateSelector } from "@/stores/hooks";
+import { searchActions } from "@/stores/slices/search/search";
+import { createDialog, dialogActions } from "@/stores/slices/dialogs/dialogs";
+import { Avatar } from "@/components/ui/messenger/Avatar";
+import { concatenate } from "@/helpers/helpers";
+import { CloseIcon } from "@/components/icons";
+import { DialogItem } from "@/components/ui/messenger/dialog/DialogItem";
+import { UserInSearchItem } from "@/components/search/items/UserInSearchItem";
+import { MessageInSearchItem } from "@/components/search/items/MessageInSearchItem";
 
 /**
- * Interface to Represent `SearchResultList` List as `data` prop.
+ * Props for the {@link SearchResultList} component.
+ *
+ * @interface
+ *
+ * @property {ISearchResult | undefined} data - The search result data.
  */
 interface SearchResultListProps {
     data: ISearchResult | undefined;
 }
 
 /**
- * Interface for the `SearchResultList` component props.
+ * Props for the {@link SearchItems} component.
+ *
+ * @interface SearchResultItemProps
+ *
+ * @property {ISearchResult["dialogs"] | ISearchResult["messages"] | ISearchResult["users"]} data - The search result data.
+ * @property {string} label - The label for the search result.
+ * @property {string} emptyLabel - The label for the empty search result.
+ * @property {(id: string) => void} onClick - The click handler for the search result.
+ * @property {FC<any>} Component - The component for the search result.
+ * @property {string} activeId - The active id for the search result.
  */
 interface SearchResultItemProps {
     data: ISearchResult["dialogs"] | ISearchResult["messages"] | ISearchResult["users"];
@@ -30,18 +43,24 @@ interface SearchResultItemProps {
     activeId?: string;
 }
 
-const SearchItems = ({data, label, emptyLabel, onClick, Component, activeId}: SearchResultItemProps) => {
-    const {t} = useTranslation();
+/**
+ * Search result item component.
+ *
+ * @author Winicred (Kirill Goritski)
+ *
+ * @since 0.9.0
+ * @version 0.9.0
+ */
+const SearchItems: FC<SearchResultItemProps> = ({ data, label, emptyLabel, onClick, Component, activeId }) => {
+    const { t } = useTranslation();
 
     if (typeof data === "undefined") return null;
 
     const Content = () => {
         if (data.length === 0) {
             return (
-                <div className="flex flex-col items-center justify-center my-2">
-                    <span className="text-[#A0A0A0] dark:text-[#A0A0A0]">
-                        {t(emptyLabel)}
-                    </span>
+                <div className="my-2 flex flex-col items-center justify-center">
+                    <span className="text-[#A0A0A0] dark:text-[#A0A0A0]">{t(emptyLabel)}</span>
                 </div>
             );
         }
@@ -49,20 +68,15 @@ const SearchItems = ({data, label, emptyLabel, onClick, Component, activeId}: Se
         return (
             <div className="mt-3 flex flex-col gap-3 px-3 xl:px-5">
                 {data.map((dialog, index) => (
-                    <Component
-                        key={index}
-                        {...dialog}
-                        onClick={onClick}
-                        activeId={activeId}
-                    />
+                    <Component key={index} onClick={onClick} activeId={activeId} {...dialog} />
                 ))}
             </div>
-        )
-    }
+        );
+    };
 
     return (
         <div className="mb-3 flex flex-col">
-            <div className="duration-250 sticky top-0 z-[1] bg-[#EAEDFA] p-1.5 transition-colors dark:bg-[#10182B] select-none">
+            <div className="sticky top-0 z-[1] select-none bg-[#EAEDFA] p-1.5 transition-colors dark:bg-[#10182B]">
                 <span>{t(label)}</span>
             </div>
 
@@ -71,8 +85,16 @@ const SearchItems = ({data, label, emptyLabel, onClick, Component, activeId}: Se
     );
 };
 
-export const SearchResultList: FC<SearchResultListProps> = ({data}: SearchResultListProps) => {
-    const {t} = useTranslation();
+/**
+ * Renders the search result list.
+ *
+ * @author Winicred (Kirill Goritski)
+ *
+ * @since 0.9.0
+ * @version 0.9.0
+ */
+export const SearchResultList: FC<SearchResultListProps> = ({ data }: SearchResultListProps) => {
+    const { t } = useTranslation();
 
     const [activeId, setActiveId] = useState<string>("");
 
@@ -80,41 +102,46 @@ export const SearchResultList: FC<SearchResultListProps> = ({data}: SearchResult
     const activeDialog = useStateSelector((state) => state.dialogs.activeDialog);
     const searchableUser = useStateSelector((state) => state.search.selectedUser);
 
-    const searchStore = useActionsCreators(searchActions);
-    const dialogsStore = useActionsCreators(dialogsActions);
+    const searchStore = useActionCreators(searchActions);
+    const dialogsStore = useActionCreators(dialogActions);
     const dispatch = useAppDispatch();
 
-    const clearUserInstance = () => {
+    /**
+     * Clears the selected user instance.
+     */
+    const clearUserInstance = (): void => {
         searchStore.setSearchableUser(undefined);
     };
 
-    const setObservedMessage = (id: string) => {
+    /**
+     * Sets the observed message ID.
+     *
+     * @param {string} id - The message ID.
+     */
+    const setObservedMessage = (id: string): void => {
         setActiveId(id);
 
-        // find the dialog of the message
         const dialog = dialogs.find((dialog) => dialog.messages.find((message) => message.id === id));
         if (dialog && dialog.id !== activeDialog?.id) {
-            dialogsStore.setActiveDialog({id: dialog.id});
+            dialogsStore.setActiveDialog({ id: dialog.id });
         }
 
         searchStore.setSearchableMessageId(id);
     };
 
     /**
-     * Creates a new Dialog with the User on Click.
+     * Creates a dialog with the specified user.
      *
-     * @async
-     *
-     * @param {string} userId - ID of the User to Create a Dialog with.
+     * @param {string} userId - The user ID.
      */
     const createDialogQuery = async (userId: string): Promise<void> => {
         const dialog = dialogs.find((dialog) => dialog.user.id === userId);
         if (!dialog) {
-            dispatch(createDialog({toUserId: userId}))
+            dispatch(createDialog({ toUserId: userId }));
             return;
         }
 
-        dialogsStore.setActiveDialog({id: dialog.id});
+        dialogsStore.setActiveDialog({ id: dialog.id });
         searchStore.setSearchableMessageId(null);
     };
 
@@ -122,7 +149,7 @@ export const SearchResultList: FC<SearchResultListProps> = ({data}: SearchResult
         <div className="flex flex-1 flex-col">
             {searchableUser && (
                 <>
-                    <div className="duration-250 bg-[#EAEDFA] p-1.5 transition-colors dark:bg-[#10182B]">
+                    <div className="bg-[#EAEDFA] p-1.5 transition-colors dark:bg-[#10182B]">
                         <span>{t("search.searchMessagesIn")}</span>
                     </div>
 
@@ -131,17 +158,18 @@ export const SearchResultList: FC<SearchResultListProps> = ({data}: SearchResult
                             <Avatar
                                 src={searchableUser.photoURL}
                                 alt={concatenate(searchableUser.firstName, searchableUser.lastName)}
-                                className="rounded-full w-10 h-10"
+                                className="h-10 w-10 rounded-full"
                             />
 
-                            <span
-                                className="flex-1">{concatenate(searchableUser.firstName, searchableUser.lastName)}</span>
+                            <span className="flex-1">
+                                {concatenate(searchableUser.firstName, searchableUser.lastName)}
+                            </span>
 
                             <button
-                                className="duration-250 cursor-pointer rounded-full p-2 text-[#4C4C4C] transition-colors hover:text-[#161616] dark:text-[#7B7B7B] dark:hover:text-[#FFFFFF]"
+                                className="cursor-pointer rounded-full p-2 text-[#4C4C4C] transition-colors hover:text-[#161616] dark:text-[#7B7B7B] dark:hover:text-[#FFFFFF]"
                                 onClick={clearUserInstance}
                             >
-                                <CloseIcon className="h-6 w-6 stroke-[1.5]"/>
+                                <CloseIcon className="h-6 w-6 stroke-[1.5]" />
                             </button>
                         </div>
                     </div>

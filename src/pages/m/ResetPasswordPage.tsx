@@ -1,19 +1,27 @@
-import {AuthLayout} from "../../components/pages/auth/layouts/AuthLayout";
-import {useNavigate, useSearchParams} from "react-router-dom";
-import {useAppDispatch} from "../../stores/hooks";
-import {useCallback, useEffect, useState} from "react";
-import {resetPassword, validateResetPasswordToken} from "../../stores/slices/user/user";
-import {SmoothSpawn} from "../../components/pages/auth/layouts/SmoothSpawn";
-import {Loader} from "../../components/ui/Loader";
-import {WarningIcon} from "../../components/icons";
-import {Button, Input, RedirectLink} from "../../components/pages/auth/items";
-import {useTranslation} from "react-i18next";
-import {IAPIError, IResponseValidationError} from "../../interfaces/response/error";
+import { useTranslation } from "react-i18next";
+import { useNavigate, useSearchParams } from "react-router-dom";
+import { useCallback, useEffect, useState } from "react";
+import { IAPIError, IResponseValidationError } from "@/interfaces/response/error";
+import { useAppDispatch } from "@/stores/hooks";
+import { resetPassword, validateResetPasswordToken } from "@/stores/slices/user/user";
+import { SmoothSpawn } from "@/components/layouts/extra/SmoothSpawn";
+import { Loader } from "@/components/ui/messenger/Loader";
+import { AuthLayout } from "@/components/layouts/AuthLayout";
+import { WarningIcon } from "@/components/icons";
+import { Button, Input, RedirectLink } from "@/components/ui/auth";
 
+/**
+ * Reset the password page in the authorization process.
+ *
+ * @author Winicred (Kirill Goritski)
+ *
+ * @since 0.9.0
+ * @version 0.9.0
+ */
 export function ResetPasswordPage() {
-    const {t} = useTranslation();
+    const { t } = useTranslation();
 
-    const [searchParams, setSearchParams] = useSearchParams();
+    const [searchParams] = useSearchParams();
     const [isFetching, setIsFetching] = useState<boolean>(false);
     const [isTokenValid, setIsTokenValid] = useState<boolean>(false);
 
@@ -25,7 +33,10 @@ export function ResetPasswordPage() {
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
 
-    const validateToken = useCallback(async () => {
+    /**
+     * Function to validate the token in the URL.
+     */
+    const validateToken = useCallback((): void => {
         const token = searchParams.get("token");
         if (!token) {
             setIsTokenValid(false);
@@ -34,20 +45,25 @@ export function ResetPasswordPage() {
 
         setIsFetching(true);
 
-        dispatch(validateResetPasswordToken({token}))
+        dispatch(validateResetPasswordToken({ token }))
             .unwrap()
             .then(() => setIsTokenValid(true))
             .catch((error) => handleInvalidToken(error))
             .finally(() => setIsFetching(false));
-    }, [searchParams]);
+    }, [dispatch, searchParams]);
 
+    /**
+     * Handler for invalid token.
+     *
+     * @param {IResponseValidationError | IAPIError} error - Error response.
+     */
     const handleInvalidToken = (error: IResponseValidationError | IAPIError) => {
         setError(error);
         setIsTokenValid(false);
-    }
+    };
 
     /**
-     * Handler for Submit Event.
+     * Function to reset the password.
      */
     const resetPasswordQuery = useCallback((): void => {
         const token = searchParams.get("token");
@@ -56,13 +72,16 @@ export function ResetPasswordPage() {
 
         setIsSubmitting(true);
 
-        dispatch(resetPassword({token, password, passwordConfirm}))
+        dispatch(resetPassword({ token, password, passwordConfirm }))
             .unwrap()
             .then(() => navigate("/m/login"))
             .catch((error) => setError(error))
             .finally(() => setIsSubmitting(false));
-    }, [password, passwordConfirm, searchParams]);
+    }, [dispatch, navigate, password, passwordConfirm, searchParams]);
 
+    /**
+     * Attempt to validate the token on mount.
+     */
     useEffect(() => {
         validateToken();
     }, [validateToken]);
@@ -70,35 +89,31 @@ export function ResetPasswordPage() {
     if (isFetching) {
         return (
             <SmoothSpawn>
-                <Loader className="mx-auto h-[40px] w-[40px]"/>
+                <Loader className="mx-auto h-[40px] w-[40px]" />
             </SmoothSpawn>
-        )
+        );
     }
 
     if ((!isTokenValid || !isTokenValid) && error && !isFetching) {
         return (
             <AuthLayout title={t("errors.unexpectedError")}>
                 <div className="flex flex-col items-center justify-center gap-3 py-5">
-                    <WarningIcon className="h-16 w-16 stroke-2 text-[#E86C6C]"/>
+                    <WarningIcon className="h-16 w-16 stroke-2 text-[#E86C6C]" />
 
                     <div className="flex flex-col">
-                        <span
-                            className="text-center text-xl dark:text-[#E3E3FA]">{t("errors.unexpectedError")}</span>
+                        <span className="text-center text-xl dark:text-[#E3E3FA]">{t("errors.unexpectedError")}</span>
 
-                        <span
-                            className="mt-1 text-center text-gray-500 dark:text-[#AFAFAF]">{error && "translation" in error && error.translation && t(`errors.${error.translation}`)}</span>
+                        <span className="mt-1 text-center text-gray-500 dark:text-[#AFAFAF]">
+                            {error && "translation" in error && error.translation && t(`errors.${error.translation}`)}
+                        </span>
 
                         <div className="mt-5 flex items-center justify-center">
-                            <RedirectLink
-                                to="/m/login"
-                                label={t("auth.activate.backToLogin")}
-                                variant="primary"
-                            />
+                            <RedirectLink to="/m/login" label={t("auth.activate.backToLogin")} variant="primary" />
                         </div>
                     </div>
                 </div>
             </AuthLayout>
-        )
+        );
     }
 
     return (

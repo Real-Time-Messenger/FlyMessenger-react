@@ -1,32 +1,27 @@
-import {useNavigate} from "react-router-dom";
-import {useAppDispatch, useStateSelector} from "../stores/hooks";
-import {ChildrenProps} from "../interfaces/ChildrenProps";
-import {useEffect, useState} from "react";
-import {SmoothSpawn} from "../components/pages/auth/layouts/SmoothSpawn";
-import {Loader} from "../components/ui/Loader";
-import {getCurrentUser} from "../stores/slices/user/user";
-import {getUserDialogs} from "../stores/slices/dialogs/dialogs";
-import {useOnlineStatus} from "../hooks/useOnlineStatus";
-import {useWebSocket, WebSocketProvider} from "./WebSocketProvider";
+import { ChildrenProps } from "@/interfaces/ChildrenProps";
+import { FC, useEffect, useState } from "react";
+import { useAppDispatch } from "@/stores/hooks";
+import { useNavigate } from "react-router-dom";
+import { WebSocketProvider } from "@/hoc/WebSocketProvider";
+import { getCurrentUser } from "@/stores/slices/user/user";
+import { getUserDialogs } from "@/stores/slices/dialogs/dialogs";
+import { SmoothSpawn } from "@/components/layouts/extra/SmoothSpawn";
+import { Loader } from "@/components/ui/messenger/Loader";
 
-export const ProtectedRoute = ({children}: ChildrenProps) => {
+/**
+ * Wraps the application in protected route component, which checks if the user is logged in and redirects to the login page if not.
+ *
+ * @author Winicred (Kirill Goritski)
+ *
+ * @since 0.9.0
+ * @version 0.9.0
+ */
+export const ProtectedRoute: FC<ChildrenProps> = ({ children }) => {
     const [isFetching, setIsFetching] = useState<boolean>(true);
 
-    const dispatch = useAppDispatch();
-
-    const currentUser = useStateSelector((state) => state.user.current);
     const navigate = useNavigate();
 
-    const {isSocketConnected, toggleOnlineStatus} = useWebSocket();
-
-    const setOnlineStatus = async (status: boolean) => {
-        toggleOnlineStatus(status);
-    };
-
-    useOnlineStatus({
-        onHide: () => setOnlineStatus(false),
-        onShow: () => setOnlineStatus(true),
-    });
+    const dispatch = useAppDispatch();
 
     useEffect(() => {
         dispatch(getCurrentUser())
@@ -34,22 +29,20 @@ export const ProtectedRoute = ({children}: ChildrenProps) => {
             .then(() => {
                 navigate("/m");
             })
-            .catch(() => navigate("/m/login"))
+            .catch(() => {
+                navigate("/m/login");
+            })
             .finally(() => setIsFetching(false));
         dispatch(getUserDialogs());
     }, [dispatch, navigate]);
 
-    if (isFetching || !currentUser.id || !isSocketConnected) {
+    if (isFetching) {
         return (
             <SmoothSpawn>
-                <Loader className="mx-auto h-[40px] w-[40px]"/>
+                <Loader className="mx-auto h-[40px] w-[40px]" />
             </SmoothSpawn>
-        )
+        );
     }
 
-    return (
-        <WebSocketProvider>
-            {children}
-        </WebSocketProvider>
-    );
-}
+    return <WebSocketProvider>{children}</WebSocketProvider>;
+};

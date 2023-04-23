@@ -1,438 +1,439 @@
 {
-  "global": {
-    "title": "Messenger | Fly Messenger",
-    "loading": "Laadimine...",
-    "everyone": "Igaüks",
-    "refresh": "Värskenda",
-    "no-one": "Mitte keegi",
-    "no-dialogs": {
-      "title": "Teil pole veel dialooge",
-      "message": "Otsige üles tuttavad inimesed ja alustage nendega vestlust."
-    }
-  },
-  "search": {
-    "title": "Otsing...",
-    "dialogs": {
-      "title": "Chattid",
-      "empty": "Chattid ei leitud"
+    "global": {
+        "title": "Messenger | Fly Messenger",
+        "loading": "Laadimine...",
+        "everyone": "Igaüks",
+        "refresh": "Värskenda",
+        "no-one": "Mitte keegi",
+        "no-dialogs": {
+            "title": "Teil pole veel dialooge",
+            "message": "Otsige üles tuttavad inimesed ja alustage nendega vestlust."
+        }
+    },
+    "search": {
+        "title": "Otsing...",
+        "dialogs": {
+            "title": "Chattid",
+            "empty": "Chattid ei leitud"
+        },
+        "users": {
+            "title": "Kasutajad",
+            "empty": "Kasutajaid ei leitud"
+        },
+        "messages": {
+            "title": "Sõnumid",
+            "empty": "Sõnumeid ei leitud"
+        },
+        "searchMessagesIn": "Otsi sõnumeid sisse"
+    },
+    "button": {
+        "cancel": "Tühista",
+        "save": "Salvesta",
+        "finish": "Lõpetada",
+        "delete": "Kustuta",
+        "forbidden": "Keelatud"
     },
     "users": {
-      "title": "Kasutajad",
-      "empty": "Kasutajaid ei leitud"
+        "name": "Nimi",
+        "lastName": "Perekonnanimi",
+        "email": "E-post",
+        "username": "Kasutajanimi",
+        "password": "Parool",
+        "passwordConfirm": "Kinnita parool",
+        "block": "Blokeeri",
+        "unblock": "Lõpeta blokeering",
+        "status": {
+            "online": "Võrgus",
+            "typing": "Kirjutab..."
+        }
+    },
+    "sidebar": {
+        "links": {
+            "dialogs": "Chattid",
+            "conversations": "Vestlused",
+            "groups": "Rühmad",
+            "support": "Toetus",
+            "settings": "Seaded",
+            "darkMode": "Tume režiim",
+            "lightMode": "Hele režiim",
+            "logout": "Logi välja"
+        }
     },
     "messages": {
-      "title": "Sõnumid",
-      "empty": "Sõnumeid ei leitud"
-    },
-    "searchMessagesIn": "Otsi sõnumeid sisse"
-  },
-  "button": {
-    "cancel": "Tühista",
-    "save": "Salvesta",
-    "finish": "Lõpetada",
-    "delete": "Kustuta",
-    "forbidden": "Keelatud"
-  },
-  "users": {
-    "name": "Nimi",
-    "lastName": "Perekonnanimi",
-    "email": "E-post",
-    "username": "Kasutajanimi",
-    "password": "Parool",
-    "passwordConfirm": "Kinnita parool",
-    "block": "Blokeeri",
-    "unblock": "Lõpeta blokeering",
-    "status": {
-      "online": "Võrgus",
-      "typing": "Kirjutab..."
-    }
-  },
-  "sidebar": {
-    "links": {
-      "dialogs": "Chattid",
-      "conversations": "Vestlused",
-      "groups": "Rühmad",
-      "support": "Toetus",
-      "settings": "Seaded",
-      "darkMode": "Tume režiim",
-      "lightMode": "Hele režiim",
-      "logout": "Logi välja"
-    }
-  },
-  "messages": {
-    "writeAMessage": "Kirjuta sõnum...",
-    "selectChat": "Valige vestlus alustamiseks",
-    "file": "Pilt",
-    "first": "Saada esimene sõnum",
-    "empty": {
-      "title": "Tundub, et siin pole sõnumeid",
-      "subtitle": "Saada esimene sõnum vestluse alustamiseks"
-    }
-  },
-  "lastSeenForALongTime": "Vaatamata pikale aega",
-  "lastSeenRecently": "Hiljuti nähtud",
-  "lastSeenJustNow": "Hetkel nähtud",
-  "lastSeenMinutesAgo": "Nähtud {{value}} minutit tagasi",
-  "lastSeenHoursAgo": "Nähtud {{value}} tundi tagasi",
-  "lastSeenDaysAgo": "Nähtud {{value}} päeva tagasi",
-  "lastSeenAt": "Nähtud {{value}}",
-  "dialog": {
-    "pin": "Kinnita",
-    "unpin": "Eemalda kinnitus",
-    "notifications": {
-      "mute": "Lülita teateid",
-      "unmute": "Lülitada teateid"
-    },
-    "sound": {
-      "mute": "Lülita heli",
-      "unmute": "Lülitada heli"
-    },
-    "modal": {
-      "delete": {
-        "title": "Kas olete kindel, et soovite selle vestluse kustutada?"
-      }
-    },
-    "block": "Blokeeri",
-    "unblock": "Deblokeeri",
-    "delete": "Kustuta vestlus"
-  },
-  "settings": {
-    "title": "Seaded",
-    "usernameCopied": "Kasutajanimi on kopeeritud",
-    "links": {
-      "profile": "Profiil",
-      "notifications": "Teateid",
-      "privacy": "Konfidentsiaalsus",
-      "blockedUsers": "Blokeeritud kasutajad",
-      "language": "Keel",
-      "deleteAccount": "Kustuta konto",
-      "sessionManagement": "Seansi juhtimine"
-    },
-    "account": {
-      "deleteAccount": {
-        "title": "Kas olete kindel, et soovite oma konto kustutada?"
-      }
-    },
-    "notifications": {
-      "title": "Teateid",
-      "notify": {
-        "title": "Lülitada märguanded"
-      },
-      "sounds": {
-        "title": "Lülitada heli"
-      },
-      "chats": "Chatti",
-      "conversations": "Vestluste",
-      "groups": "Rühmate"
-    },
-    "privacy": {
-      "title": "Konfidentsiaalsus",
-      "lastActivity": {
-        "title": "Viimane tegevus"
-      },
-      "messageForwarding": {
-        "title": "Sõnumi edastamine"
-      },
-      "groupsAndConversations": {
-        "title": "Rühmad ja vestlused"
-      },
-      "sessionManagement": {
-        "title": "Seansi juhtimine"
-      },
-      "twoFactor": {
-        "title": "Kahefaktoriline autentimine"
-      }
-    },
-    "sessions": {
-      "title": "Seansi juhtimine",
-      "empty": "Sul pole ühtegi seanssi. Proovige hiljem uuesti.",
-      "error": "Seansi kuvamisel tekkis viga. Proovige hiljem uuesti.",
-      "count": "{{count}} seansi",
-      "current": "Praegune seanss",
-      "deleteAll": "Kustuta kõik seansid",
-      "delete": {
-        "title": "Lõpetada see seanss?"
-      }
-    },
-    "blockedUsers": {
-      "title": "Blokeeritud kasutajad",
-      "label": "{{count}} blokeeritud kasutajad",
-      "empty": "Sul pole ühtegi blokeeritud kasutajat. Proovige hiljem uuesti.",
-      "error": "Blokeeritud kasutajate kuvamisel tekkis viga. Proovige hiljem uuesti."
-    },
-    "profile": {
-      "title": "Profiil",
-      "modal": {
-        "name": {
-          "title": "Nimi redigeerimine"
-        },
-        "email": {
-          "title": "E-posti redigeerimine"
+        "writeAMessage": "Kirjuta sõnum...",
+        "selectChat": "Valige vestlus alustamiseks",
+        "file": "Pilt",
+        "first": "Saada esimene sõnum",
+        "empty": {
+            "title": "Tundub, et siin pole sõnumeid",
+            "subtitle": "Saada esimene sõnum vestluse alustamiseks"
         }
-      }
     },
-    "language": {
-      "title": "Keel"
-    }
-  },
-  "auth": {
-    "login": {
-      "title": "Logi sisse",
-      "submit": "Logi sisse",
-      "signup": "Registreeru",
-      "forgotPassword": "Unustasid parooli?"
+    "lastSeenForALongTime": "Vaatamata pikale aega",
+    "lastSeenRecently": "Hiljuti nähtud",
+    "lastSeenJustNow": "Hetkel nähtud",
+    "lastSeenMinutesAgo": "Nähtud {{value}} minutit tagasi",
+    "lastSeenHoursAgo": "Nähtud {{value}} tundi tagasi",
+    "lastSeenDaysAgo": "Nähtud {{value}} päeva tagasi",
+    "lastSeenAt": "Nähtud {{value}}",
+    "dialog": {
+        "pin": "Kinnita",
+        "unpin": "Eemalda kinnitus",
+        "notifications": {
+            "mute": "Lülita teateid",
+            "unmute": "Lülitada teateid"
+        },
+        "sound": {
+            "mute": "Lülita heli",
+            "unmute": "Lülitada heli"
+        },
+        "modal": {
+            "delete": {
+                "title": "Kas olete kindel, et soovite selle vestluse kustutada?"
+            }
+        },
+        "block": "Blokeeri",
+        "unblock": "Deblokeeri",
+        "delete": "Kustuta vestlus"
     },
-    "signup": {
-      "title": "Registreeru",
-      "description": "Registreeru, et alustada vestlust",
-      "submit": "Registreeru",
-      "success": "Palju õnne! Olete edukalt sisse loginud. Konto kinnitamiseks kontrollige oma meili.",
-      "haveAccount": "Kas teil on juba konto?"
+    "settings": {
+        "title": "Seaded",
+        "usernameCopied": "Kasutajanimi on kopeeritud",
+        "links": {
+            "profile": "Profiil",
+            "notifications": "Teateid",
+            "privacy": "Konfidentsiaalsus",
+            "blockedUsers": "Blokeeritud kasutajad",
+            "language": "Keel",
+            "deleteAccount": "Kustuta konto",
+            "sessionManagement": "Seansi juhtimine"
+        },
+        "account": {
+            "deleteAccount": {
+                "title": "Kas olete kindel, et soovite oma konto kustutada?"
+            }
+        },
+        "notifications": {
+            "title": "Teateid",
+            "notify": {
+                "title": "Lülitada märguanded"
+            },
+            "sounds": {
+                "title": "Lülitada heli"
+            },
+            "chats": "Chatti",
+            "conversations": "Vestluste",
+            "groups": "Rühmate"
+        },
+        "privacy": {
+            "title": "Konfidentsiaalsus",
+            "lastActivity": {
+                "title": "Viimane tegevus"
+            },
+            "messageForwarding": {
+                "title": "Sõnumi edastamine"
+            },
+            "groupsAndConversations": {
+                "title": "Rühmad ja vestlused"
+            },
+            "sessionManagement": {
+                "title": "Seansi juhtimine"
+            },
+            "twoFactor": {
+                "title": "Kahefaktoriline autentimine"
+            }
+        },
+        "sessions": {
+            "title": "Seansi juhtimine",
+            "empty": "Sul pole ühtegi seanssi. Proovige hiljem uuesti.",
+            "error": "Seansi kuvamisel tekkis viga. Proovige hiljem uuesti.",
+            "count": "{{count}} seansi",
+            "current": "Praegune seanss",
+            "deleteAll": "Kustuta kõik seansid",
+            "delete": {
+                "title": "Lõpetada see seanss?"
+            }
+        },
+        "blockedUsers": {
+            "title": "Blokeeritud kasutajad",
+            "label": "{{count}} blokeeritud kasutajad",
+            "empty": "Sul pole ühtegi blokeeritud kasutajat. Proovige hiljem uuesti.",
+            "error": "Blokeeritud kasutajate kuvamisel tekkis viga. Proovige hiljem uuesti."
+        },
+        "profile": {
+            "title": "Profiil",
+            "modal": {
+                "name": {
+                    "title": "Nimi redigeerimine"
+                },
+                "email": {
+                    "title": "E-posti redigeerimine"
+                }
+            }
+        },
+        "language": {
+            "title": "Keel"
+        }
     },
-    "reset-password": {
-      "title": "Lähtesta parool",
-      "description": "Jätkamiseks sisestage oma uus parool.",
-      "submit": "Lähtesta parool",
-      "backToLogin": "Tagasi sisselogimiseks",
-      "newPassword": "Uus parool",
-      "passwordConfirm": "Parooli kinnitus"
+    "auth": {
+        "login": {
+            "title": "Logi sisse",
+            "submit": "Logi sisse",
+            "signup": "Registreeru",
+            "forgotPassword": "Unustasid parooli?"
+        },
+        "signup": {
+            "title": "Registreeru",
+            "description": "Registreeru, et alustada vestlust",
+            "submit": "Registreeru",
+            "success": "Palju õnne! Olete edukalt sisse loginud. Konto kinnitamiseks kontrollige oma meili.",
+            "haveAccount": "Kas teil on juba konto?"
+        },
+        "reset-password": {
+            "title": "Lähtesta parool",
+            "description": "Jätkamiseks sisestage oma uus parool.",
+            "submit": "Lähtesta parool",
+            "backToLogin": "Tagasi sisselogimiseks",
+            "newPassword": "Uus parool",
+            "passwordConfirm": "Parooli kinnitus"
+        },
+        "forgot-password": {
+            "title": "Unustasid parooli?",
+            "description": "Sisestage oma e-posti aadress, et saada parooli lähtestamise lingi.",
+            "submit": "Saada",
+            "backToLogin": "Tagasi sisselogimiseks",
+            "email": "E-posti aadress",
+            "success": "Teie e-posti aadressile on saadetud e-kiri parooli taastamise juhistega."
+        },
+        "activate": {
+            "title": "Konto aktiveerimine",
+            "description": "Konto aktiveerimiseks sisestage oma parool.",
+            "submit": "Aktiveeri konto",
+            "code": "Aktiveerimiskood",
+            "resend": "Saada uuesti",
+            "activating": "Konto aktiveerimine...",
+            "emptyToken": "Konto aktiveerimiseks peate esitama loa.",
+            "backToLogin": "Tagasi sisselogimiseks",
+            "success": "Konto aktiveerimine õnnestus. Saate nüüd sisse logida."
+        },
+        "two-factor": {
+            "title": "Kahefaktoriline autentimine",
+            "description": "Sisestage oma kood, et sisse logida.",
+            "submit": "Sisene",
+            "code": "Kood"
+        },
+        "new-device": {
+            "title": "Uue seadme kinnitus",
+            "description": "Olete sisse logitud uuest seadmest. Sisestage kood, mille me teile meili teel saatsime.",
+            "submit": "Kinnitage",
+            "code": "Kood"
+        }
     },
-    "forgot-password": {
-      "title": "Unustasid parooli?",
-      "description": "Sisestage oma e-posti aadress, et saada parooli lähtestamise lingi.",
-      "submit": "Saada",
-      "backToLogin": "Tagasi sisselogimiseks",
-      "email": "E-posti aadress",
-      "success": "Teie e-posti aadressile on saadetud e-kiri parooli taastamise juhistega."
-    },
-    "activate": {
-      "title": "Konto aktiveerimine",
-      "description": "Konto aktiveerimiseks sisestage oma parool.",
-      "submit": "Aktiveeri konto",
-      "code": "Aktiveerimiskood",
-      "resend": "Saada uuesti",
-      "activating": "Konto aktiveerimine...",
-      "emptyToken":"Konto aktiveerimiseks peate esitama loa.",
-      "backToLogin": "Tagasi sisselogimiseks",
-      "success": "Konto aktiveerimine õnnestus. Saate nüüd sisse logida."
-    },
-    "two-factor": {
-      "title": "Kahefaktoriline autentimine",
-        "description": "Sisestage oma kood, et sisse logida.",
-        "submit": "Sisene",
-        "code": "Kood"
-    },
-    "new-device": {
-      "title": "Uue seadme kinnitus",
-      "description": "Olete sisse logitud uuest seadmest. Sisestage kood, mille me teile meili teel saatsime.",
-      "submit": "Kinnitage",
-      "code": "Kood"
-    }
-  },
-  "errors": {
-    "unexpectedError": "Ooops! Midagi läks valesti.",
-    "userNotFound": "Me ei leidnud selle kasutajanime või e-posti aadressiga kontot. Palun kontrollige oma mandaate ja proovige uuesti.",
-    "incorrectPassword": "Vale parool. Kontrollige oma mandaate ja proovige uuesti.",
-    "incorrectUsernameOrPassword": "Vale kasutajanimi või parool.",
-    "resetPasswordTokenIsNotValid": "Parooli lähtestamise link on kehtetu.",
-    "userNotActive": "Kasutaja ei ole aktiivne.",
-    "userNotActiveCheckEmail": "Kasutaja ei ole aktiivne. Kontrollige oma e-posti, et aktiveerida konto.",
-    "usernameOrEmailIsTaken": "See kasutajanimi või e-posti aadress on juba hõivatud.",
-    "twoFactorCodeIsNotValid": "Kahefaktoriline kood on vale.",
-    "twoFactorIsNotEnabled": "Kahefaktoriline autentimine pole lubatud.",
-    "newDeviceCodeIsEmpty": "Uue seadme kinnituskood on tühi.",
-    "newDeviceCodeIsNotValid": "Uue seadme kinnituskood on vale.",
-    "cannotUseSamePassword": "Uus parool ei tohi olla sama, mis vana parool.",
-    "invalidActivationCode": "Aktiveerimiskood on vale.",
-    "activationCodeIsExpired": "Aktiveerimiskood on aegunud.",
-    "accountIsAlreadyActivated": "Konto on juba aktiveeritud."
-  },
-  "validation": {
     "errors": {
-      "usernameHasIncorrectLength": "Kasutajanimi peab olema vähemalt 3 ja mitte rohkem kui 50 tähemärki pikk.",
-      "emailIsNotValidType": "E-posti aadress peab olema kehtiv.",
-      "emailHasIncorrectLength": "E-posti aadress peab olema vähemalt 3 ja mitte rohkem kui 254 tähemärki pikk.",
-      "passwordHasIncorrectLength": "Parool peab olema vähemalt 8 ja mitte rohkem kui 32 tähemärki.",
-      "passwordConfirmHasIncorrectLength": "Parooli kinnitus peab olema vähemalt 8 ja mitte rohkem kui 32 tähemärki.",
-      "passwordsDoNotMatch": "Paroolid ei kattu.",
-      "emailHasIncorrectDomain": "E-posti aadress peab olema kehtiv.",
-      "usernameAlreadyTaken": "Kasutajanimi on juba võetud.",
-      "emailAlreadyTaken": "E-posti aadress on juba võetud.",
-      "emailIsNotValid": "E-posti aadress on vale.",
-      "firstNameHasIncorrectLength": "Eesnimi peab olema vähemalt 1 ja mitte rohkem kui 50 tähemärki pikk."
-    }
-  },
-  "navbar": {
-    "home": "Pealeht",
-    "faq": "FAQ",
-    "privacy": "Privaatsuspoliitika",
-    "themes": {
-      "dark": "Tume teema",
-      "light": "Hele teema"
-    }
-  },
-  "footer": {
-    "description": "Fly Messenger - on turvaline ja tasuta vestlusrakendus. Tänu lihtsale ja intuitiivsele liidesele võimaldab see mugavalt suhelda. Fly Messengeriga suhtlemise kogemus saab olema täiesti uus ja põnev.",
-    "sections": {
-      "about": {
-        "title": "Saidi kohta",
+        "unexpectedError": "Ooops! Midagi läks valesti.",
+        "userNotFound": "Me ei leidnud selle kasutajanime või e-posti aadressiga kontot. Palun kontrollige oma mandaate ja proovige uuesti.",
+        "incorrectPassword": "Vale parool. Kontrollige oma mandaate ja proovige uuesti.",
+        "incorrectUsernameOrPassword": "Vale kasutajanimi või parool.",
+        "resetPasswordTokenIsNotValid": "Parooli lähtestamise link on kehtetu.",
+        "userNotActive": "Kasutaja ei ole aktiivne.",
+        "userNotActiveCheckEmail": "Kasutaja ei ole aktiivne. Kontrollige oma e-posti, et aktiveerida konto.",
+        "usernameOrEmailIsTaken": "See kasutajanimi või e-posti aadress on juba hõivatud.",
+        "twoFactorCodeIsNotValid": "Kahefaktoriline kood on vale.",
+        "twoFactorIsNotEnabled": "Kahefaktoriline autentimine pole lubatud.",
+        "newDeviceCodeIsEmpty": "Uue seadme kinnituskood on tühi.",
+        "newDeviceCodeIsNotValid": "Uue seadme kinnituskood on vale.",
+        "cannotUseSamePassword": "Uus parool ei tohi olla sama, mis vana parool.",
+        "invalidActivationCode": "Aktiveerimiskood on vale.",
+        "activationCodeIsExpired": "Aktiveerimiskood on aegunud.",
+        "accountIsAlreadyActivated": "Konto on juba aktiveeritud."
+    },
+    "validation": {
+        "errors": {
+            "usernameHasIncorrectLength": "Kasutajanimi peab olema vähemalt 3 ja mitte rohkem kui 50 tähemärki pikk.",
+            "emailIsNotValidType": "E-posti aadress peab olema kehtiv.",
+            "emailHasIncorrectLength": "E-posti aadress peab olema vähemalt 3 ja mitte rohkem kui 254 tähemärki pikk.",
+            "passwordHasIncorrectLength": "Parool peab olema vähemalt 8 ja mitte rohkem kui 32 tähemärki.",
+            "passwordConfirmHasIncorrectLength": "Parooli kinnitus peab olema vähemalt 8 ja mitte rohkem kui 32 tähemärki.",
+            "passwordsDoNotMatch": "Paroolid ei kattu.",
+            "emailHasIncorrectDomain": "E-posti aadress peab olema kehtiv.",
+            "usernameAlreadyTaken": "Kasutajanimi on juba võetud.",
+            "emailAlreadyTaken": "E-posti aadress on juba võetud.",
+            "emailIsNotValid": "E-posti aadress on vale.",
+            "firstNameHasIncorrectLength": "Eesnimi peab olema vähemalt 1 ja mitte rohkem kui 50 tähemärki pikk.",
+            "usernameHasInvalidCharacters": "Kasutajanimi võib sisaldada ainult tähti, numbreid, sidekriipse ja alakriipse."
+        }
+    },
+    "navbar": {
+        "home": "Pealeht",
+        "faq": "FAQ",
         "privacy": "Privaatsuspoliitika",
-        "terms": "Kasutustingimused"
-      },
-      "apps": {
-        "title": "Rakendused",
-        "windows": "Windows",
-        "web": "Veebileht"
-      },
-      "contact": {
-        "title": "Võta meiega ühendust",
-        "github": "Github"
-      }
+        "themes": {
+            "dark": "Tume teema",
+            "light": "Hele teema"
+        }
+    },
+    "footer": {
+        "description": "Fly Messenger - on turvaline ja tasuta vestlusrakendus. Tänu lihtsale ja intuitiivsele liidesele võimaldab see mugavalt suhelda. Fly Messengeriga suhtlemise kogemus saab olema täiesti uus ja põnev.",
+        "sections": {
+            "about": {
+                "title": "Saidi kohta",
+                "privacy": "Privaatsuspoliitika",
+                "terms": "Kasutustingimused"
+            },
+            "apps": {
+                "title": "Rakendused",
+                "windows": "Windows",
+                "web": "Veebileht"
+            },
+            "contact": {
+                "title": "Võta meiega ühendust",
+                "github": "Github"
+            }
+        }
+    },
+    "pages": {
+        "main": {
+            "title": "Avatud lähtekoodiga vestlusrakendus",
+            "apps": {
+                "title": "Rakendused",
+                "web": {
+                    "open": "Ava {{name}}"
+                },
+                "desktop": {
+                    "open": "Laadi alla {{name}}"
+                }
+            },
+            "functions": {
+                "title": "Funktsioonid",
+                "anonymity": {
+                    "title": "Anonüümsus",
+                    "description": "Keegi ei saa teada teie e-posti aadressi ega muid andmeid, kui te neid ise ei esita."
+                },
+                "ease_of_use": {
+                    "title": "Kasutusmugavus",
+                    "description": "Intuitiivne kasutajaliides. Pole midagi segada."
+                },
+                "confidentiality": {
+                    "title": "Konfidentsiaalsus",
+                    "description": "Me ei kogu rohkem teavet, kui on vaja."
+                },
+                "without_a_trace": {
+                    "title": "Jäljetult",
+                    "description": "Pärast konto kustutamist me andmeid ei salvesta."
+                },
+                "free_of_charge": {
+                    "title": "Tasuta",
+                    "description": "Meie toode on täiesti tasuta ilma reklaamideta."
+                },
+                "no_packaging": {
+                    "title": "Pakkimine puudub",
+                    "description": "Me ei suru fotosid kokku, nende kvaliteet jääb samaks."
+                }
+            }
+        },
+        "faq": {
+            "title": "FAQ",
+            "subtitle": "Sellelt lehelt leiate korduma kippuvad küsimused.",
+            "questions": [
+                {
+                    "title": "Miks mu sõnum hangub või ei saadeta, kui proovin sõnumit saata? (Desktop)",
+                    "content": "Sõnumid saadetakse pistikupesade kaudu. Pistikupesad lülituvad lõpuks välja ja programm loob uuesti ühenduse. Selle intervalli jooksul saadetakse teade tühja pesa."
+                },
+                {
+                    "title": "Kuidas registreeruda?",
+                    "content": "Registreerumiseks peate alla laadima meie rakenduse Windowsis või lubama meie veebikliendi ja klõpsama nuppu \"Registreeri\"."
+                }
+            ]
+        },
+        "privacy": {
+            "title": "Privaatsuspoliitika",
+            "subtitle": "Kui otsustate meie teenuseid kasutada, nõustute teabe kogumise ja kasutamisega. Selle poliitika kohta. Kogume seda isikuandmete edastamiseks ja teenuste täiustamiseks. Selle privaatsuspoliitika osana ei kasuta me ega jaga me teie teavet teistega.",
+            "policy": [
+                {
+                    "title": "Sissejuhatus",
+                    "content": "See privaatsuspoliitika reguleerib seda, kuidas meie rakendus Fly Messenger kasutab ja kaitseb isikuandmeid, mille meile esitate või mille me saame seoses teie pilveandmete kasutamisega. Selle privaatsuspoliitika tähenduses viitavad mõisted \"mina\", \"meie\" ja \"meie\" Fly Messengerile ning \"teie\" viitavad teile, teenuse kasutajale.",
+                    "children": [
+                        {
+                            "title": "Privaatsuspoliitika",
+                            "content": [
+                                "Me ei müü teie andmeid.",
+                                "Me ei kasuta oma vestlust teile reklaamide näitamiseks.",
+                                "Salvestame ainult neid andmeid, mis on vajalikud Fly Messengeri turvalise ja funktsioonirikka sõnumiteenusena toimimiseks.",
+                                "Kui postitate ebaseaduslikku sisu, mis mõjutab platvormi tavapärast tööd, saab platvorm segaduse ära koristada."
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "title": "Milliseid isikuandmeid me kasutame",
+                    "children": [
+                        {
+                            "title": "Teie emaili aadress",
+                            "content": "Teie e-posti aadressi kasutatakse registreerimise ja/või autoriseerimise peamise vahendina.\nKui olete oma parooli unustanud, saate oma parooli lihtsalt oma e-posti aadressi kasutades lähtestada.\nMe ei avalikusta seda.\nMe ei saada turundusmaterjale teie e-posti aadressile."
+                        },
+                        {
+                            "title": "Asukohaandmed",
+                            "content": "Me kasutame teie IP-aadressi teie ligikaudse asukoha määramiseks, mis võimaldab teil hõlpsalt vaadata kõiki aktiivseid seansse ja muuta oma parooli, kui teie kontole volitamata pääsete.\nKui märkame katset teie kontole tundmatust seadmest sisse logida, saadame teie meilile teate, et saaksite oma kontot volitamata juurdepääsu korral õigeaegselt kaitsta.\nMe ei müü, rendi ega avalda teie IP-aadressi kolmandatele isikutele ega kasuta seda väljaspool meie platvormi."
+                        },
+                        {
+                            "title": "Sisselogimisandmed",
+                            "content": "Kogume teavet teie sisselogimise kohta, sealhulgas kliendi tüüp (laua- või veebiklient), esmaregistreerimise aeg, viimane autentimise aeg ja sisselogimisel kasutatud IP-aadress. Seda teavet ei jagata kolmandate osapooltega ja seda kasutatakse ainult teie konto turvalisuse tagamiseks ja meie platvormi optimeerimiseks."
+                        }
+                    ]
+                },
+                {
+                    "title": "Teie isikuandmete töötlemine",
+                    "children": [
+                        {
+                            "title": "Keelatud sisuga töötamine",
+                            "content": "Oleme pühendunud olema eetilised ning pakkuma kõigile oma kasutajatele turvalist ja külalislahke keskkonda. Seetõttu võitleme aktiivselt keelatud sisu, sealhulgas lapsporno, vägivaldse terrorismi, lastevastase vägivalla, pettuste ja muude vastuvõetamatu käitumise vastu. Jälgime sisu, mis meie platvormile üles laetakse, ja kui leiame keelatud sisu, eemaldame selle koheselt. Lisateabe saamiseks vaadake meie \"Kasutustingimused\"."
+                        }
+                    ]
+                },
+                {
+                    "title": "Andmete kustutamine",
+                    "children": [
+                        {
+                            "title": "Konto üksikasjad",
+                            "content": "Saate oma konto igal ajal kustutada, minnes rakenduse seadete jaotisesse. Konto kustutamisel kustutatakse täielikult kogu selle kontoga seotud teave, mis on salvestatud meie serveritesse, sealhulgas kõik vestlused, milles olete osalenud."
+                        },
+                        {
+                            "title": "Dialoogi andmed",
+                            "content": "Kui valite dialoogi kontekstimenüüst funktsiooni \"Kustuta\", kustutab server dialoogi mõlemalt poolelt täielikult, ilma et oleks võimalik naasta. Kogu dialoog kõigi kirjadega kustutatakse serverist. Samuti kustutatakse see kliendi tasemel mõlemalt pooltelt kasutajatelt, kes vastasid selle dialoogi kaudu. Me ei salvesta serverisse ega muudesse seadmetesse kaugvestluste sisu kohta teavet. Rakendame kõik vajalikud meetmed kasutajate teabe kaitsmiseks ja nende konfidentsiaalsete andmete turvalisuse tagamiseks."
+                        }
+                    ]
+                },
+                {
+                    "title": "Muu",
+                    "content": "Võime oma privaatsuspoliitikat aeg-ajalt värskendada, seega soovitame teil seda lehte regulaarselt kontrollida.\nKui teil on meie privaatsuspoliitika kohta küsimusi või ettepanekuid, võtke meiega ühendust."
+                }
+            ]
+        },
+        "terms": {
+            "title": "Kasutustingimused",
+            "content": {
+                "agreement": {
+                    "title": "Teenus- ja privaatsusleping",
+                    "content": "Enne meie toodete või teenuste kasutamist lugege käesolev teenuseleping läbi ja mõistke seda täielikult.\nRegistreerimis-/sisselogimisprotseduuri lõpuleviimine tähendab, et olete konfidentsiaalsuslepingu kogu sisuga täielikult tutvunud, sellest aru saanud ja sellega nõustunud ning nõustute järgmiste reeglitega:"
+                },
+                "uses_it": {
+                    "title": "Kui kasutaja seda kasutab, nõustub ta mitte saatma.",
+                    "content": [
+                        "Lastepornograafia, mis hõlmab alla 18-aastaste laste otsest alastust.",
+                        "Julgustada või õhutada sisu, mis toetab vägivaldset terrorismi, ekstremismi või teiste kahjustamist.",
+                        "Esitada valeteavet, esineda teistena või petka teisi rahalise ja/või muu kasu saamiseks.",
+                        "Laste väärkohtlemise või lapspornoga seotud sisu levitamine või reklaamimine.",
+                        "Teiste isikute õiguste ja privaatsuse, sealhulgas intellektuaalomandi õiguste rikkumine, eraandmete avaldamine jne."
+                    ]
+                },
+                "fair": {
+                    "title": "Õiglase kasutamise protseduurid, järgige kõiki järgmisi seadusi ja määrusi.",
+                    "content": [
+                        "Teie kodakondsusriigi asjakohased juriidilised nõuded.",
+                        "Teie praeguse asukoha ja võrguoperaatori asjakohased juriidilised nõuded."
+                    ]
+                }
+            }
+        }
     }
-  },
-  "pages": {
-    "main": {
-      "title": "Avatud lähtekoodiga vestlusrakendus",
-      "apps": {
-        "title": "Rakendused",
-        "web": {
-          "open": "Ava {{name}}"
-        },
-        "desktop": {
-          "open": "Laadi alla {{name}}"
-        }
-      },
-      "functions": {
-        "title": "Funktsioonid",
-        "anonymity": {
-          "title": "Anonüümsus",
-          "description": "Keegi ei saa teada teie e-posti aadressi ega muid andmeid, kui te neid ise ei esita."
-        },
-        "ease_of_use": {
-          "title": "Kasutusmugavus",
-          "description": "Intuitiivne kasutajaliides. Pole midagi segada."
-        },
-        "confidentiality": {
-          "title": "Konfidentsiaalsus",
-          "description": "Me ei kogu rohkem teavet, kui on vaja."
-        },
-        "without_a_trace": {
-          "title": "Jäljetult",
-          "description": "Pärast konto kustutamist me andmeid ei salvesta."
-        },
-        "free_of_charge": {
-          "title": "Tasuta",
-          "description": "Meie toode on täiesti tasuta ilma reklaamideta."
-        },
-        "no_packaging": {
-          "title": "Pakkimine puudub",
-          "description": "Me ei suru fotosid kokku, nende kvaliteet jääb samaks."
-        }
-      }
-    },
-    "faq": {
-      "title": "FAQ",
-      "subtitle": "Sellelt lehelt leiate korduma kippuvad küsimused.",
-      "questions": [
-        {
-          "title": "Miks mu sõnum hangub või ei saadeta, kui proovin sõnumit saata? (Desktop)",
-          "content": "Sõnumid saadetakse pistikupesade kaudu. Pistikupesad lülituvad lõpuks välja ja programm loob uuesti ühenduse. Selle intervalli jooksul saadetakse teade tühja pesa."
-        },
-        {
-          "title": "Kuidas registreeruda?",
-          "content": "Registreerumiseks peate alla laadima meie rakenduse Windowsis või lubama meie veebikliendi ja klõpsama nuppu \"Registreeri\"."
-        }
-      ]
-    },
-    "privacy": {
-      "title": "Privaatsuspoliitika",
-      "subtitle": "Kui otsustate meie teenuseid kasutada, nõustute teabe kogumise ja kasutamisega. Selle poliitika kohta. Kogume seda isikuandmete edastamiseks ja teenuste täiustamiseks. Selle privaatsuspoliitika osana ei kasuta me ega jaga me teie teavet teistega.",
-      "policy": [
-        {
-          "title": "Sissejuhatus",
-          "content": "See privaatsuspoliitika reguleerib seda, kuidas meie rakendus Fly Messenger kasutab ja kaitseb isikuandmeid, mille meile esitate või mille me saame seoses teie pilveandmete kasutamisega. Selle privaatsuspoliitika tähenduses viitavad mõisted \"mina\", \"meie\" ja \"meie\" Fly Messengerile ning \"teie\" viitavad teile, teenuse kasutajale.",
-          "children": [
-            {
-              "title": "Privaatsuspoliitika",
-              "content": [
-                "Me ei müü teie andmeid.",
-                "Me ei kasuta oma vestlust teile reklaamide näitamiseks.",
-                "Salvestame ainult neid andmeid, mis on vajalikud Fly Messengeri turvalise ja funktsioonirikka sõnumiteenusena toimimiseks.",
-                "Kui postitate ebaseaduslikku sisu, mis mõjutab platvormi tavapärast tööd, saab platvorm segaduse ära koristada."
-              ]
-            }
-          ]
-        },
-        {
-          "title": "Milliseid isikuandmeid me kasutame",
-          "children": [
-            {
-              "title": "Teie emaili aadress",
-              "content": "Teie e-posti aadressi kasutatakse registreerimise ja/või autoriseerimise peamise vahendina.\nKui olete oma parooli unustanud, saate oma parooli lihtsalt oma e-posti aadressi kasutades lähtestada.\nMe ei avalikusta seda.\nMe ei saada turundusmaterjale teie e-posti aadressile."
-            },
-            {
-              "title": "Asukohaandmed",
-              "content": "Me kasutame teie IP-aadressi teie ligikaudse asukoha määramiseks, mis võimaldab teil hõlpsalt vaadata kõiki aktiivseid seansse ja muuta oma parooli, kui teie kontole volitamata pääsete.\nKui märkame katset teie kontole tundmatust seadmest sisse logida, saadame teie meilile teate, et saaksite oma kontot volitamata juurdepääsu korral õigeaegselt kaitsta.\nMe ei müü, rendi ega avalda teie IP-aadressi kolmandatele isikutele ega kasuta seda väljaspool meie platvormi."
-            },
-            {
-              "title": "Sisselogimisandmed",
-              "content": "Kogume teavet teie sisselogimise kohta, sealhulgas kliendi tüüp (laua- või veebiklient), esmaregistreerimise aeg, viimane autentimise aeg ja sisselogimisel kasutatud IP-aadress. Seda teavet ei jagata kolmandate osapooltega ja seda kasutatakse ainult teie konto turvalisuse tagamiseks ja meie platvormi optimeerimiseks."
-            }
-          ]
-        },
-        {
-          "title": "Teie isikuandmete töötlemine",
-          "children": [
-            {
-              "title": "Keelatud sisuga töötamine",
-              "content": "Oleme pühendunud olema eetilised ning pakkuma kõigile oma kasutajatele turvalist ja külalislahke keskkonda. Seetõttu võitleme aktiivselt keelatud sisu, sealhulgas lapsporno, vägivaldse terrorismi, lastevastase vägivalla, pettuste ja muude vastuvõetamatu käitumise vastu. Jälgime sisu, mis meie platvormile üles laetakse, ja kui leiame keelatud sisu, eemaldame selle koheselt. Lisateabe saamiseks vaadake meie \"Kasutustingimused\"."
-            }
-          ]
-        },
-        {
-          "title": "Andmete kustutamine",
-          "children": [
-            {
-              "title": "Konto üksikasjad",
-              "content": "Saate oma konto igal ajal kustutada, minnes rakenduse seadete jaotisesse. Konto kustutamisel kustutatakse täielikult kogu selle kontoga seotud teave, mis on salvestatud meie serveritesse, sealhulgas kõik vestlused, milles olete osalenud."
-            },
-            {
-              "title": "Dialoogi andmed",
-              "content": "Kui valite dialoogi kontekstimenüüst funktsiooni \"Kustuta\", kustutab server dialoogi mõlemalt poolelt täielikult, ilma et oleks võimalik naasta. Kogu dialoog kõigi kirjadega kustutatakse serverist. Samuti kustutatakse see kliendi tasemel mõlemalt pooltelt kasutajatelt, kes vastasid selle dialoogi kaudu. Me ei salvesta serverisse ega muudesse seadmetesse kaugvestluste sisu kohta teavet. Rakendame kõik vajalikud meetmed kasutajate teabe kaitsmiseks ja nende konfidentsiaalsete andmete turvalisuse tagamiseks."
-            }
-          ]
-        },
-        {
-          "title": "Muu",
-          "content": "Võime oma privaatsuspoliitikat aeg-ajalt värskendada, seega soovitame teil seda lehte regulaarselt kontrollida.\nKui teil on meie privaatsuspoliitika kohta küsimusi või ettepanekuid, võtke meiega ühendust."
-        }
-      ]
-    },
-    "terms": {
-      "title": "Kasutustingimused",
-      "content": {
-        "agreement": {
-          "title": "Teenus- ja privaatsusleping",
-          "content": "Enne meie toodete või teenuste kasutamist lugege käesolev teenuseleping läbi ja mõistke seda täielikult.\nRegistreerimis-/sisselogimisprotseduuri lõpuleviimine tähendab, et olete konfidentsiaalsuslepingu kogu sisuga täielikult tutvunud, sellest aru saanud ja sellega nõustunud ning nõustute järgmiste reeglitega:"
-        },
-        "uses_it": {
-          "title": "Kui kasutaja seda kasutab, nõustub ta mitte saatma.",
-          "content": [
-            "Lastepornograafia, mis hõlmab alla 18-aastaste laste otsest alastust.",
-            "Julgustada või õhutada sisu, mis toetab vägivaldset terrorismi, ekstremismi või teiste kahjustamist.",
-            "Esitada valeteavet, esineda teistena või petka teisi rahalise ja/või muu kasu saamiseks.",
-            "Laste väärkohtlemise või lapspornoga seotud sisu levitamine või reklaamimine.",
-            "Teiste isikute õiguste ja privaatsuse, sealhulgas intellektuaalomandi õiguste rikkumine, eraandmete avaldamine jne."
-          ]
-        },
-        "fair": {
-          "title": "Õiglase kasutamise protseduurid, järgige kõiki järgmisi seadusi ja määrusi.",
-          "content": [
-            "Teie kodakondsusriigi asjakohased juriidilised nõuded.",
-            "Teie praeguse asukoha ja võrguoperaatori asjakohased juriidilised nõuded."
-          ]
-        }
-      }
-    }
-  }
 }

@@ -1,12 +1,20 @@
-import {AuthLayout} from "../../components/pages/auth/layouts/AuthLayout";
-import {useTranslation} from "react-i18next";
-import {useState} from "react";
-import {IResponseValidationError} from "../../interfaces/response/error";
-import {useNavigate} from "react-router-dom";
-import {useAppDispatch} from "../../stores/hooks";
-import {twoFactorAuth} from "../../stores/slices/user/user";
-import {Button, Input } from "../../components/pages/auth/items";
+import { useTranslation } from "react-i18next";
+import { useState } from "react";
+import { IResponseValidationError } from "@/interfaces/response/error";
+import { useNavigate } from "react-router-dom";
+import { useAppDispatch } from "@/stores/hooks";
+import { twoFactorAuth } from "@/stores/slices/user/user";
+import { AuthLayout } from "@/components/layouts/AuthLayout";
+import { Button, Input } from "@/components/ui/auth";
 
+/**
+ * Two-factor authentication page in the authorization process.
+ *
+ * @author Winicred (Kirill Goritski)
+ *
+ * @since 0.9.0
+ * @version 0.9.0
+ */
 export function TwoFactorPage() {
     const { t } = useTranslation();
 
@@ -18,6 +26,9 @@ export function TwoFactorPage() {
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
 
+    /**
+     * Handler for success verification.
+     */
     const successCallback = () => {
         navigate("/m");
 
@@ -25,10 +36,13 @@ export function TwoFactorPage() {
         setIsSubmitting(false);
     };
 
+    /**
+     * Form handler for two-factor authentication.
+     */
     const twoFactor = () => {
         setIsSubmitting(true);
 
-        dispatch(twoFactorAuth({code: twoFactorCode}))
+        dispatch(twoFactorAuth({ code: twoFactorCode }))
             .unwrap()
             .then(() => successCallback())
             .catch((error) => setError(error))

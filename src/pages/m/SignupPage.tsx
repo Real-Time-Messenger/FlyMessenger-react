@@ -1,13 +1,16 @@
-import {AuthLayout} from "../../components/pages/auth/layouts/AuthLayout";
-import {IAuthRegisterRequest} from "../../interfaces/request";
-import {useTranslation} from "react-i18next";
-import {ChangeEvent, useState} from "react";
-import {IAPIError, IResponseValidationError} from "../../interfaces/response/error";
-import {Button, Input, RedirectLink} from "../../components/pages/auth/items";
-import {useAppDispatch} from "../../stores/hooks";
-import {signupUser} from "../../stores/slices/user/user";
-
 // Default auth data for signup.
+import { IAuthRegisterRequest } from "@/interfaces/request";
+import { useTranslation } from "react-i18next";
+import { ChangeEvent, useState } from "react";
+import { IAPIError, IResponseValidationError } from "@/interfaces/response/error";
+import { useAppDispatch } from "@/stores/hooks";
+import { signupUser } from "@/stores/slices/user/user";
+import { AuthLayout } from "@/components/layouts/AuthLayout";
+import { Button, Input, RedirectLink } from "@/components/ui/auth";
+
+/**
+ * User registration credentials.
+ */
 const initialAuthData: IAuthRegisterRequest = {
     username: "",
     email: "",
@@ -15,8 +18,16 @@ const initialAuthData: IAuthRegisterRequest = {
     passwordConfirm: "",
 };
 
+/**
+ * Signup page in the authorization process.
+ *
+ * @author Winicred (Kirill Goritski)
+ *
+ * @since 0.9.0
+ * @version 0.9.0
+ */
 export const SignupPage = () => {
-    const {t} = useTranslation();
+    const { t } = useTranslation();
 
     const [authData, setAuthData] = useState<IAuthRegisterRequest>(initialAuthData);
 
@@ -24,7 +35,6 @@ export const SignupPage = () => {
     const [error, setError] = useState<IResponseValidationError | IAPIError | null>(null);
     const [success, setSuccess] = useState<boolean>(false);
 
-    // const router = useRouter();
     const dispatch = useAppDispatch();
 
     /**
@@ -40,7 +50,7 @@ export const SignupPage = () => {
     /**
      * Handler for success registration.
      */
-    const successSignup = async () => {
+    const successSignup = (): void => {
         setError(null);
         setSuccess(true);
     };
@@ -48,7 +58,7 @@ export const SignupPage = () => {
     /**
      * Resets all password fields.
      */
-    const resetPasswords = () => {
+    const resetPassword = (): void => {
         setAuthData({
             ...authData,
             password: "",
@@ -57,13 +67,12 @@ export const SignupPage = () => {
     };
 
     /**
-     * Handler if error occurs while registering.
+     * Handler for error.
      */
-    const handleError = (error: IResponseValidationError | IAPIError) => {
+    const handleError = (error: IResponseValidationError | IAPIError): void => {
         setError(error);
 
-        // Reset passwords if any error occurs.
-        resetPasswords();
+        resetPassword();
     };
 
     /**
@@ -74,7 +83,7 @@ export const SignupPage = () => {
 
         dispatch(signupUser(authData))
             .unwrap()
-            .then(async () => await successSignup())
+            .then(() => successSignup())
             .catch((error) => handleError(error))
             .finally(() => setIsSubmitting(false));
     };
@@ -132,7 +141,7 @@ export const SignupPage = () => {
                     />
                 </AuthLayout.Body>
 
-                <AuthLayout.ErrorBoundary error={error}/>
+                <AuthLayout.ErrorBoundary error={error} />
 
                 <AuthLayout.Buttons>
                     {success && <span className="text-center text-sm text-[#45CA24]">{t("auth.signup.success")}</span>}
@@ -147,12 +156,9 @@ export const SignupPage = () => {
                 </AuthLayout.Buttons>
 
                 <AuthLayout.AdditionalLinks>
-                    <RedirectLink
-                        to="/m/login"
-                        label={t("auth.signup.haveAccount")}
-                    />
+                    <RedirectLink to="/m/login" label={t("auth.signup.haveAccount")} />
                 </AuthLayout.AdditionalLinks>
             </AuthLayout.Form>
         </AuthLayout>
     );
-}
+};

@@ -1,7 +1,7 @@
 import i18n from "i18next";
-import Backend from 'i18next-http-backend';
-import LanguageDetector from 'i18next-browser-languagedetector';
-import {initReactI18next} from "react-i18next";
+import Backend from "i18next-http-backend";
+import LanguageDetector from "i18next-browser-languagedetector";
+import { initReactI18next } from "react-i18next";
 import EnTranslation from "./src/locales/en/translation.json";
 import EtTranslation from "./src/locales/et/translation.json";
 import RuTranslation from "./src/locales/ru/translation.json";
@@ -11,7 +11,7 @@ import RuTranslation from "./src/locales/ru/translation.json";
  */
 const resources = {
     et: {
-        translation: EtTranslation
+        translation: EtTranslation,
     },
     en: {
         translation: EnTranslation,

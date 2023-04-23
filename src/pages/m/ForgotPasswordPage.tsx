@@ -1,11 +1,19 @@
-import { Button, Input, RedirectLink } from "../../components/pages/auth/items";
-import {AuthLayout} from "../../components/pages/auth/layouts/AuthLayout";
-import {IAPIError, IResponseValidationError} from "../../interfaces/response/error";
-import {useTranslation} from "react-i18next";
-import {useState} from "react";
-import {useAppDispatch} from "../../stores/hooks";
-import {sendForgotPasswordEmail} from "../../stores/slices/user/user";
+import { useTranslation } from "react-i18next";
+import { useState } from "react";
+import { IAPIError, IResponseValidationError } from "@/interfaces/response/error";
+import { useAppDispatch } from "@/stores/hooks";
+import { sendForgotPasswordEmail } from "@/stores/slices/user/user";
+import { AuthLayout } from "@/components/layouts/AuthLayout";
+import { Button, Input, RedirectLink } from "@/components/ui/auth";
 
+/**
+ * Forgot password page in the authorization process.
+ *
+ * @author Winicred (Kirill Goritski)
+ *
+ * @since 0.9.0
+ * @version 0.9.0
+ */
 export function ForgotPasswordPage() {
     const { t } = useTranslation();
 
@@ -34,7 +42,7 @@ export function ForgotPasswordPage() {
 
         setIsSubmitting(true);
 
-        dispatch(sendForgotPasswordEmail({email}))
+        dispatch(sendForgotPasswordEmail({ email }))
             .unwrap()
             .then(() => successForgotPassword())
             .catch((error) => setError(error))
@@ -50,8 +58,6 @@ export function ForgotPasswordPage() {
                     <AuthLayout.Description>{t("auth.forgot-password.description")}</AuthLayout.Description>
                 </AuthLayout.Header>
 
-                {success && <div className="my-3 text-green-500 text-center">{t("auth.forgot-password.success")}</div>}
-
                 <AuthLayout.Body>
                     <Input
                         type="email"
@@ -62,6 +68,8 @@ export function ForgotPasswordPage() {
                         errorBoundary={error as IResponseValidationError}
                     />
                 </AuthLayout.Body>
+
+                {success && <div className="my-3 text-center text-green-500">{t("auth.forgot-password.success")}</div>}
 
                 <AuthLayout.ErrorBoundary error={error as IAPIError} />
 
@@ -77,15 +85,9 @@ export function ForgotPasswordPage() {
                 </AuthLayout.Buttons>
 
                 <AuthLayout.AdditionalLinks>
-                    <RedirectLink
-                        to="/m/login"
-                        label={t("auth.login.title")}
-                    />
+                    <RedirectLink to="/m/login" label={t("auth.login.title")} />
 
-                    <RedirectLink
-                        to="/m/signup"
-                        label={t("auth.signup.title")}
-                    />
+                    <RedirectLink to="/m/signup" label={t("auth.signup.title")} />
                 </AuthLayout.AdditionalLinks>
             </AuthLayout.Form>
         </AuthLayout>

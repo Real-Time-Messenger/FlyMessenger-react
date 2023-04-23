@@ -1,5 +1,5 @@
-import React, { FC } from 'react';
-import {ClassNameProps} from "../../interfaces/ClassNameProps";
+import React, { FC } from "react";
+import { ClassNameProps } from "@/interfaces/ClassNameProps";
 
 export const ChevronDownIcon: FC<ClassNameProps> = ({ className }: ClassNameProps) => {
     return (

@@ -1,19 +1,30 @@
-import {AuthLayout} from "../../components/pages/auth/layouts/AuthLayout";
-import {useTranslation} from "react-i18next";
-import {FormEvent, useState} from "react";
-import {IAuthLoginRequest} from "../../interfaces/request";
-import {IAPIError, IResponseValidationError} from "../../interfaces/response/error";
-import {useAppDispatch, useStateSelector} from "../../stores/hooks";
-import {LoginEventTypes, loginUser, LoginUserPayload, signupUser} from "../../stores/slices/user/user";
-import {Button, Input, RedirectLink } from "../../components/pages/auth/items";
-import {useNavigate} from "react-router-dom";
-import {AnyObject} from "../../interfaces/AnyObject";
+import { IAuthLoginRequest } from "@/interfaces/request";
+import { useTranslation } from "react-i18next";
+import { FormEvent, useState } from "react";
+import { IAPIError, IResponseValidationError } from "@/interfaces/response/error";
+import { useAppDispatch } from "@/stores/hooks";
+import { useNavigate } from "react-router-dom";
+import { IAuthResponse } from "@/interfaces/response";
+import { LoginEventTypes, loginUser } from "@/stores/slices/user/user";
+import { AuthLayout } from "@/components/layouts/AuthLayout";
+import { Button, RedirectLink, Input } from "@/components/ui/auth";
 
+/**
+ * User credentials for login.
+ */
 const initialAuthData: IAuthLoginRequest = {
     username: "",
     password: "",
 };
 
+/**
+ * Login page in the authorization process.
+ *
+ * @author Winicred (Kirill Goritski)
+ *
+ * @since 0.9.0
+ * @version 0.9.0
+ */
 export const LoginPage = () => {
     const { t } = useTranslation();
 
@@ -27,9 +38,9 @@ export const LoginPage = () => {
     const navigate = useNavigate();
 
     /**
-     * Handles change event for inputs and updates authData.
+     * Handles change event for inputs and updates {@link authData}.
      */
-    const handleChange = (e: FormEvent<HTMLInputElement>) => {
+    const handleChange = (e: FormEvent<HTMLInputElement>): void => {
         setAuthData({
             ...authData,
             [e.currentTarget.name]: e.currentTarget.value,
@@ -39,7 +50,7 @@ export const LoginPage = () => {
     /**
      * Handler for success login.
      */
-    const handleSuccessLogin = (response: AnyObject) => {
+    const handleSuccessLogin = (response: IAuthResponse): void => {
         setError(null);
 
         const event = response.event as LoginEventTypes;
@@ -57,14 +68,17 @@ export const LoginPage = () => {
             default:
                 navigate("/m");
         }
-    }
+    };
 
-    const login = () => {
+    /**
+     * Form handler for login.
+     */
+    const login = (): void => {
         setIsSubmitting(true);
 
         dispatch(loginUser(authData))
             .unwrap()
-            .then((response) => handleSuccessLogin(response))
+            .then((response) => handleSuccessLogin(response as IAuthResponse))
             .catch((error) => setError(error))
             .finally(() => setIsSubmitting(false));
     };
@@ -97,7 +111,7 @@ export const LoginPage = () => {
                     />
                 </AuthLayout.Body>
 
-                <AuthLayout.ErrorBoundary error={error as IAPIError} />
+                <AuthLayout.ErrorBoundary error={error} />
 
                 <AuthLayout.Buttons>
                     <Button
@@ -110,16 +124,10 @@ export const LoginPage = () => {
                 </AuthLayout.Buttons>
 
                 <AuthLayout.AdditionalLinks>
-                    <RedirectLink
-                        to="/m/signup"
-                        label={t("auth.login.signup")}
-                    />
-                    <RedirectLink
-                        to="/m/forgot-password"
-                        label={t("auth.login.forgotPassword")}
-                    />
+                    <RedirectLink to="/m/signup" label={t("auth.login.signup")} />
+                    <RedirectLink to="/m/forgot-password" label={t("auth.login.forgotPassword")} />
                 </AuthLayout.AdditionalLinks>
             </AuthLayout.Form>
         </AuthLayout>
     );
-}
+};

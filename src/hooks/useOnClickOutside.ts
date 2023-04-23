@@ -1,9 +1,19 @@
 import useEventListener from "./useEventListener";
 import { RefObject } from "react";
 
-type Handler = (event: MouseEvent) => void;
-
-export default function useOnClickOutside<T extends HTMLElement = HTMLElement>(ref: RefObject<T>, handler: Handler, mouseEvent: "mousedown" | "mouseup" = "mouseup"): void {
+/**
+ * React hook that detects whether a component is currently being clicked outside.
+ * It returns a boolean value indicating whether the component is currently being clicked outside or not.
+ *
+ * @param {RefObject<*>} ref - The ref of the element to detect the click outside state for.
+ * @param {function} handler - The handler to call when the element is clicked outside.
+ * @param {string} [mouseEvent] - The mouse event to listen to.
+ */
+export const useOnClickOutside = <T extends HTMLElement = HTMLElement>(
+    ref: RefObject<T>,
+    handler: (event: MouseEvent | TouchEvent) => void,
+    mouseEvent: "mousedown" | "mouseup" = "mouseup",
+): void => {
     useEventListener(mouseEvent, (event) => {
         const el = ref?.current;
 
@@ -14,4 +24,4 @@ export default function useOnClickOutside<T extends HTMLElement = HTMLElement>(r
 
         handler(event);
     });
-}
+};

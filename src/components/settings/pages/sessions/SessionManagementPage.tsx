@@ -1,42 +1,56 @@
-import {FC, useEffect, useState} from "react";
-import {useTranslation} from "react-i18next";
-import {SessionItem} from "../../items";
-import {useAppDispatch, useStateSelector} from "../../../../stores/hooks";
-import {getUserSessions} from "../../../../stores/slices/user/user";
-import {Loader} from "../../../ui/Loader";
-import {useWebSocket} from "../../../../hoc/WebSocketProvider";
+import { FC, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
+import { useAppDispatch, useStateSelector } from "@/stores/hooks";
+import { useWebSocket } from "@/hoc/WebSocketProvider";
+import { getUserSessions } from "@/stores/slices/user/user";
+import { Loader } from "@/components/ui/messenger/Loader";
+import { SessionItem } from "@/components/settings/items";
 
+/**
+ * Page component for managing user sessions.
+ *
+ * @author Winicred (Kirill Goritski)
+ *
+ * @since 0.9.0
+ * @version 0.9.0
+ */
 export const SessionManagementPage: FC = () => {
-    const {t} = useTranslation();
+    const { t } = useTranslation();
 
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const [error, setError] = useState<boolean>(false);
 
-    const sessions = useStateSelector((state) => state.user.current.sessions)
+    const sessions = useStateSelector((state) => state.user.current.sessions);
     const currentSession = sessions.find((session) => session.current);
     const filteredSessions = sessions.filter((session) => !session.current);
 
     const dispatch = useAppDispatch();
 
-    const {destroySession} = useWebSocket()
+    const { destroySession } = useWebSocket();
 
-    const deleteAllSessions = () => {
+    /**
+     * Deletes all user sessions.
+     */
+    const deleteAllSessions = (): void => {
         for (const session of filteredSessions) {
             destroySession(session.id);
         }
-    }
+    };
 
+    /**
+     * Fetches user sessions on mount.
+     */
     useEffect(() => {
         dispatch(getUserSessions())
             .unwrap()
             .catch(() => setError(true))
             .finally(() => setIsLoading(false));
-    }, [dispatch])
+    }, [dispatch]);
 
     if (isLoading) {
         return (
             <div className="my-5 flex h-full flex-col items-center justify-center">
-                <Loader className="h-10 w-10"/>
+                <Loader className="h-10 w-10" />
             </div>
         );
     }
@@ -56,36 +70,35 @@ export const SessionManagementPage: FC = () => {
                     <div className="my-3 flex flex-col gap-2">
                         <span className="text-[#4C4C4C] dark:text-[#B8BAF2]">{t("settings.sessions.current")}</span>
 
-                        <SessionItem
-                            canDelete={false}
-                            {...currentSession}
-                        />
+                        <SessionItem canDelete={false} {...currentSession} />
                     </div>
                 )}
 
-                <button onClick={deleteAllSessions}
-                        className="duration-250 min-w-[180px] select-none rounded py-2 text-center transition-colors bg-[#E86C6C]/70 dark:bg-[#E86C6C80] text-[#161616] dark:text-[#FFFFFF] enabled:hover:bg-[#E86C6C] enabled:dark:hover:bg-[#E86C6C]/70 disabled:cursor-not-allowed disabled:opacity-50"
-                        disabled={filteredSessions.length === 0}>{t("settings.sessions.deleteAll")}</button>
+                <button
+                    onClick={deleteAllSessions}
+                    className="min-w-[180px] select-none rounded bg-[#E86C6C]/70 py-2 text-center text-[#161616] transition-colors enabled:hover:bg-[#E86C6C] disabled:cursor-not-allowed disabled:opacity-50 dark:bg-[#E86C6C80] dark:text-[#FFFFFF] enabled:dark:hover:bg-[#E86C6C]/70"
+                    disabled={filteredSessions.length === 0}
+                >
+                    {t("settings.sessions.deleteAll")}
+                </button>
 
                 {filteredSessions.length > 0 ? (
                     <>
-                        <span
-                            className="my-3 text-[#4C4C4C] dark:text-[#B8BAF2] mt-3 pt-3 border-t border-t-[#CFD0D4] dark:border-t-[#2F384E20]">{t("settings.sessions.count", {count: filteredSessions.length})}</span>
+                        <span className="my-3 mt-3 border-t border-t-[#CFD0D4] pt-3 text-[#4C4C4C] dark:border-t-[#2F384E20] dark:text-[#B8BAF2]">
+                            {t("settings.sessions.count", { count: filteredSessions.length })}
+                        </span>
 
                         <div className="no-scrollbar flex max-h-[400px] flex-col gap-3 overflow-auto">
                             {filteredSessions.map((session) => (
-                                <SessionItem
-                                    key={session.id}
-                                    {...session}
-                                />
+                                <SessionItem key={session.id} {...session} />
                             ))}
                         </div>
                     </>
                 ) : (
-                    <div
-                        className="flex h-full flex-col items-center justify-center mt-5 pt-5 border-t border-t-[#CFD0D4] dark:border-t-[#2F384E20]">
-                        <span
-                            className="text-center text-[#303030] dark:text-[#B8BAF2]">{t("settings.sessions.empty")}</span>
+                    <div className="mt-5 flex h-full flex-col items-center justify-center border-t border-t-[#CFD0D4] pt-5 dark:border-t-[#2F384E20]">
+                        <span className="text-center text-[#303030] dark:text-[#B8BAF2]">
+                            {t("settings.sessions.empty")}
+                        </span>
                     </div>
                 )}
             </div>

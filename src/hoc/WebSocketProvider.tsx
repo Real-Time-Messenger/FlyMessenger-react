@@ -1,13 +1,19 @@
-import {ChildrenProps} from "../interfaces/ChildrenProps";
-import {createContext, FC, useCallback, useContext, useEffect, useState} from "react";
-import {dialogsActions} from "../stores/slices/dialogs/dialogs";
-import {useActionsCreators} from "../stores/hooks";
-import {userActions} from "../stores/slices/user/user";
-import {useTranslation} from "react-i18next";
-import {sidebarActions} from "../stores/slices/ui/sidebar/sidebar";
-import {settingsActions} from "../stores/slices/ui/settings/settings";
-import {searchActions} from "../stores/slices/search/search";
+import React, { createContext, FC, useCallback, useContext, useEffect, useRef } from "react";
+import { ChildrenProps } from "@/interfaces/ChildrenProps";
+import { sidebarActions } from "@/stores/slices/ui/sidebar/sidebar";
+import { settingsActions } from "@/stores/slices/ui/settings/settings";
+import { dialogActions } from "@/stores/slices/dialogs/dialogs";
+import { searchActions } from "@/stores/slices/search/search";
+import { userActions } from "@/stores/slices/user/user";
+import { useActionCreators, useStateSelector } from "@/stores/hooks";
+import { useTranslation } from "react-i18next";
+import { useOnlineStatus } from "@/hooks";
 
+/**
+ * Enum for WebSocket event (client -> server) types.
+ *
+ * @enum {string}
+ */
 export enum WebSocketEventType {
     SEND_MESSAGE = "SEND_MESSAGE",
     READ_MESSAGE = "READ_MESSAGE",
@@ -17,6 +23,11 @@ export enum WebSocketEventType {
     DESTROY_SESSION = "DESTROY_SESSION",
 }
 
+/**
+ * Enum for WebSocket event (server -> client) types.
+ *
+ * @enum {string}
+ */
 export enum WebSocketResponseType {
     RECEIVE_MESSAGE = "RECEIVE_MESSAGE",
     READ_MESSAGE = "READ_MESSAGE",
@@ -29,289 +40,319 @@ export enum WebSocketResponseType {
     DELETE_USER = "DELETE_USER",
 }
 
-interface SocketMessage {
+/**
+ * Interface for WebSocket message.
+ *
+ * @interface SocketMessage
+ *
+ * @property {string} text - Message text.
+ * @property {string} file - Message file.
+ */
+export interface SocketMessage {
     text?: string;
     file?: {
         name: string;
         size: number;
         type: string;
         data: string;
-    }
+    };
 }
 
-interface WebSocketContext {
+/**
+ * Interface for WebSocket context.
+ *
+ * @interface WebSocketContextValue
+ *
+ * @property {WebSocket | null} socket - WebSocket instance.
+ * @property {() => void} connect - Function for connecting to WebSocket.
+ * @property {() => void} disconnect - Function for disconnecting from WebSocket.
+ * @property {() => boolean} isSocketConnected - Function for checking if WebSocket is connected.
+ * @property {(dialogId: string, message: SocketMessage) => void} sendMessage - Function for sending message to WebSocket.
+ * @property {(dialogId: string, messageId: string) => void} readMessage - Function for sending read message to WebSocket.
+ * @property {(dialogId: string, status: boolean) => void} typing - Function for sending typing status to WebSocket.
+ * @property {(status: boolean) => void} toggleOnlineStatus - Function for sending online status to WebSocket.
+ * @property {(sessionId: string) => void} destroySession - Function for sending destroy session to WebSocket.
+ */
+interface WebSocketContextValue {
     socket: WebSocket | null;
-    typing: (dialogId: string, status: boolean) => void;
-    sendMessage: (dialogId: string, message: SocketMessage) => void;
-    connect: (callback?: () => void) => void;
-    destroySession: (sessionId: string) => void;
-    toggleOnlineStatus: (status: boolean) => void;
-    readMessage: (dialogId: string, messageId: string) => void;
+    connect: () => void;
+    disconnect: () => void;
     isSocketConnected: () => boolean;
+    sendMessage: (dialogId: string, message: SocketMessage) => void;
+    readMessage: (dialogId: string, messageId: string) => void;
+    typing: (dialogId: string, status: boolean) => void;
+    toggleOnlineStatus: (status: boolean) => void;
+    destroySession: (sessionId: string) => void;
 }
 
-export const WebSocketContext = createContext<WebSocketContext>({
+/**
+ * Context for WebSocket.
+ *
+ * Used for storing WebSocket instance and functions to reuse it in other components.
+ */
+export const WebSocketContext = createContext<WebSocketContextValue>({
     socket: null,
-    typing: () => null,
-    sendMessage: () => null,
-    connect: () => null,
-    destroySession: () => null,
-    toggleOnlineStatus: () => null,
-    readMessage: () => null,
+    connect: () => {},
+    disconnect: () => {},
     isSocketConnected: () => false,
+    sendMessage: () => {},
+    readMessage: () => {},
+    typing: () => {},
+    toggleOnlineStatus: () => {},
+    destroySession: () => {},
 });
 
-const WebSocketProvider: FC<ChildrenProps> = ({children}: ChildrenProps) => {
-    const {t} = useTranslation();
+/**
+ * App provider for WebSocket.
+ *
+ * @author Winicred (Kirill Goritski)
+ *
+ * @since 0.9.0
+ * @version 0.9.0
+ */
+export const WebSocketProvider: FC<ChildrenProps> = ({ children }) => {
+    const { t } = useTranslation();
 
-    const socketContext = useWebSocket()
+    const socketRef = useRef<WebSocket | null>(null);
 
-    const [socket, setSocket] = useState<WebSocket | null>(socketContext.socket);
+    const currentUser = useStateSelector((state) => state.user.current);
 
-    const sidebarStore = useActionsCreators(sidebarActions);
-    const settingsStore = useActionsCreators(settingsActions);
-    const dialogsStore = useActionsCreators(dialogsActions);
-    const searchStore = useActionsCreators(searchActions);
-    const userStore = useActionsCreators(userActions);
+    const sidebarStore = useActionCreators(sidebarActions);
+    const settingsStore = useActionCreators(settingsActions);
+    const dialogStore = useActionCreators(dialogActions);
+    const searchStore = useActionCreators(searchActions);
+    const userStore = useActionCreators(userActions);
 
     const url = import.meta.env.VITE_WS_URL;
 
-    const isSocketConnected = useCallback(() => socket && socket.readyState === socket.OPEN || false, [socket]);
-
-    const logout = useCallback(() => {
+    /**
+     * Short-hand function for dropping WebSocket connection and clearing all data in stores.
+     */
+    const logout = useCallback((): void => {
         searchStore.reset();
         settingsStore.reset();
         sidebarStore.reset();
-        dialogsStore.reset();
+        dialogStore.reset();
 
         window.location.reload();
-    }, []);
+    }, [dialogStore, searchStore, settingsStore, sidebarStore]);
 
-    const setupSocket = (socket: WebSocket, callback?: () => void): WebSocket => {
-        socket.onopen = () => {
-            if (callback) callback();
+    /**
+     * Disconnect from WebSocket.
+     */
+    const disconnect = (): void => {
+        if (!socketRef.current) return;
 
-            setTimeout(() => toggleOnlineStatus(true), 1000);
-        };
+        socketRef.current.close();
+        socketRef.current = null;
+    };
 
-        socket.onclose = () => {
-            connect(callback);
-        };
+    /**
+     * Returns the connection status of the WebSocket.
+     */
+    const isSocketConnected = (): boolean => {
+        return socketRef.current !== null && socketRef.current.readyState === WebSocket.OPEN;
+    };
 
-        socket.onerror = () => {
-            // connect(callback);
-        };
-
-        socket.onmessage = (message) => {
-            if (typeof message.data !== "string") return;
-
-            handleSocketMessage(message);
-        };
-
-        return socket;
-    }
-
-    const handleSocketMessage = (message: MessageEvent): void => {
-        const data = JSON.parse(message.data);
-
-        console.log(data)
-
-        switch (data.type) {
-            case WebSocketResponseType.RECEIVE_MESSAGE:
-                dialogsStore.addMessage({
-                    message: data.message,
-                    dialog: data.dialog,
-                });
-                if (data.userId === data.message.sender.id) break;
-
-                userStore.notify({
-                    message: data.message,
-                    dialogData: data.dialogData,
-                    fileTranslation: t("messages.file").toString()
-                });
-                break;
-            case WebSocketResponseType.READ_MESSAGE:
-                dialogsStore.readMessage({
-                    dialogId: data.dialogId,
-                    messageId: data.messageId
-                });
-                break;
-
-            case WebSocketResponseType.TOGGLE_ONLINE_STATUS:
-                dialogsStore.toggleUserOnline({
-                    userId: data.userId,
-                    isOnline: data.status,
-                    lastActivity: data.lastActivity
-                });
-                break;
-
-            case WebSocketResponseType.TYPING:
-                dialogsStore.toggleTyping({dialogId: data.dialogId, isTyping: true});
-                break;
-
-            case WebSocketResponseType.UNTYPING:
-                dialogsStore.toggleTyping({dialogId: data.dialogId, isTyping: false});
-                break;
-
-            case WebSocketResponseType.USER_BLOCKED:
-                dialogsStore.blockUser({userId: data.userId, isBlocked: data.isBlocked})
-                break;
-
-            case WebSocketResponseType.USER_LOGOUT:
-                if (!data.success && data.sessionId === data.currentSessionId) {
-                    logout();
-                    return;
-                }
-
-                userStore.removeSession({sessionId: data.sessionId});
-                break;
-            case WebSocketResponseType.DELETE_DIALOG:
-                dialogsStore.deleteDialog({dialogId: data.dialogId});
-                break;
-            case WebSocketResponseType.DELETE_USER:
-                logout();
-                break;
-            default:
-                break;
-        }
-    }
-
-    const typing = useCallback((dialogId: string, status: boolean): void => {
-        if (!socket) return;
-
-        socket.send(JSON.stringify({
-            type: status ? WebSocketEventType.TYPING : WebSocketEventType.UNTYPING,
-            dialogId,
-        }));
-    }, [socket]);
-
+    /**
+     * Send message through WebSocket.
+     *
+     * @param {dialogId} dialogId - Dialog ID.
+     * @param {SocketMessage} [message] - Message to send.
+     */
     const sendMessage = (dialogId: string, message: SocketMessage): void => {
-        console.log(socket)
-
-        if (!socket) {
-            return;
-        }
-
-        socket.send(JSON.stringify({
+        send({
             type: WebSocketEventType.SEND_MESSAGE,
             dialogId,
             ...message,
-        }));
+        });
     };
 
-    const destroySession = (sessionId: string): void => {
-        if (!socket) {
-            return;
-        }
-
-        socket.send(JSON.stringify({
-            type: WebSocketEventType.DESTROY_SESSION,
-            sessionId,
-        }));
-    }
-
-    const toggleOnlineStatus = (status: boolean): void => {
-        if (socketContext.socket && isSocketConnected()) {
-            socketContext.socket.send(JSON.stringify({
-                type: WebSocketEventType.TOGGLE_ONLINE_STATUS,
-                status,
-            }));
-            return;
-        }
-
-        if (socket && isSocketConnected()) {
-            socket.send(JSON.stringify({
-                type: WebSocketEventType.TOGGLE_ONLINE_STATUS,
-                status,
-            }));
-            return;
-        }
-    }
-
+    /**
+     * Send read message signal through WebSocket.
+     *
+     * @param {dialogId} dialogId - Dialog ID.
+     * @param {messageId} messageId - Message ID.
+     */
     const readMessage = (dialogId: string, messageId: string): void => {
-        if (!socket) return;
-
-        socket.send(JSON.stringify({
+        send({
             type: WebSocketEventType.READ_MESSAGE,
             dialogId,
             messageId,
-        }));
-    }
+        });
+    };
 
-    const connect = (callback?: () => void): void => {
-        if (!url) return;
+    /**
+     * Send typing status through WebSocket.
+     *
+     * @param {dialogId} dialogId - Dialog ID.
+     * @param {status} status - Typing status.
+     */
+    const typing = (dialogId: string, status: boolean): void => {
+        send({
+            type: status ? WebSocketEventType.TYPING : WebSocketEventType.UNTYPING,
+            dialogId,
+        });
+    };
 
-        socketContext.socket = setupSocket(new WebSocket(url), callback);
+    /**
+     * Send online status through WebSocket.
+     *
+     * @param {status} status - Online status.
+     */
+    const toggleOnlineStatus = useCallback((status: boolean): void => {
+        send({
+            type: WebSocketEventType.TOGGLE_ONLINE_STATUS,
+            status,
+        });
+    }, []);
 
-        setSocket(socketContext.socket);
-    }
+    /**
+     * Send destroy session message through WebSocket.
+     *
+     * @param {sessionId} sessionId - Session ID.
+     */
+    const destroySession = (sessionId: string): void => {
+        send({
+            type: WebSocketEventType.DESTROY_SESSION,
+            sessionId,
+        });
+    };
+
+    const send = (message: object): void => {
+        if (!socketRef.current || socketRef.current.readyState !== WebSocket.OPEN) return;
+
+        socketRef.current.send(JSON.stringify(message));
+    };
+
+    /**
+     * Handle WebSocket message.
+     */
+    const handleSocketMessage = useCallback(
+        (message: string): void => {
+            const data = JSON.parse(message);
+
+            switch (data.type) {
+                case WebSocketResponseType.RECEIVE_MESSAGE:
+                    dialogStore.addMessage({
+                        message: data.message,
+                        dialog: data.dialog,
+                    });
+
+                    if (currentUser.id === data.message.sender.id) break;
+
+                    userStore.notify({
+                        message: data.message,
+                        dialogData: data.dialogData,
+                        fileTranslation: t("messages.file").toString(),
+                    });
+                    break;
+                case WebSocketResponseType.READ_MESSAGE:
+                    dialogStore.readMessage({
+                        dialogId: data.dialogId,
+                        messageId: data.messageId,
+                    });
+                    break;
+
+                case WebSocketResponseType.TOGGLE_ONLINE_STATUS:
+                    dialogStore.toggleUserOnline({
+                        userId: data.userId,
+                        isOnline: data.status,
+                        lastActivity: data.lastActivity,
+                    });
+                    break;
+
+                case WebSocketResponseType.TYPING:
+                    dialogStore.toggleTyping({ dialogId: data.dialogId, isTyping: true });
+                    break;
+
+                case WebSocketResponseType.UNTYPING:
+                    dialogStore.toggleTyping({ dialogId: data.dialogId, isTyping: false });
+                    break;
+
+                case WebSocketResponseType.USER_BLOCKED:
+                    dialogStore.blockUser({ userId: data.userId, isBlocked: data.isBlocked });
+                    break;
+
+                case WebSocketResponseType.USER_LOGOUT:
+                    if (!data.success && data.sessionId === data.currentSessionId) {
+                        logout();
+                        return;
+                    }
+
+                    userStore.removeSession({ sessionId: data.sessionId });
+                    break;
+                case WebSocketResponseType.DELETE_DIALOG:
+                    dialogStore.deleteDialog({ dialogId: data.dialogId });
+                    break;
+                case WebSocketResponseType.DELETE_USER:
+                    logout();
+                    break;
+                default:
+                    break;
+            }
+        },
+        [dialogStore, logout, t, userStore],
+    );
+
+    /**
+     * Connect to WebSocket.
+     *
+     * @param {() => void} callback - Callback function.
+     */
+    const connect = useCallback(
+        (callback?: () => void): void => {
+            if (socketRef.current || !url) return;
+
+            socketRef.current = new WebSocket(url);
+
+            socketRef.current.onopen = () => {
+                if (callback) callback();
+
+                toggleOnlineStatus(true);
+            };
+
+            socketRef.current.onclose = () => {
+                connect();
+            };
+
+            socketRef.current.onmessage = (event) => {
+                handleSocketMessage(event.data);
+            };
+        },
+        [handleSocketMessage, toggleOnlineStatus, url],
+    );
+
+    useOnlineStatus({
+        onHide: () => toggleOnlineStatus(false),
+        onShow: () => toggleOnlineStatus(true),
+    });
 
     useEffect(() => {
-        if (socketContext.socket) setSocket(socketContext.socket);
-    }, [socketContext.socket]);
-
-    useEffect(() => {
-        if (isSocketConnected()) return;
-
         connect();
 
         return () => {
-            if (socket) {
-                socket.close();
-            }
-
-            if (socketContext.socket) {
-                socketContext.socket.close();
-                socketContext.socket = null;
-            }
-        }
-    }, []);
-
-    const data = {
-        socket,
-        typing,
-        sendMessage,
-        connect,
-        destroySession,
-        toggleOnlineStatus,
-        readMessage,
-        isSocketConnected
-    }
-
-    useEffect(() => {
-        socketContext.socket = socket
-        socketContext.typing = typing
-        socketContext.sendMessage = sendMessage
-        socketContext.connect = connect
-        socketContext.destroySession = destroySession
-        socketContext.toggleOnlineStatus = toggleOnlineStatus
-        socketContext.readMessage = readMessage
-        socketContext.isSocketConnected = isSocketConnected
-
-        return () => {
-            socketContext.socket = null
-            socketContext.typing = () => {
-            }
-            socketContext.sendMessage = () => {
-            }
-            socketContext.connect = () => {
-            }
-            socketContext.destroySession = () => {
-            }
-            socketContext.toggleOnlineStatus = () => {
-            }
-            socketContext.readMessage = () => {
-            }
-            socketContext.isSocketConnected = () => false
-        }
-    }, [socket, typing, sendMessage, connect, destroySession, toggleOnlineStatus, readMessage, isSocketConnected]);
+            disconnect();
+        };
+    }, [connect]);
 
     return (
-        <WebSocketContext.Provider value={{...data}}>
+        <WebSocketContext.Provider
+            value={{
+                socket: socketRef.current,
+                connect,
+                disconnect,
+                isSocketConnected,
+                sendMessage,
+                readMessage,
+                typing,
+                toggleOnlineStatus,
+                destroySession,
+            }}
+        >
             {children}
         </WebSocketContext.Provider>
     );
 };
 
-const useWebSocket = () => useContext(WebSocketContext);
-export {WebSocketProvider, useWebSocket};
+export const useWebSocket = () => useContext(WebSocketContext);

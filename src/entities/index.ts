@@ -1,9 +1,9 @@
-import { IBlockedUser } from "./IBlockedUser";
-import { ISession } from "./ISession";
-import { ISettings, LanguagesEnum, ThemesEnum } from "./ISettings";
-import { IUser } from "./IUser";
-import { IDialog, IUserInDialog } from "./dialogs/IDialog";
-import { IDialogMessage } from "./dialogs/IDialogMessage";
+import { IBlockedUser } from "./user/IBlockedUser";
+import { ISession } from "./user/ISession";
+import { ISettings, Languages, Themes } from "./user/ISettings";
+import { IUser } from "./user/IUser";
+import { IDialog, IUserInDialog } from "@/entities/dialog/IDialog";
+import { IDialogMessage } from "@/entities/dialog/IDialogMessage";
 
-export { ThemesEnum, LanguagesEnum };
+export { Themes, Languages };
 export type { IUserInDialog, IDialog, IDialogMessage, ISession, ISettings, IUser, IBlockedUser };

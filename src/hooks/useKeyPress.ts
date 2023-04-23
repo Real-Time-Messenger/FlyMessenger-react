@@ -1,12 +1,21 @@
 import { useCallback, useEffect, useState } from "react";
 
-export default function useKeyPress(targetKeys: string | string[] | null, callback: () => void) {
+/**
+ * React hook that detects when a specific key is pressed.
+ * It runs a callback function when the specified key is pressed.
+ *
+ * @param {string | string[]} targetKeys - The key or keys to detect.
+ * @param {function} callback - The callback function to run when the key is pressed.
+ */
+export const useKeyPress = (targetKeys: string | string[] | null, callback: () => void): void => {
     if (!targetKeys) return;
 
     targetKeys = Array.isArray(targetKeys) ? targetKeys : [targetKeys];
 
     // eslint-disable-next-line react-hooks/rules-of-hooks
-    const [pressedKeys, setKeys] = useState<object>(targetKeys.reduce((acc, key) => ({ ...acc, [key as string]: false }), {}));
+    const [pressedKeys, setKeys] = useState<object>(
+        targetKeys.reduce((acc, key) => ({ ...acc, [key as string]: false }), {}),
+    );
 
     // eslint-disable-next-line react-hooks/rules-of-hooks
     const downHandler = useCallback(
@@ -54,4 +63,4 @@ export default function useKeyPress(targetKeys: string | string[] | null, callba
             window.removeEventListener("keyup", upHandler);
         };
     }, [targetKeys, pressedKeys, downHandler, upHandler]);
-}
+};

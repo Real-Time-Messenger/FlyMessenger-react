@@ -1,15 +1,17 @@
 /**
- * Interface for the Authentication Success Response.
+ * Authentication Response.
+ *
+ * @interface IAuthResponse
+ *
+ * @property {string | undefined} token - The authentication token.
+ * @property {AuthResponseEvent | undefined} event - The authentication event.
  */
 export interface IAuthResponse {
-	token?: string;
-	event?: AuthResponseEvent;
+    token?: string;
+    event?: AuthResponseEvent;
 }
 
 /**
- * Enum for Authentication Response Events.
+ * Event types for the authentication response.
  */
-export enum AuthResponseEvent {
-	TWO_FACTOR = "TWO_FACTOR",
-	NEW_DEVICE = "NEW_DEVICE",
-}
+type AuthResponseEvent = "TWO_FACTOR" | "NEW_DEVICE";
