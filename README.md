@@ -1,6 +1,6 @@
-![GitHub package.json version](https://img.shields.io/github/package-json/v/Real-Time-Messenger/FlyMessenger-webclient)
-![GitHub last commit (by committer)](https://img.shields.io/github/last-commit/Real-Time-Messenger/FlyMessenger-webclient)
-![GitHub](https://img.shields.io/github/license/Real-Time-Messenger/FlyMessenger-webclient)
+![GitHub package.json version](https://img.shields.io/github/package-json/v/Real-Time-Messenger/FlyMessenger-react)
+![GitHub last commit (by committer)](https://img.shields.io/github/last-commit/Real-Time-Messenger/FlyMessenger-react)
+![GitHub](https://img.shields.io/github/license/Real-Time-Messenger/FlyMessenger-react)
 
 # Fly Messenger
 
