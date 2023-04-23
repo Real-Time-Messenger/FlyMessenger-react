@@ -238,7 +238,6 @@ const userSlice = createSlice({
             action: PayloadAction<{
                 message: IDialogMessage;
                 dialogData: { isNotificationsEnabled: boolean; isSoundEnabled: boolean };
-                dialog: IDialog;
                 fileTranslation: string;
             }>,
         ) {

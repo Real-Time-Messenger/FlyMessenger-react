@@ -14,7 +14,7 @@ import { Modal } from "@/components/ui/messenger/Modal";
  * @property {string} id - Session ID.
  */
 interface SessionDeleteModalProps extends ModalProps {
-    onConfirm: (id: string) => void;
+    onConfirm: () => void;
 }
 
 /**
