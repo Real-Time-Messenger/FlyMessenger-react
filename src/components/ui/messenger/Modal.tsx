@@ -30,6 +30,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
 import classNames from "classnames";
 import { Loader } from "@/components/ui/messenger/Loader";
+import {createPortal} from "react-dom";
 
 /**
  * Interface for the {@link Modal.Content} interface.
@@ -133,28 +134,33 @@ const itemCva = cva("", {
  * @since 0.9.0
  * @version 0.9.0
  */
-export const Modal = ({ isOpened, children, onClose }: ModalProps & ChildrenProps) => {
+export const Modal = ({ isOpened, children, onClose, zIndex = 2 }: ModalProps & ChildrenProps) => {
     useKeyPress("Escape", onClose);
 
-    return (
-        <DarkenedLayout isDarkened={isOpened} zIndex={3}>
-            <ModalContext.Provider value={{ isOpened, onClose }}>
-                <AnimatePresence mode="wait" key="modal-item">
-                    {isOpened && (
-                        <motion.div
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                            exit={{ opacity: 0 }}
-                            transition={{ duration: 0.2 }}
-                            className="modal-item w-[350px] rounded-lg bg-[#EAEDFA] p-4 text-center dark:bg-[#10182B]"
-                        >
-                            {children}
-                        </motion.div>
-                    )}
-                </AnimatePresence>
-            </ModalContext.Provider>
-        </DarkenedLayout>
+    const Component = useMemo(
+        () => (
+            <DarkenedLayout isDarkened={isOpened} zIndex={zIndex}>
+                <ModalContext.Provider value={{ isOpened, onClose }}>
+                    <AnimatePresence mode="wait" key="modal-item">
+                        {isOpened && (
+                            <motion.div
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: 1 }}
+                                exit={{ opacity: 0 }}
+                                transition={{ duration: 0.2 }}
+                                className="modal-item w-[350px] rounded-lg bg-[#EAEDFA] p-4 text-center dark:bg-[#10182B]"
+                            >
+                                {children}
+                            </motion.div>
+                        )}
+                    </AnimatePresence>
+                </ModalContext.Provider>
+            </DarkenedLayout>
+        ),
+        [isOpened, children, onClose]
     );
+
+    return createPortal(Component, document.body);
 };
 
 /**
@@ -215,7 +221,7 @@ const Input: ForwardRefExoticComponent<PropsWithoutRef<ModalInputProps> & RefAtt
         }, [error, props.name]);
 
         const classes = classNames(
-            "w-full px-1 py-2 bg-transparent outline-none border-b-2 transition-colors",
+            "w-full px-1 py-2 bg-transparent outline-none border-b-2 transition-colors text-[#303030] dark:text-[#E3E3FA]",
             isError
                 ? "border-b-red-500 dark:border-b-red-600/50 focus:border-b-red-500 dark:focus:border-b-red-500"
                 : "border-b-[#696969] dark:border-b-[#64698F] focus:dark:border-b-[#B8BAF2]",
@@ -239,7 +245,7 @@ const Input: ForwardRefExoticComponent<PropsWithoutRef<ModalInputProps> & RefAtt
 
         return (
             <div className="flex w-full flex-col">
-                <label className="px-1 text-left text-sm">{props.label}</label>
+                <label className="px-1 text-left text-sm text-[#303030] dark:text-[#64698F]">{props.label}</label>
 
                 <input {...props} ref={ref} className={classes} autoComplete="off" />
 

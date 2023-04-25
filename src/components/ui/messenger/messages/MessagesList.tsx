@@ -132,7 +132,7 @@ export const MessagesList = () => {
     const activeDialog = dialogs.find((dialog) => dialog.id === activeDialogId);
     const { messages } = activeDialog as IDialog;
 
-    const observedDialogId = useStateSelector((state) => state.search.selectedMessageId);
+    const observedMessageId = useStateSelector((state) => state.search.selectedMessageId);
     const userId = useStateSelector((state) => state.user.current.id);
 
     const dispatch = useAppDispatch();
@@ -171,15 +171,15 @@ export const MessagesList = () => {
      * Scroll to the message, which was selected in the search control.
      */
     const scrollToObservedMessage = useCallback((): void => {
-        if (!observedDialogId || !scrollRef.current) return;
+        if (!observedMessageId || !scrollRef.current) return;
 
         // As in the algorithm above, where we use `id` attribute,
         // we need to get the message element by id.
-        const message = document.querySelector<HTMLDivElement>(`[id="${observedDialogId}"]`);
+        const message = document.querySelector<HTMLDivElement>(`[id="${observedMessageId}"]`);
         if (!message) return;
 
         message.scrollIntoView({ behavior: "smooth", block: "center" });
-    }, [observedDialogId]);
+    }, [observedMessageId]);
 
     /**
      * Handles if user scrolled up at lease 200px to show the scroll down button.
@@ -316,7 +316,7 @@ export const MessagesList = () => {
                             transition={{ duration: 0.25 }}
                             exit={{ opacity: 0, scale: 0.5 }}
                             onClick={() => handleScrollToBottom()}
-                            className="fixed bottom-20 right-8 z-[10] flex cursor-pointer select-none items-center rounded-full bg-[#FFFFFF] p-3 transition-colors hover:bg-[#CAD5F2] dark:bg-[#1F2B49] dark:hover:bg-[#2B3C5F]"
+                            className="fixed bottom-20 right-8 z-[2] flex cursor-pointer select-none items-center rounded-full bg-[#FFFFFF] p-3 transition-colors hover:bg-[#CAD5F2] dark:bg-[#1F2B49] dark:hover:bg-[#2B3C5F]"
                         >
                             <ChevronDownIcon className="h-7 w-7" />
                         </motion.div>

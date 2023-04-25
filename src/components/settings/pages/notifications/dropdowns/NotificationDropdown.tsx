@@ -29,7 +29,7 @@ export const NotificationDropdown: FC<ModalProps> = ({ isOpened, onClose }) => {
     };
 
     return (
-        <Dropdown isOpened={isOpened} onClose={onClose} className="-right-1/3 top-0">
+        <Dropdown isOpened={isOpened} onClose={onClose} className="top-0 right-0 sm:-right-1/3">
             <Dropdown.SwitchItem
                 Icon={DialogIcon}
                 checked={settings.chatsNotificationsEnabled}

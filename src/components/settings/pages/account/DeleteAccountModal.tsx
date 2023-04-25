@@ -48,7 +48,7 @@ export const DeleteAccountModal: FC<ModalProps> = ({ isOpened, onClose }) => {
     };
 
     return createPortal(
-        <Modal isOpened={isOpened} onClose={onClose}>
+        <Modal isOpened={isOpened} onClose={onClose} zIndex={3}>
             <Modal.Title>{t("settings.account.deleteAccount.title")}</Modal.Title>
             <Modal.Footer>
                 <Modal.Button label={t("button.cancel")} />

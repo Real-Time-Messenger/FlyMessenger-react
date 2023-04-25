@@ -12,6 +12,8 @@
     },
     "search": {
         "title": "Поиск...",
+        "primary": "Поиск",
+        "value": "{{value}} из {{total}}",
         "dialogs": {
             "title": "Диалоги",
             "empty": "Диалоги не найдены"

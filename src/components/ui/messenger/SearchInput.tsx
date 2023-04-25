@@ -24,11 +24,13 @@ export const SearchInput = () => {
 
     const inputRef = useRef<HTMLInputElement>(null);
 
+    const isSearching = useStateSelector((state) => state.search.isSearching);
+
     const isUserSelected = !!useStateSelector((state) => state.search.selectedUser);
     const activeDialogId = useStateSelector((state) => state.dialogs.activeDialog?.id);
 
     const debouncedValue = useDebounce<string>(value, 500);
-    const valueIsEmpty = value === "";
+    const valueIsEmpty = value.trim().length === 0;
 
     const buttonClassesBase = classNames(
         "absolute top-0 flex p-3 items-center justify-center outline-none stroke-[1.5]",
@@ -55,7 +57,7 @@ export const SearchInput = () => {
      * Clear the search input.
      */
     const clearSearch = (): void => {
-        actions.clearSearch();
+        actions.reset();
 
         setValue("");
         inputRef.current?.focus();
@@ -64,6 +66,12 @@ export const SearchInput = () => {
     useEffect(() => {
         handleDebouncedValue();
     }, [debouncedValue, handleDebouncedValue, isUserSelected]);
+
+    useEffect(() => {
+        if (isSearching) return;
+
+        setValue("");
+    }, [isSearching])
 
     return (
         <div className="relative w-full">

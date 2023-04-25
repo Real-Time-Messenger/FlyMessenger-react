@@ -1,3 +1,5 @@
+import {HTTPError} from "ky";
+
 const oneWeek = 1000 * 60 * 60 * 24 * 7;
 
 /**
@@ -132,3 +134,18 @@ export const sendNotification = (title: string, options: NotificationOptions): v
         });
     }
 };
+
+/**
+ * Exception handler for ky requests.
+ *
+ * @param {Error} error - The error.
+ * @param {(value: unknown) => unknown} rejectWithValue - The rejectWithValue function.
+ */
+export const handleKyException = async (error: HTTPError, rejectWithValue: (value: unknown) => unknown): Promise<unknown> => {
+    try {
+        const serverError = JSON.parse(await error.response.text());
+        return rejectWithValue(serverError);
+    } catch (error) {
+        return rejectWithValue({ translation: "unexpectedError", message: "Unexpected Error." });
+    }
+}

@@ -50,6 +50,7 @@ import { VolumeIcon } from "./VolumeIcon";
 import { VolumeOffIcon } from "./VolumeOffIcon";
 import { WarningIcon } from "./WarningIcon";
 import { WebAppIcon } from "./WebAppIcon";
+import { MoreIcon } from "./MoreIcon";
 
 export {
     AlertCircleIcon,
@@ -104,4 +105,5 @@ export {
     ArrowUpIcon,
     SunIcon,
     MoonIcon,
+    MoreIcon,
 };

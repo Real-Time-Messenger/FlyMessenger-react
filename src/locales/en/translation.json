@@ -12,6 +12,8 @@
     },
     "search": {
         "title": "Search...",
+        "primary": "Search",
+        "value": "{{value}} of {{total}}",
         "dialogs": {
             "title": "Dialogues",
             "empty": "No dialogues found"

@@ -54,8 +54,8 @@ const sidebarSlice = createSlice({
             state.activeLink = undefined;
             state.isMobileSidebarOpened = true;
         },
-        toggleMobileSidebar(state, action: PayloadAction<{ state: boolean }>) {
-            state.isMobileSidebarOpened = action.payload.state;
+        toggleMobileSidebar(state, action: PayloadAction<boolean>) {
+            state.isMobileSidebarOpened = action.payload;
         },
     },
 });

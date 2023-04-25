@@ -37,7 +37,7 @@ export const ChangeEmailModal: FC<ModalProps> = ({ isOpened, onClose }) => {
     };
 
     return (
-        <Modal isOpened={isOpened} onClose={onClose}>
+        <Modal isOpened={isOpened} onClose={onClose} zIndex={3}>
             <Modal.Title>{t("settings.profile.modal.email.title")}</Modal.Title>
 
             <Modal.Content errorBoundary={{ error, setError }}>

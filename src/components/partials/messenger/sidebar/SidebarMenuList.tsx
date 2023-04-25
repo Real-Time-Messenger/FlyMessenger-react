@@ -6,8 +6,9 @@ import { HamburgerMenuIcon } from "@/components/icons";
 import { SearchInput } from "@/components/ui/messenger/SearchInput";
 import { Loader } from "@/components/ui/messenger/Loader";
 import { SearchResultList } from "@/components/search/SearchResultList";
-import { DialogItem } from "@/components/ui/messenger/dialog/DialogItem";
-import { FC } from "react";
+import {DialogItem, PositionProps} from "@/components/ui/messenger/dialog/DialogItem";
+import {FC, useState} from "react";
+import {MobileSidebarContent} from "@/components/partials/messenger/sidebar/SidebarContent";
 
 /**
  * Props for the {@link SidebarMenuList}.
@@ -25,7 +26,7 @@ interface SidebarMenuListProps {
 }
 
 /**
- * Renders wrapped (search input, title and etc.) content inside a sidebar.
+ * Renders wrapped (search input, title, etc.) content inside a sidebar.
  *
  * @author Winicred (Kirill Goritski)
  *
@@ -38,8 +39,6 @@ export const SidebarMenuList: FC<SidebarMenuListProps> = ({ label, data, status 
     const isSearching = useStateSelector((state) => state.search.isSearching);
     const searchableUser = useStateSelector((state) => state.search.selectedUser);
     const searchResults = useStateSelector((state) => state.search.searchResults);
-
-    const isSearchActive = isSearching || typeof searchableUser !== "undefined";
 
     const unreadMessages = data.reduce((acc, dialog) => acc + (dialog.unreadMessages > 0 ? 1 : 0), 0);
 
@@ -60,9 +59,7 @@ export const SidebarMenuList: FC<SidebarMenuListProps> = ({ label, data, status 
             </div>
 
             <div className="mb-2 flex gap-2 border-b border-b-[#CFD0D4] px-2 pt-2 pb-2 pr-5 dark:border-t-[#2F384E20] lg:hidden">
-                <button className="flex p-[10.5px]">
-                    <HamburgerMenuIcon className="h-6 w-6" />
-                </button>
+                <MobileSidebarContent />
 
                 <SearchInput />
             </div>
@@ -78,13 +75,13 @@ export const SidebarMenuList: FC<SidebarMenuListProps> = ({ label, data, status 
                     </div>
                 ) : (
                     <>
-                        {isSearchActive && searchResults && (
+                        {isSearching && (
                             <div className="scroll-y-overlay row-span-1 h-full transition-colors">
                                 <SearchResultList data={searchResults} />
                             </div>
                         )}
 
-                        {!isSearchActive && (
+                        {!isSearching && (
                             <>
                                 {data.length === 0 && (
                                     <div className="flex flex-col items-center justify-center px-2 text-center">

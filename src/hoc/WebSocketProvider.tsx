@@ -67,8 +67,8 @@ export interface SocketMessage {
  * @property {() => void} connect - Function for connecting to WebSocket.
  * @property {() => void} disconnect - Function for disconnecting from WebSocket.
  * @property {() => boolean} isSocketConnected - Function for checking if WebSocket is connected.
- * @property {(dialogId: string, message: SocketMessage) => void} sendMessage - Function for sending message to WebSocket.
- * @property {(dialogId: string, messageId: string) => void} readMessage - Function for sending read message to WebSocket.
+ * @property {(dialogId: string, message: SocketMessage) => void} sendMessage - Function for sending a message to WebSocket.
+ * @property {(dialogId: string, messageId: string) => void} readMessage - Function for sending a read message to WebSocket.
  * @property {(dialogId: string, status: boolean) => void} typing - Function for sending typing status to WebSocket.
  * @property {(status: boolean) => void} toggleOnlineStatus - Function for sending online status to WebSocket.
  * @property {(sessionId: string) => void} destroySession - Function for sending destroy session to WebSocket.
@@ -126,7 +126,7 @@ export const WebSocketProvider: FC<ChildrenProps> = ({ children }) => {
     const url = import.meta.env.VITE_WS_URL;
 
     /**
-     * Short-hand function for dropping WebSocket connection and clearing all data in stores.
+     * Shorthand function for dropping WebSocket connection and clearing all data in stores.
      */
     const logout = useCallback((): void => {
         searchStore.reset();
@@ -155,7 +155,7 @@ export const WebSocketProvider: FC<ChildrenProps> = ({ children }) => {
     };
 
     /**
-     * Send message through WebSocket.
+     * Send a message through WebSocket.
      *
      * @param {dialogId} dialogId - Dialog ID.
      * @param {SocketMessage} [message] - Message to send.
@@ -208,7 +208,7 @@ export const WebSocketProvider: FC<ChildrenProps> = ({ children }) => {
     }, []);
 
     /**
-     * Send destroy session message through WebSocket.
+     * Send a destroy session message through WebSocket.
      *
      * @param {sessionId} sessionId - Session ID.
      */
@@ -220,7 +220,10 @@ export const WebSocketProvider: FC<ChildrenProps> = ({ children }) => {
     };
 
     const send = (message: object): void => {
-        if (!socketRef.current || socketRef.current.readyState !== WebSocket.OPEN) return;
+        if (!socketRef.current || socketRef.current.readyState !== WebSocket.OPEN) {
+            connect(JSON.stringify(message));
+            return;
+        }
 
         socketRef.current.send(JSON.stringify(message));
     };
@@ -292,7 +295,7 @@ export const WebSocketProvider: FC<ChildrenProps> = ({ children }) => {
                     break;
             }
         },
-        [dialogStore, logout, t, userStore],
+        [currentUser.id, dialogStore, logout, t, userStore],
     );
 
     /**
@@ -301,20 +304,28 @@ export const WebSocketProvider: FC<ChildrenProps> = ({ children }) => {
      * @param {() => void} callback - Callback function.
      */
     const connect = useCallback(
-        (callback?: () => void): void => {
+        (callback?: string): void => {
             if (socketRef.current || !url) return;
 
             socketRef.current = new WebSocket(url);
 
             socketRef.current.onopen = () => {
-                if (callback) callback();
+                if (callback) socketRef.current?.send(callback);
 
                 toggleOnlineStatus(true);
             };
 
             socketRef.current.onclose = () => {
+                if (window.location.pathname !== "/m") return;
+
                 connect();
             };
+
+            socketRef.current.onerror = () => {
+                if (window.location.pathname !== "/m") return;
+
+                connect();
+            }
 
             socketRef.current.onmessage = (event) => {
                 handleSocketMessage(event.data);

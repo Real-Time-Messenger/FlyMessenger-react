@@ -10,6 +10,7 @@ import { CloseIcon } from "@/components/icons";
 import { DialogItem } from "@/components/ui/messenger/dialog/DialogItem";
 import { UserInSearchItem } from "@/components/search/items/UserInSearchItem";
 import { MessageInSearchItem } from "@/components/search/items/MessageInSearchItem";
+import {sidebarActions} from "@/stores/slices/ui/sidebar/sidebar";
 
 /**
  * Props for the {@link SearchResultList} component.
@@ -102,8 +103,10 @@ export const SearchResultList: FC<SearchResultListProps> = ({ data }: SearchResu
     const activeDialog = useStateSelector((state) => state.dialogs.activeDialog);
     const searchableUser = useStateSelector((state) => state.search.selectedUser);
 
+    const sidebarStore = useActionCreators(sidebarActions);
     const searchStore = useActionCreators(searchActions);
-    const dialogsStore = useActionCreators(dialogActions);
+    const dialogStore = useActionCreators(dialogActions);
+
     const dispatch = useAppDispatch();
 
     /**
@@ -123,10 +126,12 @@ export const SearchResultList: FC<SearchResultListProps> = ({ data }: SearchResu
 
         const dialog = dialogs.find((dialog) => dialog.messages.find((message) => message.id === id));
         if (dialog && dialog.id !== activeDialog?.id) {
-            dialogsStore.setActiveDialog({ id: dialog.id });
+            dialogStore.setActiveDialog({ id: dialog.id });
         }
 
         searchStore.setSearchableMessageId(id);
+
+        sidebarStore.toggleMobileSidebar(false);
     };
 
     /**
@@ -141,7 +146,7 @@ export const SearchResultList: FC<SearchResultListProps> = ({ data }: SearchResu
             return;
         }
 
-        dialogsStore.setActiveDialog({ id: dialog.id });
+        dialogStore.setActiveDialog({ id: dialog.id });
         searchStore.setSearchableMessageId(null);
     };
 

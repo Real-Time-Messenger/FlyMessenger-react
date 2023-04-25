@@ -134,17 +134,17 @@ export const MessageItem: FC<MessageItemProps> = ({
                 <div
                     className={classNames(
                         "relative mt-auto flex select-none items-center justify-center",
-                        !showAvatar && "ml-[40px]",
+                        !showAvatar && "md:ml-[40px]",
                     )}
                 >
                     {showAvatar && (
-                        <Avatar src={sender.photoURL} alt="image" className="h-[40px] w-[40px] rounded-full" />
+                        <Avatar src={sender.photoURL} alt="image" className="h-[40px] w-[40px] rounded-full hidden md:flex" />
                     )}
                 </div>
 
                 <div
                     className={classNames(
-                        "relative mx-2.5 rounded-lg p-2.5 transition-[background-color] sm:max-w-[400px] md:max-w-[400px] lg:max-w-[450px] xl:max-w-[700px] 2xl:max-w-4xl",
+                        "relative mx-2.5 rounded-lg p-2.5 transition-[background-color] md:max-w-[400px] lg:max-w-[450px] xl:max-w-[700px] 2xl:max-w-4xl",
                         file ? "pr-14" : "pr-20",
                         isCurrentUser ? "bg-[#5B9BD965] dark:bg-[#304F74]" : "bg-white dark:bg-[#151F38]",
                     )}

@@ -34,7 +34,7 @@ export const LastActivityModeDropdown: FC<ModalProps> = ({ isOpened, onClose }) 
     };
 
     return (
-        <Dropdown isOpened={isOpened} onClose={onClose} className="-right-16 top-0">
+        <Dropdown isOpened={isOpened} onClose={onClose} className="top-0 right-0 sm:-right-16">
             <Dropdown.Item>
                 <RatioButton
                     value={+isEnabled}

@@ -1,6 +1,6 @@
 import classNames from "classnames";
 import { ClassNameProps } from "@/interfaces/ClassNameProps";
-import { ComponentType, FC, ReactNode, SVGProps, useRef } from "react";
+import {ComponentType, createContext, FC, ReactNode, SVGProps, useContext, useRef} from "react";
 import { useOnClickOutside } from "@/hooks";
 import { Switch } from "@/components/ui/messenger/Switch";
 import { motion } from "framer-motion";
@@ -72,6 +72,10 @@ interface DropdownItemProps extends ChildrenProps, ClassNameProps {
     onClick?: () => void;
 }
 
+const DropdownContext = createContext<{ onClose: () => void }>({
+    onClose: () => {},
+});
+
 export const Dropdown = ({ isOpened, onClose, className, children }: DropdownProps) => {
     const ref = useRef<HTMLDivElement>(null);
     const handler = onClose ?? (() => {});
@@ -90,7 +94,7 @@ export const Dropdown = ({ isOpened, onClose, className, children }: DropdownPro
                 className,
             )}
         >
-            {children}
+            <DropdownContext.Provider value={{ onClose: handler }}>{children}</DropdownContext.Provider>
         </motion.div>
     );
 };
@@ -128,8 +132,16 @@ const SwitchItem: FC<SwitchDropdownItemProps> = ({ Icon, checked, label, onClick
  * @version 0.9.0
  */
 const DropdownItem: FC<DropdownItemProps> = ({ children, onClick, className }: DropdownItemProps) => {
+    const {onClose} = useContext(DropdownContext);
+
+    const handleClick = () => {
+        if (onClick) onClick();
+
+        onClose();
+    }
+
     return (
-        <div className={className} onClick={onClick}>
+        <div className={className} onClick={handleClick}>
             {children}
         </div>
     );

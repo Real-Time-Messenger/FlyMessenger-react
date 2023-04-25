@@ -4,7 +4,7 @@ import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { AnyObject } from "@/interfaces/AnyObject";
 import { ISettings } from "@/entities/user/ISettings";
 import { IBlockResponse } from "@/interfaces/response";
-import { sendNotification } from "@/helpers/helpers";
+import {handleKyException, sendNotification} from "@/helpers/helpers";
 import { UserKeys } from "@/entities/user/IUser";
 
 export type LoginEventTypes = "ACTIVATION_REQUIRED" | "TWO_FACTOR" | "NEW_DEVICE";
@@ -46,8 +46,7 @@ export const loginUser = createAsyncThunk(
         try {
             return await $api.post("auth/login", { json: data }).json();
         } catch (error: any) {
-            const serverError = JSON.parse(await error.response.text());
-            return rejectWithValue(serverError);
+            return handleKyException(error, rejectWithValue);
         }
     },
 );
@@ -64,8 +63,7 @@ export const signupUser = createAsyncThunk(
         try {
             return await $api.post("auth/signup", { json: data }).json();
         } catch (error: any) {
-            const serverError = JSON.parse(await error.response.text());
-            return rejectWithValue(serverError);
+            return handleKyException(error, rejectWithValue);
         }
     },
 );
@@ -79,8 +77,7 @@ export const newDeviceLogin = createAsyncThunk(
         try {
             return await $api.post("auth/new-device", { json: data }).json();
         } catch (error: any) {
-            const serverError = JSON.parse(await error.response.text());
-            return rejectWithValue(serverError);
+            return handleKyException(error, rejectWithValue);
         }
     },
 );
@@ -105,8 +102,7 @@ export const sendForgotPasswordEmail = createAsyncThunk(
         try {
             return await $api.post("auth/call-reset-password", { json: data }).json();
         } catch (error: any) {
-            const serverError = JSON.parse(await error.response.text());
-            return rejectWithValue(serverError);
+            return handleKyException(error, rejectWithValue);
         }
     },
 );
@@ -120,8 +116,7 @@ export const validateResetPasswordToken = createAsyncThunk(
         try {
             return await $api.post("auth/validate-reset-password-token", { json: data }).json();
         } catch (error: any) {
-            const serverError = JSON.parse(await error.response.text());
-            return rejectWithValue(serverError);
+            return handleKyException(error, rejectWithValue);
         }
     },
 );
@@ -135,8 +130,7 @@ export const resetPassword = createAsyncThunk(
         try {
             return await $api.post("auth/reset-password", { json: data }).json();
         } catch (error: any) {
-            const serverError = JSON.parse(await error.response.text());
-            return rejectWithValue(serverError);
+            return handleKyException(error, rejectWithValue);
         }
     },
 );
@@ -150,8 +144,7 @@ export const twoFactorAuth = createAsyncThunk(
         try {
             return await $api.post("auth/two-factor", { json: data }).json();
         } catch (error: any) {
-            const serverError = JSON.parse(await error.response.text());
-            return rejectWithValue(serverError);
+            return handleKyException(error, rejectWithValue);
         }
     },
 );
@@ -165,8 +158,7 @@ export const activateUser = createAsyncThunk(
         try {
             return await $api.post("auth/activate", { json: data }).json();
         } catch (error: any) {
-            const serverError = JSON.parse(await error.response.text());
-            return rejectWithValue(serverError);
+            return handleKyException(error, rejectWithValue);
         }
     },
 );

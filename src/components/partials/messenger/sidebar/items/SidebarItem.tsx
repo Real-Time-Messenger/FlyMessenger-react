@@ -4,8 +4,8 @@ import { useActionCreators, useStateSelector } from "@/stores/hooks";
 import { sidebarActions } from "@/stores/slices/ui/sidebar/sidebar";
 import { useHover } from "@/hooks";
 import { SidebarItemProps } from "@/interfaces/components/SidebarItemProps";
-import { LabelComponent } from "./items/LabelComponent";
-import { IconComponent } from "./items/IconComponent";
+import { LabelComponent } from "./LabelComponent";
+import { IconComponent } from "./IconComponent";
 
 /**
  * The default colors for the sidebar item.

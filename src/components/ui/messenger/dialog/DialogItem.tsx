@@ -11,6 +11,7 @@ import { Avatar } from "@/components/ui/messenger/Avatar";
 import { concatenate, parseDateToTime } from "@/helpers/helpers";
 import { AnimatePresence, motion } from "framer-motion";
 import { dialogActions } from "@/stores/slices/dialogs/dialogs";
+import {sidebarActions} from "@/stores/slices/ui/sidebar/sidebar";
 
 /**
  * Interface of X, Y coordinates.
@@ -69,6 +70,7 @@ export const DialogItem: FC<IDialog> = ({ id, user, lastMessage, isMeBlocked, ..
     const activeDialogId = useStateSelector((state) => state.dialogs.activeDialog?.id);
     const activeDialog = dialogs.find((dialog) => dialog.id === activeDialogId);
 
+    const sidebarStore = useActionCreators(sidebarActions);
     const searchStore = useActionCreators(searchActions);
     const dialogStore = useActionCreators(dialogActions);
 
@@ -92,6 +94,9 @@ export const DialogItem: FC<IDialog> = ({ id, user, lastMessage, isMeBlocked, ..
      * Handles the dialog item click.
      */
     const handleClick = (): void => {
+        sidebarStore.toggleMobileSidebar(false);
+        searchStore.reset();
+
         if (id === activeDialog?.id) return;
 
         dialogStore.setActiveDialog({ id });

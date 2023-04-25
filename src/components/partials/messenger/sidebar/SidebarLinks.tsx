@@ -22,7 +22,7 @@ import { SidebarItem } from "@/components/partials/messenger/sidebar/items/Sideb
 /**
  * The links for the {@link SidebarLinks}.
  */
-const Links = (): SidebarItemProps[] => {
+export const Links = (): SidebarItemProps[] => {
     const isDarkMode = useStateSelector((state) => state.sidebar.isDarkMode);
 
     const sidebarStore = useActionCreators(sidebarActions);

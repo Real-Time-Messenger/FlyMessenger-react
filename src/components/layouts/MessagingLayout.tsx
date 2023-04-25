@@ -28,10 +28,10 @@ export const MessagingLayout: FC<ChildrenProps> = ({ children }) => {
     }
 
     return (
-        <div className="flex w-screen flex-1 flex-col">
+        <div className="flex w-screen flex-1 flex-col overflow-hidden">
             <MessageHeader />
 
-            <div className="flex-1 overflow-hidden bg-[#EAEDFA] transition-colors dark:bg-[#10182B]">{children}</div>
+            <div className="flex-1 overflow-hidden bg-[#EAEDFA] transition-colors dark:bg-[#10182B] w-screen lg:w-auto">{children}</div>
 
             <MessageFooter />
         </div>

@@ -12,6 +12,8 @@
     },
     "search": {
         "title": "Otsing...",
+        "primary": "Otsing",
+        "value": "{{value}} {{total}}-st",
         "dialogs": {
             "title": "Chattid",
             "empty": "Chattid ei leitud"

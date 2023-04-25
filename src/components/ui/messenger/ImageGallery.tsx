@@ -1,7 +1,8 @@
-import { motion } from "framer-motion";
-import { FC, MouseEvent as ReactMouseEvent, useCallback, useEffect, useRef, useState } from "react";
-import { useKeyPress } from "@/hooks";
-import { ChevronLeftIcon, ChevronRightIcon, CloseIcon } from "../../icons";
+import {motion} from "framer-motion";
+import {FC, TouchEvent, useCallback, useEffect, useRef, useState} from "react";
+import {useDebounce, useKeyPress} from "@/hooks";
+import {ChevronLeftIcon, ChevronRightIcon, CloseIcon} from "../../icons";
+import classNames from "classnames";
 
 /**
  * Props for the {@link ImageGallery} component.
@@ -24,12 +25,11 @@ interface ImageGalleryProps {
  * @since 0.9.0
  * @version 0.9.0
  */
-export const ImageGallery: FC<ImageGalleryProps> = ({ images, current, onClose }) => {
+export const ImageGallery: FC<ImageGalleryProps> = ({images, current, onClose}) => {
     const [currentImage, setImage] = useState<string>(current);
     const [scale, setScale] = useState<number>(1);
-    const [top, setTop] = useState<number>(0);
-    const [left, setLeft] = useState<number>(0);
-    const [isDragging, setDragging] = useState<boolean>(false);
+    const [touchStart, setTouchStart] = useState<number | null>(null)
+    const [touchEnd, setTouchEnd] = useState<number | null>(null)
 
     const imageRef = useRef<HTMLImageElement>(null);
 
@@ -50,29 +50,29 @@ export const ImageGallery: FC<ImageGalleryProps> = ({ images, current, onClose }
 
             setImage(images[nextIndex]);
             setScale(1);
-            setTop(0);
-            setLeft(0);
         },
         [currentImage, images],
     );
 
-    /**
-     * Handles the drag start event.
-     *
-     * @param {ReactMouseEvent<HTMLImageElement>} event - The drag start event.
-     */
-    const handleDragStart = (event: ReactMouseEvent<HTMLImageElement>): void => {
-        event.preventDefault();
+    const onTouchStart = (e: TouchEvent) => {
+        setTouchEnd(null)
+        setTouchStart(e.targetTouches[0].clientX)
+    }
 
-        setDragging(true);
-    };
+    const onTouchMove = (e: TouchEvent) => setTouchEnd(e.targetTouches[0].clientX)
 
-    /**
-     * Handles the drag end event.
-     */
-    const handleDragEnd = (): void => {
-        setDragging(false);
-    };
+    const onTouchEnd = () => {
+        if (!touchStart || !touchEnd) return
+        const distance = touchStart - touchEnd
+        const isLeftSwipe = distance > 50
+        const isRightSwipe = distance < -50
+
+        if (isLeftSwipe) toggleImage("right")
+        if (isRightSwipe) toggleImage("left")
+
+        setTouchStart(null)
+        setTouchEnd(null)
+    }
 
     /**
      * Detects the key presses.
@@ -82,151 +82,70 @@ export const ImageGallery: FC<ImageGalleryProps> = ({ images, current, onClose }
     useKeyPress("ArrowRight", () => toggleImage("right"));
 
     useEffect(() => {
-        const handleDrag = (e: MouseEvent) => {
-            e.preventDefault();
-
-            if (!isDragging) {
-                return;
-            }
-
-            const imageRect = imageRef.current?.getBoundingClientRect();
-
-            if (!imageRect) {
-                return;
-            }
-
-            setScale((prevScale) => prevScale + e.movementX);
-
-            // TODO: Fix image dragging
-            // const isXOutOfBounds = imageRect.left < 0 || imageRect.right > window.innerWidth;
-            // const isYOutOfBounds = imageRect.top < 0 || imageRect.bottom <= window.innerHeight;
-            //
-            // if (imageRect.top >= 0) {
-            //     console.log(imageRect.top * scale);
-            //     setTop(0);
-            // }
-            //
-            // if (isXOutOfBounds) {
-            //     setLeft((prevLeft) => prevLeft + e.movementX);
-            // }
-            //
-            // if (isYOutOfBounds) {
-            //     setTop((prevTop) => prevTop + e.movementY);
-            // }
-        };
-
-        const handleMouseUp = () => {
-            setDragging(false);
-            window.removeEventListener("mousemove", handleDrag);
-            window.removeEventListener("mouseup", handleMouseUp);
-        };
-
-        if (isDragging) {
-            window.addEventListener("mousemove", handleDrag);
-            window.addEventListener("mouseup", handleMouseUp);
-        }
-
-        return () => {
-            window.removeEventListener("mousemove", handleDrag);
-            window.removeEventListener("mouseup", handleMouseUp);
-        };
-    }, [isDragging]);
-
-    useEffect(() => {
-        const image = document.querySelector(".image-gallery__image") as HTMLImageElement;
-        if (!image) return;
-
-        const handleWheel = (e: WheelEvent) => {
-            if (e.ctrlKey) {
-                e.preventDefault();
-                setScale((prevScale) => {
-                    const smoothScroll = e.deltaY < 0 ? 0.1 : -0.1;
-
-                    const newScale = prevScale + smoothScroll;
-                    if (newScale < 1) {
-                        return 1;
-                    }
-
-                    return newScale;
-                });
-            } else {
-                if (e.deltaY < 0 && isPrevImage) {
-                    toggleImage("left");
-                } else if (e.deltaY > 0 && isNextImage) {
-                    toggleImage("right");
-                }
-            }
-        };
-
-        window.addEventListener("wheel", handleWheel, {
-            passive: false,
-        });
-
-        return () => {
-            window.removeEventListener("wheel", handleWheel);
-        };
-    }, [isNextImage, isPrevImage, toggleImage]);
+        window.addEventListener("wheel",
+            (event) => toggleImage(event.deltaY > 0 ? "right" : "left"),
+            {passive: true});
+    }, [toggleImage]);
 
     return (
         <motion.div
-            className="fixed inset-0 z-[3] flex h-screen w-screen select-none items-center justify-center bg-black/80 dark:bg-black/60"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.2 }}
+            className={classNames("fixed inset-0 z-[3] flex h-screen w-screen select-none items-center justify-center bg-black/80 dark:bg-black/60", "cursor-grabbing")}
+            initial={{opacity: 0}}
+            animate={{opacity: 1}}
+            exit={{opacity: 0}}
+            onTouchMove={onTouchMove}
+            onTouchEnd={onTouchEnd}
+            onTouchStart={onTouchStart}
+            transition={{duration: 0.2}}
         >
-            <div className="image-gallery h-full">
-                <div className="absolute left-0 top-0 flex h-screen flex-col">
-                    <div className="pointer-events-none h-[96px] w-[96px] bg-transparent" />
+            <div className="image-gallery h-full flex items-center justify-center">
+                <div className="absolute left-0 top-0 h-screen flex-col flex" onTouchMove={onTouchMove}
+                     onTouchEnd={onTouchEnd} onTouchStart={onTouchStart}>
+                    <div className="pointer-events-none h-[96px] w-[96px] bg-transparent"/>
 
                     {isPrevImage && (
                         <button
-                            className="relative z-[2] h-5/6 px-6 transition-colors hover:bg-[#C1C1C165] dark:hover:bg-[#C1C1C145]"
+                            className="relative z-[2] h-5/6 px-6 transition-colors flex items-center lg:hover:bg-[#C1C1C165] lg:dark:hover:bg-[#C1C1C145]"
                             onClick={() => toggleImage("left")}
                         >
-                            <ChevronLeftIcon className="h-12 w-12 stroke-[2] text-white" />
+                            <ChevronLeftIcon className="h-12 w-12 stroke-[2] text-white"/>
                         </button>
                     )}
 
-                    <div className="pointer-events-none h-[96px] w-[96px] bg-transparent" />
+                    <div className="pointer-events-none h-[96px] w-[96px] bg-transparent"/>
                 </div>
 
-                {/*<motion.div*/}
-                {/*    className="relative"*/}
-                {/*    initial={{scale: 0.9}}*/}
-                {/*    animate={{scale: 1}}*/}
-                {/*    exit={{scale: 0.9}}*/}
-                {/*>*/}
-
                 <img
-                    onMouseDown={handleDragStart}
-                    onMouseUp={handleDragEnd}
                     ref={imageRef}
                     src={currentImage}
                     alt="Message image"
-                    className="image-gallery__image relative h-full w-full transition-transform"
-                    style={{ transformOrigin: "center center", top, left, width: `${scale * 100}%` }}
+                    draggable={false}
+                    className="image-gallery__image relative"
+                    onTouchMove={onTouchMove}
+                    onTouchEnd={onTouchEnd}
+                    onTouchStart={onTouchStart}
+                    style={{transformOrigin: "center center", transform: `scale(${scale})`}}
                 />
-                {/*</motion.div>*/}
 
-                <div className="absolute right-0 top-0 flex h-screen flex-col">
+                <div className="absolute right-0 top-0 h-screen flex-col flex">
                     <button
-                        className="relative z-[2] flex items-center justify-center p-6 transition-colors hover:bg-[#C1C1C165] dark:hover:bg-[#C1C1C145]"
+                        className="relative z-[2] items-center justify-center p-6 transition-color flex lg:hover:bg-[#C1C1C165] lg:dark:hover:bg-[#C1C1C145]"
                         onClick={onClose}
                     >
-                        <CloseIcon className="h-12 w-12 stroke-[2] text-white" />
+                        <CloseIcon className="h-12 w-12 stroke-[2] text-white"/>
                     </button>
+
 
                     {isNextImage && (
                         <button
-                            className="relative z-[2] h-5/6 px-6 transition-colors hover:bg-[#C1C1C165] dark:hover:bg-[#C1C1C145]"
+                            className="relative z-[2] h-5/6 px-6 transition-colors items-center flex lg:hover:bg-[#C1C1C165] lg:dark:hover:bg-[#C1C1C145]"
                             onClick={() => toggleImage("right")}
                         >
-                            <ChevronRightIcon className="h-12 w-12 stroke-[2] text-white" />
+                            <ChevronRightIcon className="h-12 w-12 stroke-[2] text-white"/>
                         </button>
                     )}
 
-                    <div className="pointer-events-none h-[96px] w-[96px] bg-transparent" />
+                    <div className="pointer-events-none h-[96px] w-[96px] bg-transparent"/>
                 </div>
             </div>
         </motion.div>

@@ -15,6 +15,7 @@ import { $api } from "@/http";
  */
 interface InitialState {
     selectedUser?: IUser | IUserInDialog;
+    selectedMobileUser?: IUser | IUserInDialog;
     selectedMessageId: string | null;
     isSearching: boolean;
     searchResults: ISearchResult;
@@ -25,6 +26,7 @@ interface InitialState {
  */
 const initialState: InitialState = {
     selectedUser: undefined,
+    selectedMobileUser: undefined,
     isSearching: false,
     searchResults: { messages: [], dialogs: [], users: [] },
     selectedMessageId: null,
@@ -59,12 +61,20 @@ export const searchSlice = createSlice({
             state.selectedUser = action.payload;
             state.searchResults = { messages: [], dialogs: [], users: [] };
         },
+        setSearchableMobileUser(state, action: PayloadAction<IUser | IUserInDialog | undefined>) {
+            state.selectedMobileUser = action.payload;
+            state.searchResults = { messages: [], dialogs: [], users: [] };
+        },
         setSearchableMessageId(state, action: PayloadAction<string | null>) {
             state.selectedMessageId = action.payload;
         },
-        clearSearch(state) {
+        clearMobileSearch(state) {
             state.isSearching = false;
-            state.selectedUser = undefined;
+            state.selectedMobileUser = undefined;
+            state.searchResults = { messages: [], dialogs: [], users: [] };
+        },
+        clearSearchResults(state) {
+            state.isSearching = false;
             state.searchResults = { messages: [], dialogs: [], users: [] };
         },
         reset(state) {
@@ -79,6 +89,9 @@ export const searchSlice = createSlice({
         });
         builder.addCase(sendSearch.fulfilled, (state, action: PayloadAction<ISearchResult>) => {
             state.searchResults = action.payload;
+        });
+        builder.addCase(sendSearchByDialogId.pending, (state) => {
+            state.isSearching = true;
         });
         builder.addCase(sendSearchByDialogId.fulfilled, (state, action: PayloadAction<ISearchResult>) => {
             state.searchResults = action.payload;

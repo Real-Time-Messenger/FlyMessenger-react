@@ -9,4 +9,5 @@
 export interface ModalProps {
     isOpened: boolean;
     onClose: () => void;
+    zIndex?: number;
 }

@@ -18,13 +18,6 @@ export default function App() {
     useDocumentTitle(t("global.title"));
 
     useEffect(() => {
-        if (currentUser.id) {
-            const darkMode = currentUser.settings.theme === "dark";
-            sidebarStore.toggleDarkMode({ state: darkMode });
-
-            return;
-        }
-
         const cookies = document.cookie.split("; ");
         const darkModeCookie = cookies.find((cookie) => cookie.includes("darkMode"));
         if (darkModeCookie) {

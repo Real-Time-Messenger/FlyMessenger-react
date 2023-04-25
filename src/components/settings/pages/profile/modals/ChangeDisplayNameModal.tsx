@@ -27,7 +27,7 @@ export const ChangeDisplayNameModal: FC<ModalProps> = ({ isOpened, onClose }) =>
     const dispatch = useAppDispatch();
 
     /**
-     * Handler for updating current user display name.
+     * Handler for updating the current user display name.
      */
     const onSubmit = () => {
         if (!firstNameRef.current || !lastNameRef.current) return;
@@ -39,7 +39,7 @@ export const ChangeDisplayNameModal: FC<ModalProps> = ({ isOpened, onClose }) =>
     };
 
     return (
-        <Modal isOpened={isOpened} onClose={onClose}>
+        <Modal isOpened={isOpened} onClose={onClose} zIndex={3}>
             <Modal.Title>{t("settings.profile.modal.name.title")}</Modal.Title>
 
             <Modal.Content errorBoundary={{ error, setError }}>
