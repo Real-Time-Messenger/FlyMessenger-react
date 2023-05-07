@@ -10,16 +10,16 @@ Real-time messenger using client/server technology.
 
 <!-- TOC -->
 
-* [Getting Started](#getting-started)
-    * [Prerequisites](#prerequisites)
-    * [Installing](#installing)
-    * [Testing](#testing)
-    * [Building](#building)
-    * [Linting](#linting)
-    * [Format with Prettier](#format-with-prettier)
-* [Technologies](#technologies)
-* [Authors](#authors)
-* [License](#license)
+-   [Getting Started](#getting-started)
+    -   [Prerequisites](#prerequisites)
+    -   [Installing](#installing)
+    -   [Testing](#testing)
+    -   [Building](#building)
+    -   [Linting](#linting)
+    -   [Format with Prettier](#format-with-prettier)
+-   [Technologies](#technologies)
+-   [Authors](#authors)
+-   [License](#license)
 
 <!-- TOC -->
 
@@ -65,17 +65,13 @@ npm run dev
 
 The application will now be running on `http://localhost:5173`.
 
-[//]: # (### Testing)
-
-[//]: # ()
-[//]: # (To run the tests, run:)
-
-[//]: # ()
-[//]: # (```bash)
-
-[//]: # (npm run test)
-
-[//]: # (```)
+[//]: # "### Testing"
+[//]: #
+[//]: # "To run the tests, run:"
+[//]: #
+[//]: # "```bash"
+[//]: # "npm run test"
+[//]: # "```"
 
 ### Building
 
@@ -103,24 +99,24 @@ npm run format
 
 ## Technologies
 
-- **[React](https://reactjs.org/)**: A JavaScript library for building user interfaces.
-- **[TypeScript](https://www.typescriptlang.org/)**: TypeScript is a typed superset of JavaScript that compiles to plain
-  JavaScript.
-- **[ESLint](https://eslint.org/)**: ESLint is a tool for identifying and reporting on patterns found in ECMAScript/JavaScript
-  code.
-- **[Prettier](https://prettier.io/)**: Prettier is an opinionated code formatter.
-- **[Tailwind CSS](https://tailwindcss.com/)**: A utility-first CSS framework for rapidly building custom designs.
-- **[Redux Toolkit](https://redux-toolkit.js.org/)**: The official, opinionated, batteries-included toolset for efficient Redux
-  development.
-- **[ky](https://github.com/sindresorhus/ky)**: Tiny and elegant HTTP client based on the browser Fetch API.
-- **[react-i18next](https://react.i18next.com/)**: Internationalization for React done right.
-- **[framer-motion](https://www.framer.com/motion/)**: A production-ready motion library for React.
-- **[vite](https://vitejs.dev/)**: Next generation frontend tooling. It's fast!.
+-   **[React](https://reactjs.org/)**: A JavaScript library for building user interfaces.
+-   **[TypeScript](https://www.typescriptlang.org/)**: TypeScript is a typed superset of JavaScript that compiles to plain
+    JavaScript.
+-   **[ESLint](https://eslint.org/)**: ESLint is a tool for identifying and reporting on patterns found in ECMAScript/JavaScript
+    code.
+-   **[Prettier](https://prettier.io/)**: Prettier is an opinionated code formatter.
+-   **[Tailwind CSS](https://tailwindcss.com/)**: A utility-first CSS framework for rapidly building custom designs.
+-   **[Redux Toolkit](https://redux-toolkit.js.org/)**: The official, opinionated, batteries-included toolset for efficient Redux
+    development.
+-   **[ky](https://github.com/sindresorhus/ky)**: Tiny and elegant HTTP client based on the browser Fetch API.
+-   **[react-i18next](https://react.i18next.com/)**: Internationalization for React done right.
+-   **[framer-motion](https://www.framer.com/motion/)**: A production-ready motion library for React.
+-   **[vite](https://vitejs.dev/)**: Next generation frontend tooling. It's fast!.
 
 ## Authors
 
-- **[Kirill Goritski](https://t.me/winicred)**
-- **[Vladislav Hodzajev](https://t.me/white_wolf_dd)**
+-   **[Kirill Goritski](https://t.me/winicred)**
+-   **[Vladislav Hodzajev](https://t.me/white_wolf_dd)**
 
 ## License
 

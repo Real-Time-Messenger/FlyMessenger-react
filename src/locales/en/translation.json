@@ -151,7 +151,12 @@
             "error": "An error occurred while fetching the sessions. Please try again later.",
             "count": "{{count}} sessions",
             "current": "Current session",
-            "deleteAll": "Delete all sessions",
+            "deleteAll": {
+                "title": "Delete all sessions",
+                "modal": {
+                    "question": "Are you sure you want to delete all sessions?"
+                }
+            },
             "delete": {
                 "title": "Delete this session?"
             }

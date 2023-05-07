@@ -6,9 +6,9 @@ import { HamburgerMenuIcon } from "@/components/icons";
 import { SearchInput } from "@/components/ui/messenger/SearchInput";
 import { Loader } from "@/components/ui/messenger/Loader";
 import { SearchResultList } from "@/components/search/SearchResultList";
-import {DialogItem, PositionProps} from "@/components/ui/messenger/dialog/DialogItem";
-import {FC, useState} from "react";
-import {MobileSidebarContent} from "@/components/partials/messenger/sidebar/SidebarContent";
+import { DialogItem, PositionProps } from "@/components/ui/messenger/dialog/DialogItem";
+import { FC, useState } from "react";
+import { MobileSidebarContent } from "@/components/partials/messenger/sidebar/SidebarContent";
 
 /**
  * Props for the {@link SidebarMenuList}.
@@ -75,13 +75,11 @@ export const SidebarMenuList: FC<SidebarMenuListProps> = ({ label, data, status 
                     </div>
                 ) : (
                     <>
-                        {isSearching && (
+                        {isSearching || typeof searchableUser !== "undefined" ? (
                             <div className="scroll-y-overlay row-span-1 h-full transition-colors">
                                 <SearchResultList data={searchResults} />
                             </div>
-                        )}
-
-                        {!isSearching && (
+                        ) : (
                             <>
                                 {data.length === 0 && (
                                     <div className="flex flex-col items-center justify-center px-2 text-center">

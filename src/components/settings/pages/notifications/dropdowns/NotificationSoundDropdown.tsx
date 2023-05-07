@@ -44,6 +44,7 @@ export const NotificationSoundDropdown: FC<ModalProps> = ({ isOpened, onClose })
             <Dropdown.SwitchItem
                 Icon={ConversationIcon}
                 checked={conversationsSoundEnabled}
+                disabled
                 label={t("settings.notifications.conversations")}
                 onClick={() =>
                     handleChange({
@@ -54,6 +55,7 @@ export const NotificationSoundDropdown: FC<ModalProps> = ({ isOpened, onClose })
             <Dropdown.SwitchItem
                 Icon={GlobeIcon}
                 checked={groupsSoundEnabled}
+                disabled
                 label={t("settings.notifications.groups")}
                 onClick={() =>
                     handleChange({

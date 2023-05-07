@@ -19,7 +19,7 @@ export const SearchInput = () => {
 
     const { t } = useTranslation();
 
-    const actions = useActionCreators(searchActions);
+    const searchStore = useActionCreators(searchActions);
     const dispatch = useAppDispatch();
 
     const inputRef = useRef<HTMLInputElement>(null);
@@ -57,9 +57,9 @@ export const SearchInput = () => {
      * Clear the search input.
      */
     const clearSearch = (): void => {
-        actions.reset();
-
         setValue("");
+
+        searchStore.reset();
         inputRef.current?.focus();
     };
 
@@ -68,10 +68,13 @@ export const SearchInput = () => {
     }, [debouncedValue, handleDebouncedValue, isUserSelected]);
 
     useEffect(() => {
-        if (isSearching) return;
+        if (isSearching || isUserSelected) {
+            inputRef.current?.focus();
+            return;
+        }
 
         setValue("");
-    }, [isSearching])
+    }, [isSearching, isUserSelected]);
 
     return (
         <div className="relative w-full">

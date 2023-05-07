@@ -56,14 +56,19 @@ const scrollToFirstUnreadMessage = (
     // We need to get `id` of this message to scroll to it.
     const firstUnreadMessage = messages.find((message) => !message.isRead && message.sender.id !== userId);
     if (!firstUnreadMessage) {
-        ref.current.scrollTop = ref.current.scrollHeight;
+        // ref.current.scrollTop = ref.current.scrollHeight;
+        ref.current.scrollTo({ top: ref.current.scrollHeight });
         return;
     }
-
     // Our message items have `id` attribute.
     // This attribute is needed to scroll get the message in DOM.
+
     const messageElement = ref.current.querySelector<HTMLDivElement>(`[id="${firstUnreadMessage.id}"]`);
-    if (!messageElement) return;
+    if (!messageElement) {
+        // ref.current.scrollTop = ref.current.scrollHeight;
+        ref.current.scrollTo({ top: ref.current.scrollHeight });
+        return;
+    }
 
     messageElement.scrollIntoView({ block: "start", inline: "center" });
 
@@ -130,7 +135,8 @@ export const MessagesList = () => {
     const dialogs = useStateSelector((state) => state.dialogs.dialogs);
     const activeDialogId = useStateSelector((state) => state.dialogs.activeDialog?.id);
     const activeDialog = dialogs.find((dialog) => dialog.id === activeDialogId);
-    const { messages } = activeDialog as IDialog;
+
+    const messages = useStateSelector((state) => state.dialogs.activeDialog?.messages) as IDialogMessage[];
 
     const observedMessageId = useStateSelector((state) => state.search.selectedMessageId);
     const userId = useStateSelector((state) => state.user.current.id);
@@ -287,6 +293,12 @@ export const MessagesList = () => {
 
         setHasMore(messages.length >= 100);
     }, [messages.length, activeDialog]);
+
+    useEffect(() => {
+        if (!isFetching && activeDialog && scrollRef.current && scrollRef.current.scrollTop > -200) {
+            handleScrollToBottom();
+        }
+    }, [isFetching, activeDialog, handleScrollToBottom]);
 
     if (sortedMessagesArray.length === 0) {
         return (

@@ -78,7 +78,7 @@ interface WebSocketContextValue {
     connect: () => void;
     disconnect: () => void;
     isSocketConnected: () => boolean;
-    sendMessage: (dialogId: string, message: SocketMessage) => void;
+    sendMessage: (dialogId: string, recipientId: string, message: SocketMessage) => void;
     readMessage: (dialogId: string, messageId: string) => void;
     typing: (dialogId: string, status: boolean) => void;
     toggleOnlineStatus: (status: boolean) => void;
@@ -116,6 +116,8 @@ export const WebSocketProvider: FC<ChildrenProps> = ({ children }) => {
     const socketRef = useRef<WebSocket | null>(null);
 
     const currentUser = useStateSelector((state) => state.user.current);
+
+    const dialogs = useStateSelector((state) => state.dialogs.dialogs);
 
     const sidebarStore = useActionCreators(sidebarActions);
     const settingsStore = useActionCreators(settingsActions);
@@ -160,10 +162,11 @@ export const WebSocketProvider: FC<ChildrenProps> = ({ children }) => {
      * @param {dialogId} dialogId - Dialog ID.
      * @param {SocketMessage} [message] - Message to send.
      */
-    const sendMessage = (dialogId: string, message: SocketMessage): void => {
+    const sendMessage = (dialogId: string, recipientId: string, message: SocketMessage): void => {
         send({
             type: WebSocketEventType.SEND_MESSAGE,
             dialogId,
+            recipientId,
             ...message,
         });
     };
@@ -196,19 +199,7 @@ export const WebSocketProvider: FC<ChildrenProps> = ({ children }) => {
     };
 
     /**
-     * Send online status through WebSocket.
-     *
-     * @param {status} status - Online status.
-     */
-    const toggleOnlineStatus = useCallback((status: boolean): void => {
-        send({
-            type: WebSocketEventType.TOGGLE_ONLINE_STATUS,
-            status,
-        });
-    }, []);
-
-    /**
-     * Send a destroy session message through WebSocket.
+     * Send a destroyed session message through WebSocket.
      *
      * @param {sessionId} sessionId - Session ID.
      */
@@ -229,6 +220,18 @@ export const WebSocketProvider: FC<ChildrenProps> = ({ children }) => {
     };
 
     /**
+     * Send online status through WebSocket.
+     *
+     * @param {status} status - Online status.
+     */
+    const toggleOnlineStatus = useCallback((status: boolean): void => {
+        send({
+            type: WebSocketEventType.TOGGLE_ONLINE_STATUS,
+            status,
+        });
+    }, []);
+
+    /**
      * Handle WebSocket message.
      */
     const handleSocketMessage = useCallback(
@@ -243,7 +246,6 @@ export const WebSocketProvider: FC<ChildrenProps> = ({ children }) => {
                     });
 
                     if (currentUser.id === data.message.sender.id) break;
-
                     userStore.notify({
                         message: data.message,
                         dialogData: data.dialogData,
@@ -291,8 +293,6 @@ export const WebSocketProvider: FC<ChildrenProps> = ({ children }) => {
                 case WebSocketResponseType.DELETE_USER:
                     logout();
                     break;
-                default:
-                    break;
             }
         },
         [currentUser.id, dialogStore, logout, t, userStore],
@@ -325,7 +325,7 @@ export const WebSocketProvider: FC<ChildrenProps> = ({ children }) => {
                 if (window.location.pathname !== "/m") return;
 
                 connect();
-            }
+            };
 
             socketRef.current.onmessage = (event) => {
                 handleSocketMessage(event.data);

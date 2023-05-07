@@ -5,7 +5,7 @@ import { useKeyPress } from "@/hooks";
 import { Modal } from "@/components/ui/messenger/Modal";
 
 /**
- * Props for the {@link SessionDeleteModal} component.
+ * Props for the {@link DeleteAllSessionModal} component.
  *
  * @interface SessionDeleteModalProps
  *
@@ -18,21 +18,19 @@ interface SessionDeleteModalProps extends ModalProps {
 }
 
 /**
- * Modal component for deleting a session.
+ * Modal component for deleting a multiple sessions.
  *
  * @author Winicred (Kirill Goritski)
  *
  * @since 0.9.0
  * @version 0.9.0
  */
-export const SessionDeleteModal: FC<SessionDeleteModalProps> = ({ isOpened, onClose, onConfirm }) => {
+export const DeleteAllSessionModal: FC<SessionDeleteModalProps> = ({ isOpened, onClose, onConfirm }) => {
     const { t } = useTranslation();
-
-    useKeyPress("Escape", onClose);
 
     return (
         <Modal isOpened={isOpened} onClose={onClose} zIndex={3}>
-            <Modal.Title>{t("settings.sessions.delete.title")}</Modal.Title>
+            <Modal.Title>{t("settings.sessions.deleteAll.modal.question")}</Modal.Title>
             <Modal.Footer>
                 <Modal.Button
                     label={t("button.cancel")}

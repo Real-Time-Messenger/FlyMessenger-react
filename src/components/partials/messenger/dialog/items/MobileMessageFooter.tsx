@@ -1,9 +1,9 @@
-import {ArrowUpIcon} from "@/components/icons";
-import {useEffect, useState} from "react";
-import {useActionCreators, useStateSelector} from "@/stores/hooks";
-import {searchActions} from "@/stores/slices/search/search";
-import {useTranslation} from "react-i18next";
-import {loginUser} from "@/stores/slices/user/user";
+import { ArrowUpIcon } from "@/components/icons";
+import { useEffect, useState } from "react";
+import { useActionCreators, useStateSelector } from "@/stores/hooks";
+import { searchActions } from "@/stores/slices/search/search";
+import { useTranslation } from "react-i18next";
+import { loginUser } from "@/stores/slices/user/user";
 
 /**
  * The footer of the message window.
@@ -17,7 +17,7 @@ import {loginUser} from "@/stores/slices/user/user";
  * @version 0.9.0
  */
 export const MobileMessageFooter = () => {
-    const {t} = useTranslation();
+    const { t } = useTranslation();
 
     const [currentMessageIndex, setCurrentMessageIndex] = useState<number>(1);
 
@@ -40,28 +40,26 @@ export const MobileMessageFooter = () => {
             if (currentMessageIndex === 1) return;
             setCurrentMessageIndex(currentMessageIndex - 1);
         }
-    }
+    };
 
     useEffect(() => {
         if (!isSearching || searchableMessages.length === 0) return;
-        
+
         const message = searchableMessages[currentMessageIndex - 1].lastMessage;
         if (!message) return;
-        
+
         searchStore.setSearchableMessageId(message.id);
-    }, [currentMessageIndex, isSearching, searchStore, searchableMessages])
-    
+    }, [currentMessageIndex, isSearching, searchStore, searchableMessages]);
+
     useEffect(() => {
         setCurrentMessageIndex(1);
-    }, [searchableMessages])
+    }, [searchableMessages]);
 
     return (
-        <div
-            className="flex justify-between items-center border-t border-t-[#CFD0D4] transition-colors dark:border-t-[#52525240] dark:bg-[#151F38] py-2 px-4 lg:hidden">
-
+        <div className="flex items-center justify-between border-t border-t-[#CFD0D4] py-2 px-4 transition-colors dark:border-t-[#52525240] dark:bg-[#151F38] lg:hidden">
             {isSearching && searchableMessages.length > 0 && (
                 <span className="text-sm text-[#888888] transition-colors dark:text-[#7B7B7B]">
-                    {t("search.value", {value: currentMessageIndex, total: searchableMessages.length})}
+                    {t("search.value", { value: currentMessageIndex, total: searchableMessages.length })}
                 </span>
             )}
 
@@ -71,21 +69,23 @@ export const MobileMessageFooter = () => {
                 </span>
             )}
 
-            <div className="flex gap-3 ml-auto">
+            <div className="ml-auto flex gap-3">
                 <button
-                    className="p-1 active:bg-[#C1C1C165] dark:active:bg-[#2F384E65] rounded-full disabled:opacity-50 disabled:pointer-events-none"
+                    className="rounded-full p-1 active:bg-[#C1C1C165] disabled:pointer-events-none disabled:opacity-50 dark:active:bg-[#2F384E65]"
                     disabled={searchableMessages.length === 0 || currentMessageIndex === searchableMessages.length}
-                    onClick={() => handleSearch("next")}>
-                    <ArrowUpIcon className="w-6 h-6"/>
+                    onClick={() => handleSearch("next")}
+                >
+                    <ArrowUpIcon className="h-6 w-6" />
                 </button>
 
                 <button
-                    className="p-1 active:bg-[#C1C1C165] dark:active:bg-[#2F384E65] rounded-full disabled:opacity-50 disabled:pointer-events-none"
+                    className="rounded-full p-1 active:bg-[#C1C1C165] disabled:pointer-events-none disabled:opacity-50 dark:active:bg-[#2F384E65]"
                     disabled={searchableMessages.length === 0 || currentMessageIndex === 1}
-                    onClick={() => handleSearch("prev")}>
-                    <ArrowUpIcon className="w-6 h-6 rotate-180"/>
+                    onClick={() => handleSearch("prev")}
+                >
+                    <ArrowUpIcon className="h-6 w-6 rotate-180" />
                 </button>
             </div>
         </div>
-    )
-}
+    );
+};

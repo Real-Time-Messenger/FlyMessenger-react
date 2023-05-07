@@ -4,7 +4,7 @@ import { useActionCreators } from "@/stores/hooks";
 import { userActions } from "@/stores/slices/user/user";
 import { useWebSocket } from "@/hoc/WebSocketProvider";
 import { CloseIcon, GlobeIcon, MonitorIcon } from "@/components/icons";
-import { SessionDeleteModal } from "@/components/settings/pages/sessions/modals/SessionDeleteModal";
+import { DeleteSessionModal } from "@/components/settings/pages/sessions/modals/DeleteSessionModal";
 import { parseDateToTime } from "@/helpers/helpers";
 
 /**
@@ -65,8 +65,8 @@ export const SessionItem: FC<SessionItemProps> = ({ id, location, label, type, c
 
     return (
         <>
-            <SessionDeleteModal
-                onConfirm={() => destroySessionHandler()}
+            <DeleteSessionModal
+                onConfirm={destroySessionHandler}
                 isOpened={isDeleteModalOpened}
                 onClose={() => setIsDeleteModalOpened(false)}
             />

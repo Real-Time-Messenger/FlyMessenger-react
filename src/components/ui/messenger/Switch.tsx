@@ -23,15 +23,21 @@ export const switchToggle = {
  * @since 0.9.0
  * @version 0.9.0
  */
-export const Switch: FC<SwitchProps> = ({ checked, onChange, className }: SwitchProps) => {
+export const Switch: FC<SwitchProps> = ({ checked, onChange, className, disabled = false }) => {
+    const handleChange = (): void => {
+        if (disabled) return;
+        onChange(!checked);
+    };
+
     return (
         <div
             className={classNames(
-                "relative h-4 w-8 cursor-pointer rounded-full transition-colors",
+                "relative h-4 w-8 rounded-full transition-colors",
                 checked ? "bg-[#45CA24] dark:bg-[#9DEA8A]" : "bg-[#E86C6C] dark:bg-[#E86C6C]",
+                !disabled && "cursor-pointer",
                 className,
             )}
-            onClick={() => onChange(!checked)}
+            onClick={handleChange}
         >
             <motion.div
                 variants={switchToggle}

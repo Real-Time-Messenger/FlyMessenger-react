@@ -4,7 +4,7 @@ import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { AnyObject } from "@/interfaces/AnyObject";
 import { ISettings } from "@/entities/user/ISettings";
 import { IBlockResponse } from "@/interfaces/response";
-import {handleKyException, sendNotification} from "@/helpers/helpers";
+import { handleKyException, sendNotification } from "@/helpers/helpers";
 import { UserKeys } from "@/entities/user/IUser";
 
 export type LoginEventTypes = "ACTIVATION_REQUIRED" | "TWO_FACTOR" | "NEW_DEVICE";

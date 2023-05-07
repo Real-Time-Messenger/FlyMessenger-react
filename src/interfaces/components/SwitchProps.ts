@@ -13,4 +13,5 @@ import { ClassNameProps } from "../ClassNameProps";
 export interface SwitchProps extends ClassNameProps {
     checked: boolean;
     onChange: (checked?: boolean) => void;
+    disabled?: boolean;
 }

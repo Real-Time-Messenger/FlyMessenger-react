@@ -14,7 +14,7 @@ import { ReadStatusIcon } from "@/components/ui/messenger/dialog/DialogItem";
  * @extends {IDialog}
  *
  * @property {(id: string) => void} onClick - The function to toggle the message.
- * @property {string} activeId - The id of the active message.
+ * @property {string} activeId - ID of the active message.
  */
 interface DialogItemPropsInSearch extends IDialog {
     onClick: (id: string) => void;
@@ -29,7 +29,7 @@ interface DialogItemPropsInSearch extends IDialog {
  * @since 0.9.0
  * @version 0.9.0
  */
-export const MessageInSearchItem: FC<DialogItemPropsInSearch> = ({ onClick, lastMessage, user, activeId }) => {
+export const MessageInSearchItem: FC<DialogItemPropsInSearch> = ({ lastMessage, user, activeId, onClick }) => {
     const { t } = useTranslation();
 
     const isActive = lastMessage?.id === activeId;

@@ -1,6 +1,6 @@
 import { DeleteAccountModal } from "./account/DeleteAccountModal";
 import { ChangeDisplayNameModal } from "./profile/modals/ChangeDisplayNameModal";
 import { ChangeEmailModal } from "./profile/modals/ChangeEmailModal";
-import { SessionDeleteModal } from "./sessions/modals/SessionDeleteModal";
+import { DeleteSessionModal } from "./sessions/modals/DeleteSessionModal";
 
-export { DeleteAccountModal, ChangeDisplayNameModal, ChangeEmailModal, SessionDeleteModal };
+export { DeleteAccountModal, ChangeDisplayNameModal, ChangeEmailModal, DeleteSessionModal };

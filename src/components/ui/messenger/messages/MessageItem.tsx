@@ -3,7 +3,7 @@ import { FC, useEffect, useState } from "react";
 import { useStateSelector } from "@/stores/hooks";
 import { useWebSocket } from "@/hoc/WebSocketProvider";
 import { useInView } from "react-intersection-observer";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence } from "framer-motion";
 import { ImageGallery } from "@/components/ui/messenger/ImageGallery";
 import classNames from "classnames";
 import { Avatar } from "@/components/ui/messenger/Avatar";
@@ -23,21 +23,6 @@ interface MessageItemProps extends IDialogMessage {
     showAvatar: boolean;
     className?: string;
 }
-
-/**
- * The variants for the message spawn animation.
- */
-const messageSpawn = {
-    hidden: {
-        y: 20,
-    },
-    visible: {
-        y: 0,
-        transition: {
-            duration: 0.2,
-        },
-    },
-};
 
 /**
  * Renders a single message in the {@link MessagesList} component.
@@ -117,11 +102,7 @@ export const MessageItem: FC<MessageItemProps> = ({
                 )}
             </AnimatePresence>
 
-            <motion.div
-                variants={messageSpawn}
-                initial="hidden"
-                animate="visible"
-                exit="hidden"
+            <div
                 className={classNames(
                     "message-item relative flex px-2 py-1 transition-colors",
                     isObserved && "bg-[#98BDE750] dark:bg-[#416D9C50]",
@@ -138,7 +119,11 @@ export const MessageItem: FC<MessageItemProps> = ({
                     )}
                 >
                     {showAvatar && (
-                        <Avatar src={sender.photoURL} alt="image" className="h-[40px] w-[40px] rounded-full hidden md:flex" />
+                        <Avatar
+                            src={sender.photoURL}
+                            alt="image"
+                            className="hidden h-[40px] w-[40px] rounded-full md:flex"
+                        />
                     )}
                 </div>
 
@@ -172,7 +157,7 @@ export const MessageItem: FC<MessageItemProps> = ({
                         <span className="text-[#696969] dark:text-[#9E9E9E]">{parseMessageTime(sentAt)}</span>
                     </div>
                 </div>
-            </motion.div>
+            </div>
         </>
     );
 };

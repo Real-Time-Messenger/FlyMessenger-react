@@ -79,7 +79,10 @@ export const LoginPage = () => {
         dispatch(loginUser(authData))
             .unwrap()
             .then((response) => handleSuccessLogin(response as IAuthResponse))
-            .catch((error) => setError(error))
+            .catch((error) => {
+                // alert(error.message);
+                setError(error);
+            })
             .finally(() => setIsSubmitting(false));
     };
 

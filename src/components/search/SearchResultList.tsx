@@ -1,16 +1,17 @@
 import { ISearchResult } from "@/interfaces/response";
 import { FC, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useActionCreators, useAppDispatch, useStateSelector } from "@/stores/hooks";
+import { useActionCreators, useStateSelector } from "@/stores/hooks";
 import { searchActions } from "@/stores/slices/search/search";
-import { createDialog, dialogActions } from "@/stores/slices/dialogs/dialogs";
+import { dialogActions } from "@/stores/slices/dialogs/dialogs";
 import { Avatar } from "@/components/ui/messenger/Avatar";
 import { concatenate } from "@/helpers/helpers";
 import { CloseIcon } from "@/components/icons";
 import { DialogItem } from "@/components/ui/messenger/dialog/DialogItem";
 import { UserInSearchItem } from "@/components/search/items/UserInSearchItem";
 import { MessageInSearchItem } from "@/components/search/items/MessageInSearchItem";
-import {sidebarActions} from "@/stores/slices/ui/sidebar/sidebar";
+import { sidebarActions } from "@/stores/slices/ui/sidebar/sidebar";
+import { IDialog } from "@/entities";
 
 /**
  * Props for the {@link SearchResultList} component.
@@ -39,7 +40,8 @@ interface SearchResultItemProps {
     data: ISearchResult["dialogs"] | ISearchResult["messages"] | ISearchResult["users"];
     label: string;
     emptyLabel: string;
-    onClick?: (id: string) => void;
+    onClick?: (dialog: IDialog) => void;
+    onMessageClick?: (id: string) => void;
     Component: FC<any>;
     activeId?: string;
 }
@@ -52,8 +54,17 @@ interface SearchResultItemProps {
  * @since 0.9.0
  * @version 0.9.0
  */
-const SearchItems: FC<SearchResultItemProps> = ({ data, label, emptyLabel, onClick, Component, activeId }) => {
+const SearchItems: FC<SearchResultItemProps> = ({
+    data,
+    label,
+    emptyLabel,
+    onClick,
+    onMessageClick,
+    Component,
+    activeId,
+}) => {
     const { t } = useTranslation();
+    const onClickHandler = typeof onMessageClick === "undefined" ? onClick : onMessageClick;
 
     if (typeof data === "undefined") return null;
 
@@ -69,7 +80,7 @@ const SearchItems: FC<SearchResultItemProps> = ({ data, label, emptyLabel, onCli
         return (
             <div className="mt-3 flex flex-col gap-3 px-3 xl:px-5">
                 {data.map((dialog, index) => (
-                    <Component key={index} onClick={onClick} activeId={activeId} {...dialog} />
+                    <Component key={index} onClick={onClickHandler} activeId={activeId} {...dialog} />
                 ))}
             </div>
         );
@@ -107,8 +118,6 @@ export const SearchResultList: FC<SearchResultListProps> = ({ data }: SearchResu
     const searchStore = useActionCreators(searchActions);
     const dialogStore = useActionCreators(dialogActions);
 
-    const dispatch = useAppDispatch();
-
     /**
      * Clears the selected user instance.
      */
@@ -137,17 +146,18 @@ export const SearchResultList: FC<SearchResultListProps> = ({ data }: SearchResu
     /**
      * Creates a dialog with the specified user.
      *
-     * @param {string} userId - The user ID.
+     * @param {IDialog} dialog - The user ID.
      */
-    const createDialogQuery = async (userId: string): Promise<void> => {
-        const dialog = dialogs.find((dialog) => dialog.user.id === userId);
-        if (!dialog) {
-            dispatch(createDialog({ toUserId: userId }));
-            return;
+    const createDialogQuery = (dialog: IDialog): void => {
+        const isDialogExist = !!dialogs.find((dialogItem) => dialogItem.user.id === dialog.id);
+        if (isDialogExist) {
+            dialogStore.setActiveDialogByUserId({ userId: dialog.id });
+        } else {
+            dialogStore.setActiveDialogStrict(dialog);
         }
 
-        dialogStore.setActiveDialog({ id: dialog.id });
         searchStore.setSearchableMessageId(null);
+        sidebarStore.toggleMobileSidebar(false);
     };
 
     return (
@@ -195,7 +205,7 @@ export const SearchResultList: FC<SearchResultListProps> = ({ data }: SearchResu
                         label="search.users.title"
                         emptyLabel="search.users.empty"
                         Component={UserInSearchItem}
-                        onClick={(id) => createDialogQuery(id)}
+                        onClick={(user) => createDialogQuery(user)}
                     />
                 </>
             )}
@@ -205,7 +215,7 @@ export const SearchResultList: FC<SearchResultListProps> = ({ data }: SearchResu
                 data={data?.messages}
                 label="search.messages.title"
                 emptyLabel="search.messages.empty"
-                onClick={(id) => setObservedMessage(id)}
+                onMessageClick={(id) => setObservedMessage(id)}
                 activeId={activeId}
             />
         </div>

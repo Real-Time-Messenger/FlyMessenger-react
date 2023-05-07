@@ -88,6 +88,20 @@ const dialogSlice = createSlice({
 
             state.activeDialog = dialog;
         },
+        setActiveDialogByUserId(state, action: PayloadAction<{ userId: string } | null>) {
+            if (!action.payload) {
+                state.activeDialog = undefined;
+                return;
+            }
+
+            const dialog = state.dialogs.find((dialog) => dialog.user.id === action.payload?.userId);
+            if (!dialog) return;
+
+            state.activeDialog = dialog;
+        },
+        setActiveDialogStrict(state, action: PayloadAction<IDialog>) {
+            state.activeDialog = action.payload;
+        },
         addMessage(state, action: PayloadAction<{ message: IDialogMessage; dialog: IDialog }>) {
             const { message, dialog: newDialog } = action.payload;
 
@@ -109,9 +123,13 @@ const dialogSlice = createSlice({
                 dialog.unreadMessages++;
             }
 
-            if (state.activeDialog?.id === dialog.id) {
-                state.activeDialog.messages.push(message);
+            if (state.activeDialog?.user.id === dialog.user.id) {
+                state.activeDialog = dialog;
             }
+
+            // if (state.activeDialog?.id === dialog.id) {
+            //     state.activeDialog.messages.push(message);
+            // }
         },
         reset(state) {
             state.activeDialog = undefined;
@@ -175,7 +193,9 @@ const dialogSlice = createSlice({
             state.status = "error";
         });
         builder.addCase(getMessages.fulfilled, (state, action: PayloadAction<IDialogMessage[]>) => {
-            state.activeDialog?.messages.unshift(...action.payload);
+            if (!state.activeDialog) return;
+
+            state.activeDialog.messages.unshift(...action.payload);
         });
         builder.addCase(createDialog.fulfilled, (state, action: PayloadAction<IDialog>) => {
             state.dialogs.push(action.payload);

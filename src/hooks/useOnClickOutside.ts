@@ -14,7 +14,7 @@ export const useOnClickOutside = <T extends HTMLElement = HTMLElement>(
     ref: RefObject<T>,
     handler: (event: MouseEvent | TouchEvent) => void,
     mouseEvent: "mousedown" | "mouseup" = "mouseup",
-    touchEvent: "touchstart" | "touchend" = "touchend"
+    touchEvent: "touchstart" | "touchend" = "touchend",
 ): void => {
     useEventListener(mouseEvent, (event) => {
         const el = ref?.current;

@@ -88,12 +88,14 @@ export const searchSlice = createSlice({
             state.isSearching = true;
         });
         builder.addCase(sendSearch.fulfilled, (state, action: PayloadAction<ISearchResult>) => {
+            // state.isSearching = false;
             state.searchResults = action.payload;
         });
         builder.addCase(sendSearchByDialogId.pending, (state) => {
             state.isSearching = true;
         });
         builder.addCase(sendSearchByDialogId.fulfilled, (state, action: PayloadAction<ISearchResult>) => {
+            // state.isSearching = false;
             state.searchResults = action.payload;
         });
     },

@@ -43,6 +43,7 @@ export const NotificationDropdown: FC<ModalProps> = ({ isOpened, onClose }) => {
             <Dropdown.SwitchItem
                 Icon={ConversationIcon}
                 checked={settings.conversationsNotificationsEnabled}
+                disabled
                 label={t("settings.notifications.conversations")}
                 onClick={() =>
                     handleSubmit({
@@ -53,6 +54,7 @@ export const NotificationDropdown: FC<ModalProps> = ({ isOpened, onClose }) => {
             <Dropdown.SwitchItem
                 Icon={GlobeIcon}
                 checked={settings.groupsNotificationsEnabled}
+                disabled
                 label={t("settings.notifications.groups")}
                 onClick={() =>
                     handleSubmit({

@@ -64,8 +64,8 @@ export const SidebarNavigation: FC = () => {
                 className={classNames(
                     "flex h-full flex-col bg-[#FFFFFF] transition-all dark:border-r-[#52525240] dark:bg-[#151F38] md:border-r md:border-r-[#CFD0D4]",
                     {
-                        "w-screen sm:w-[390px] lg:w-[390px] lg:ml-[70px]": isMobileSidebarOpened,
-                        "w-0 md:w-0 lg:w-[390px] lg:ml-[70px]": !isMobileSidebarOpened,
+                        "w-screen sm:w-[390px] lg:ml-[70px] lg:w-[390px]": isMobileSidebarOpened,
+                        "w-0 md:w-0 lg:ml-[70px] lg:w-[390px]": !isMobileSidebarOpened,
                     },
                 )}
             >

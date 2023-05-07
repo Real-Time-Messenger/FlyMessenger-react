@@ -16,6 +16,7 @@ import { IDialogMessage } from "@/entities";
  */
 export interface IUserInDialog {
     id: string;
+    username: string;
     firstName: string;
     lastName: string;
     photoURL: string;

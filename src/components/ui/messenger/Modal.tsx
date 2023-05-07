@@ -30,7 +30,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
 import classNames from "classnames";
 import { Loader } from "@/components/ui/messenger/Loader";
-import {createPortal} from "react-dom";
+import { createPortal } from "react-dom";
 
 /**
  * Interface for the {@link Modal.Content} interface.
@@ -157,7 +157,7 @@ export const Modal = ({ isOpened, children, onClose, zIndex = 2 }: ModalProps & 
                 </ModalContext.Provider>
             </DarkenedLayout>
         ),
-        [isOpened, children, onClose]
+        [isOpened, children, onClose],
     );
 
     return createPortal(Component, document.body);
@@ -286,6 +286,8 @@ const Button: FC<ModalButtonProps> = ({ className, variant, label, onSubmit, ...
         onSubmit();
         setIsSubmitting(false);
     }, [onSubmit]);
+
+    useKeyPress("Enter", handleSubmit);
 
     /**
      * Handles the `onClick` event.

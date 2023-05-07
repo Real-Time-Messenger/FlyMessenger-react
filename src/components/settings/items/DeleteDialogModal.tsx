@@ -2,10 +2,10 @@ import { ModalProps } from "@/interfaces/components/ModalProps";
 import { useTranslation } from "react-i18next";
 import { Modal } from "@/components/ui/messenger/Modal";
 import { FC } from "react";
-import {useActionCreators, useAppDispatch, useStateSelector} from "@/stores/hooks";
-import {deleteDialog, dialogActions} from "@/stores/slices/dialogs/dialogs";
-import {sidebarActions} from "@/stores/slices/ui/sidebar/sidebar";
-import {searchActions} from "@/stores/slices/search/search";
+import { useActionCreators, useAppDispatch, useStateSelector } from "@/stores/hooks";
+import { deleteDialog, dialogActions } from "@/stores/slices/dialogs/dialogs";
+import { sidebarActions } from "@/stores/slices/ui/sidebar/sidebar";
+import { searchActions } from "@/stores/slices/search/search";
 
 /**
  * Props for the {@link DeleteDialogModal} component.
@@ -31,15 +31,15 @@ export const DeleteDialogModal: FC<DeleteDialogModalProps> = ({ id, isOpened, on
     const dispatch = useAppDispatch();
 
     const deleteDialogQuery = () => {
-        dispatch(deleteDialog({dialogId: id}))
+        dispatch(deleteDialog({ dialogId: id }))
             .unwrap()
             .then(() => {
                 if (activeDialog?.id === id) sidebarStore.toggleMobileSidebar(true);
 
-                dialogStore.deleteDialog({dialogId: id});
+                dialogStore.deleteDialog({ dialogId: id });
                 searchStore.reset();
             })
-            .finally(() => onClose())
+            .finally(() => onClose());
     };
 
     return (

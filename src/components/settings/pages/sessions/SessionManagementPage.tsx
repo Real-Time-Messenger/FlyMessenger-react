@@ -5,6 +5,7 @@ import { useWebSocket } from "@/hoc/WebSocketProvider";
 import { getUserSessions } from "@/stores/slices/user/user";
 import { Loader } from "@/components/ui/messenger/Loader";
 import { SessionItem } from "@/components/settings/items";
+import { DeleteAllSessionModal } from "@/components/settings/pages/sessions/modals/DeleteAllSessionsModal";
 
 /**
  * Page component for managing user sessions.
@@ -15,6 +16,8 @@ import { SessionItem } from "@/components/settings/items";
  * @version 0.9.0
  */
 export const SessionManagementPage: FC = () => {
+    const [isModalOpened, setModalOpened] = useState<boolean>(false);
+
     const { t } = useTranslation();
 
     const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -35,6 +38,8 @@ export const SessionManagementPage: FC = () => {
         for (const session of filteredSessions) {
             destroySession(session.id);
         }
+
+        setModalOpened(false);
     };
 
     /**
@@ -65,6 +70,12 @@ export const SessionManagementPage: FC = () => {
 
     return (
         <>
+            <DeleteAllSessionModal
+                onConfirm={deleteAllSessions}
+                isOpened={isModalOpened}
+                onClose={() => setModalOpened(false)}
+            />
+
             <div className="mt-2.5 flex w-full flex-col border-t-4 border-t-[#CFD0D4] p-2.5 dark:border-t-[#2F384E20]">
                 {currentSession && (
                     <div className="my-3 flex flex-col gap-2">
@@ -75,11 +86,11 @@ export const SessionManagementPage: FC = () => {
                 )}
 
                 <button
-                    onClick={deleteAllSessions}
+                    onClick={() => setModalOpened(true)}
                     className="min-w-[180px] select-none rounded bg-[#E86C6C]/70 py-2 text-center text-[#161616] transition-colors enabled:hover:bg-[#E86C6C] disabled:cursor-not-allowed disabled:opacity-50 dark:bg-[#E86C6C80] dark:text-[#FFFFFF] enabled:dark:hover:bg-[#E86C6C]/70"
                     disabled={filteredSessions.length === 0}
                 >
-                    {t("settings.sessions.deleteAll")}
+                    {t("settings.sessions.deleteAll.title")}
                 </button>
 
                 {filteredSessions.length > 0 ? (

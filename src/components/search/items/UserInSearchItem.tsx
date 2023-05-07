@@ -1,4 +1,4 @@
-import { IUser } from "@/entities";
+import { IDialog, IUser } from "@/entities";
 import { FC } from "react";
 import { useStateSelector } from "@/stores/hooks";
 import classNames from "classnames";
@@ -14,8 +14,8 @@ import { concatenate } from "@/helpers/helpers";
  *
  * @property {(id: string) => void} onClick - The function to toggle the user.
  */
-interface UserInSearchItemProps extends IUser {
-    onClick: (id: string) => void;
+interface UserInSearchItemProps extends IDialog {
+    onClick: (dialog: IDialog) => void;
 }
 
 /**
@@ -26,16 +26,9 @@ interface UserInSearchItemProps extends IUser {
  * @since 0.9.0
  * @version 0.9.0
  */
-export const UserInSearchItem: FC<UserInSearchItemProps> = ({
-    id,
-    photoURL,
-    username,
-    firstName,
-    lastName,
-    onClick,
-}) => {
+export const UserInSearchItem: FC<UserInSearchItemProps> = ({ id, user, onClick, ...dialogProps }) => {
     const activeDialog = useStateSelector((state) => state.dialogs.activeDialog);
-    const isActive = activeDialog && activeDialog.user.id === id;
+    const isActive = (activeDialog && (activeDialog.id === id || activeDialog.user.id === id)) || false;
 
     const classes = classNames(
         "w-full p-2 rounded-lg transition-colors cursor-pointer flex items-center gap-2.5 overflow-hidden select-none",
@@ -45,13 +38,17 @@ export const UserInSearchItem: FC<UserInSearchItemProps> = ({
     );
 
     return (
-        <div onClick={() => onClick(id)} className={classes}>
+        <div className={classes} onClick={() => onClick({ id, user, ...dialogProps })}>
             <div className="flex h-full min-h-[48px] w-min min-w-[48px] items-center justify-center">
-                <Avatar src={photoURL} alt={concatenate(firstName, lastName)} className="h-12 w-12 rounded-full" />
+                <Avatar
+                    src={user.photoURL}
+                    alt={concatenate(user.firstName, user.lastName)}
+                    className="h-12 w-12 rounded-full"
+                />
             </div>
 
             <div className="flex flex-1 flex-col gap-1 overflow-hidden transition-none">
-                <span className="truncate dark:text-[#FFFFFF]">{concatenate(firstName, lastName)}</span>
+                <span className="truncate dark:text-[#FFFFFF]">{concatenate(user.firstName, user.lastName)}</span>
 
                 <div className="flex">
                     <span
@@ -60,7 +57,7 @@ export const UserInSearchItem: FC<UserInSearchItemProps> = ({
                             isActive ? "text-[#303030] dark:text-[#FFFFFF]" : "text-[#4C4C4C] dark:text-[#AFAFAF]",
                         )}
                     >
-                        @{username}
+                        @{user.username}
                     </span>
                 </div>
             </div>

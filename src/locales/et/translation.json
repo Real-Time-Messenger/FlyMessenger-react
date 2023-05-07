@@ -151,7 +151,12 @@
             "error": "Seansi kuvamisel tekkis viga. Proovige hiljem uuesti.",
             "count": "{{count}} seansi",
             "current": "Praegune seanss",
-            "deleteAll": "Kustuta kõik seansid",
+            "deleteAll": {
+                "title": "Kustuta kõik seansid",
+                "modal": {
+                    "question": "Kas olete kindel, et soovite kõik seansid kustutada?"
+                }
+            },
             "delete": {
                 "title": "Lõpetada see seanss?"
             }

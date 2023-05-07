@@ -1,10 +1,10 @@
-import {useTranslation} from "react-i18next";
-import {useActionCreators, useStateSelector} from "@/stores/hooks";
-import {useWebSocket} from "@/hoc/WebSocketProvider";
-import {ChangeEvent, FC, KeyboardEvent, useCallback, useEffect, useRef, useState} from "react";
-import {parseBase64} from "@/helpers/helpers";
-import {ArrowUpIcon, ClipIcon, SendIcon} from "@/components/icons";
-import {searchActions} from "@/stores/slices/search/search";
+import { useTranslation } from "react-i18next";
+import { useActionCreators, useStateSelector } from "@/stores/hooks";
+import { useWebSocket } from "@/hoc/WebSocketProvider";
+import { ChangeEvent, FC, KeyboardEvent, useCallback, useEffect, useRef, useState } from "react";
+import { parseBase64 } from "@/helpers/helpers";
+import { ArrowUpIcon, ClipIcon, SendIcon } from "@/components/icons";
+import { searchActions } from "@/stores/slices/search/search";
 import classNames from "classnames";
 import { MobileMessageFooter } from "./items/MobileMessageFooter";
 
@@ -52,13 +52,13 @@ const splitMessage = (message: string): string[] => {
  * @version 0.9.0
  */
 export const MessageFooter: FC = () => {
-    const {t} = useTranslation();
+    const { t } = useTranslation();
     const dialogs = useStateSelector((state) => state.dialogs.dialogs);
     const activeDialog = useStateSelector((state) => state.dialogs.activeDialog);
 
     const currentDialog = dialogs.find((dialog) => dialog.id === activeDialog?.id);
 
-    const {sendMessage, typing} = useWebSocket();
+    const { sendMessage, typing } = useWebSocket();
 
     const textareaRef = useRef<HTMLTextAreaElement>(null);
     const fileRef = useRef<HTMLInputElement>(null);
@@ -147,7 +147,7 @@ export const MessageFooter: FC = () => {
                     data: parseBase64(reader.result as string),
                 };
 
-                sendMessage(activeDialog.id, {file: fileObject});
+                sendMessage(activeDialog.id, activeDialog.user.id, { file: fileObject });
             };
 
             reader.readAsDataURL(file);
@@ -177,7 +177,7 @@ export const MessageFooter: FC = () => {
         for (const chunk of chunks) {
             if (chunk.trim() === "") continue;
 
-            sendMessage(activeDialog.id, {text: chunk});
+            sendMessage(activeDialog.id, activeDialog.user.id, { text: chunk });
         }
 
         resetTextarea();
@@ -189,41 +189,43 @@ export const MessageFooter: FC = () => {
             {isMobileUserSearching && <MobileMessageFooter />}
 
             <div
-                className={classNames("relative w-full items-center justify-between border-t border-t-[#CFD0D4] transition-colors dark:border-t-[#52525240] dark:bg-[#151F38]", isMobileUserSearching ? "hidden lg:flex" : "flex")}>
+                className={classNames(
+                    "relative w-full items-center justify-between border-t border-t-[#CFD0D4] transition-colors dark:border-t-[#52525240] dark:bg-[#151F38]",
+                    isMobileUserSearching ? "hidden lg:flex" : "flex",
+                )}
+            >
                 <button
                     className="group relative flex h-full cursor-pointer items-end justify-center py-3"
                     onClick={openFileDialog}
                 >
-                    <ClipIcon
-                        className="mx-3 h-6 w-6 stroke-[1.5] text-[#888888] transition-colors group-hover:text-[#161616] dark:text-[#7B7B7B] dark:group-hover:text-[#F5F5F5]"/>
+                    <ClipIcon className="mx-3 h-6 w-6 stroke-[1.5] text-[#888888] transition-colors group-hover:text-[#161616] dark:text-[#7B7B7B] dark:group-hover:text-[#F5F5F5]" />
 
                     <input
                         ref={fileRef}
                         type="file"
                         className="hidden"
                         onChange={handleFileUpload}
-                        accept="image/png, image/jpeg, image/gif, video/mp4, video/webm, video/ogg"
+                        accept="image/png, image/jpeg"
                     />
                 </button>
 
                 <div className="flex h-full w-full cursor-text py-2" onClick={() => textareaRef.current?.focus()}>
-                <textarea
-                    className="no-scrollbar my-auto h-5 max-h-44 w-full cursor-text resize-none overflow-y-scroll whitespace-pre-wrap break-words bg-transparent text-sm placeholder-[#696969] outline-none"
-                    placeholder={t("messages.writeAMessage").toString()}
-                    ref={textareaRef}
-                    id="message-footer__textarea"
-                    spellCheck="true"
-                    onInput={handleTextareaEvent}
-                    onKeyDown={handleMessageSubmit}
-                />
+                    <textarea
+                        className="no-scrollbar my-auto h-5 max-h-44 w-full cursor-text resize-none overflow-y-scroll whitespace-pre-wrap break-words bg-transparent text-sm placeholder-[#696969] outline-none"
+                        placeholder={t("messages.writeAMessage").toString()}
+                        ref={textareaRef}
+                        id="message-footer__textarea"
+                        spellCheck="true"
+                        onInput={handleTextareaEvent}
+                        onKeyDown={handleMessageSubmit}
+                    />
                 </div>
 
                 <button
                     className="group flex h-full cursor-pointer items-end justify-center py-3"
                     onClick={sendMessageQuery}
                 >
-                    <SendIcon
-                        className="mx-3 h-6 w-6 stroke-[1.5] text-[#888888] transition-colors group-hover:text-[#161616] dark:text-[#7B7B7B] dark:group-hover:text-[#F5F5F5]"/>
+                    <SendIcon className="mx-3 h-6 w-6 stroke-[1.5] text-[#888888] transition-colors group-hover:text-[#161616] dark:text-[#7B7B7B] dark:group-hover:text-[#F5F5F5]" />
                 </button>
             </div>
         </>

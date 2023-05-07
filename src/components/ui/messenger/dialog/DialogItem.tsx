@@ -11,7 +11,7 @@ import { Avatar } from "@/components/ui/messenger/Avatar";
 import { concatenate, parseDateToTime } from "@/helpers/helpers";
 import { AnimatePresence, motion } from "framer-motion";
 import { dialogActions } from "@/stores/slices/dialogs/dialogs";
-import {sidebarActions} from "@/stores/slices/ui/sidebar/sidebar";
+import { sidebarActions } from "@/stores/slices/ui/sidebar/sidebar";
 
 /**
  * Interface of X, Y coordinates.
