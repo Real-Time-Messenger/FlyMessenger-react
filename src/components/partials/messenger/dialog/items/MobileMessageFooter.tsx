@@ -3,7 +3,6 @@ import { useEffect, useState } from "react";
 import { useActionCreators, useStateSelector } from "@/stores/hooks";
 import { searchActions } from "@/stores/slices/search/search";
 import { useTranslation } from "react-i18next";
-import { loginUser } from "@/stores/slices/user/user";
 
 /**
  * The footer of the message window.
@@ -26,10 +25,6 @@ export const MobileMessageFooter = () => {
 
     const searchStore = useActionCreators(searchActions);
 
-    /**
-     *
-     * @param direction
-     */
     const handleSearch = (direction: "next" | "prev") => {
         if (!isSearching || searchableMessages.length === 0) return;
 

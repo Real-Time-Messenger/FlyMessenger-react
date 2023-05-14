@@ -248,7 +248,7 @@ export const MessagesList = () => {
         if (unreadMessages.length === 0) return;
 
         unreadMessages.forEach((message) => {
-            readMessage(activeDialog.id, message.id);
+            readMessage(activeDialog.id, activeDialog.user.id, message.id);
         });
     }, [activeDialog, sortedMessagesArray, userId, readMessage]);
 

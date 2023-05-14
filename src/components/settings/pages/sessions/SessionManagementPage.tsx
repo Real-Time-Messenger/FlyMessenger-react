@@ -87,7 +87,7 @@ export const SessionManagementPage: FC = () => {
 
                 <button
                     onClick={() => setModalOpened(true)}
-                    className="min-w-[180px] select-none rounded bg-[#E86C6C]/70 py-2 text-center text-[#161616] transition-colors enabled:hover:bg-[#E86C6C] disabled:cursor-not-allowed disabled:opacity-50 dark:bg-[#E86C6C80] dark:text-[#FFFFFF] enabled:dark:hover:bg-[#E86C6C]/70"
+                    className="min-w-[180px] select-none rounded bg-[#E86C6C]/70 py-2 text-center text-[#161616] transition-colors enabled:hover:bg-[#E86C6C] disabled:cursor-not-allowed disabled:opacity-75 dark:bg-[#E86C6C80] dark:text-[#FFFFFF] enabled:dark:hover:bg-[#E86C6C]/70"
                     disabled={filteredSessions.length === 0}
                 >
                     {t("settings.sessions.deleteAll.title")}

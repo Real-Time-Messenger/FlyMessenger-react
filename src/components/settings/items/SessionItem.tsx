@@ -28,7 +28,15 @@ interface SessionItemProps extends ISession {
  * @since 0.9.0
  * @version 0.9.0
  */
-export const SessionItem: FC<SessionItemProps> = ({ id, location, label, type, createdAt, canDelete = true }) => {
+export const SessionItem: FC<SessionItemProps> = ({
+    id,
+    location,
+    label,
+    type,
+    ipAddress,
+    createdAt,
+    canDelete = true,
+}) => {
     const [isDeleteModalOpened, setIsDeleteModalOpened] = useState<boolean>(false);
 
     const userStore = useActionCreators(userActions);
@@ -76,7 +84,14 @@ export const SessionItem: FC<SessionItemProps> = ({ id, location, label, type, c
 
                 <div className="flex flex-1 flex-col justify-between gap-0.5">
                     <div className="flex items-center justify-between">
-                        <span className="capitalize">{type.toLowerCase()}</span>
+                        <div className="flex items-center gap-2">
+                            <span className="capitalize">{type.toLowerCase()}</span>
+                            {canDelete && (
+                                <span className="my-auto select-none text-xs text-[#888888] dark:text-[#E3E3FA70]">
+                                    {ipAddress}
+                                </span>
+                            )}
+                        </div>
 
                         {canDelete && (
                             <button

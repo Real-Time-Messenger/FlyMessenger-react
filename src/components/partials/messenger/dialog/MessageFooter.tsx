@@ -1,10 +1,9 @@
 import { useTranslation } from "react-i18next";
-import { useActionCreators, useStateSelector } from "@/stores/hooks";
+import { useStateSelector } from "@/stores/hooks";
 import { useWebSocket } from "@/hoc/WebSocketProvider";
-import { ChangeEvent, FC, KeyboardEvent, useCallback, useEffect, useRef, useState } from "react";
+import { ChangeEvent, FC, KeyboardEvent, useCallback, useRef } from "react";
 import { parseBase64 } from "@/helpers/helpers";
-import { ArrowUpIcon, ClipIcon, SendIcon } from "@/components/icons";
-import { searchActions } from "@/stores/slices/search/search";
+import { ClipIcon, SendIcon } from "@/components/icons";
 import classNames from "classnames";
 import { MobileMessageFooter } from "./items/MobileMessageFooter";
 
@@ -72,18 +71,19 @@ export const MessageFooter: FC = () => {
         (state: boolean): void => {
             if (!activeDialog?.id) return;
 
-            typing(activeDialog.id, state);
+            typing(activeDialog.id, activeDialog.user.id, state);
         },
-        [activeDialog?.id, typing],
+        [activeDialog?.id, activeDialog?.user.id, typing],
     );
 
     /**
      * A function that sends a message to the server whether the user is writing a message or not.
      */
-    const handleTyping = useCallback(
-        () => (textareaRef.current?.value.trim() !== "" ? typingQuery(true) : typingQuery(false)),
-        [typingQuery],
-    );
+    const handleTyping = useCallback(() => {
+        if (!textareaRef.current) return;
+
+        typingQuery(textareaRef.current.value.trim() !== "");
+    }, [typingQuery]);
 
     /**
      * Reset the textarea to the initial state.

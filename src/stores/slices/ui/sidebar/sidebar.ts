@@ -34,8 +34,8 @@ const sidebarSlice = createSlice({
     name: "sidebar",
     initialState,
     reducers: {
-        toggleSidebar(state, action: PayloadAction<{ state: boolean }>) {
-            state.isSidebarOpened = action.payload.state;
+        toggleSidebar(state, action: PayloadAction<boolean>) {
+            state.isSidebarOpened = action.payload;
         },
         toggleDarkMode(state, action: PayloadAction<{ state?: boolean }>) {
             state.isDarkMode = action.payload?.state ?? !state.isDarkMode;

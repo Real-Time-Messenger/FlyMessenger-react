@@ -49,7 +49,7 @@ export const Button: FC<AuthButtonProps> = ({ label, variant, isSubmitting = und
     return (
         <button
             className={classNames(
-                "min-w-[180px] select-none rounded py-2 text-center transition-colors disabled:cursor-not-allowed disabled:opacity-50",
+                "min-w-[180px] select-none rounded py-2 text-center transition disabled:cursor-not-allowed disabled:opacity-50",
                 itemCva({ variant }),
             )}
             disabled={isSubmitting}

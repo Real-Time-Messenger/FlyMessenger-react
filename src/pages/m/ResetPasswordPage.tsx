@@ -153,6 +153,12 @@ export function ResetPasswordPage() {
                         label={t("auth.reset-password.submit")}
                         variant="submit"
                         isSubmitting={isSubmitting}
+                        disabled={
+                            isSubmitting ||
+                            password.length < 8 ||
+                            passwordConfirm.length < 8 ||
+                            password !== passwordConfirm
+                        }
                     />
                 </AuthLayout.Buttons>
             </AuthLayout.Form>

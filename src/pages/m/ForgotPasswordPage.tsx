@@ -66,6 +66,7 @@ export function ForgotPasswordPage() {
                         placeholder={t("auth.forgot-password.email").toString()}
                         onChange={(e) => setEmail(e.target.value)}
                         errorBoundary={error as IResponseValidationError}
+                        disabled={success}
                     />
                 </AuthLayout.Body>
 
@@ -75,7 +76,6 @@ export function ForgotPasswordPage() {
 
                 <AuthLayout.Buttons>
                     <Button
-                        onClick={sendResetPasswordEmail}
                         type="submit"
                         label={t("auth.forgot-password.submit")}
                         variant="submit"

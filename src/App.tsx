@@ -3,7 +3,7 @@ import { useActionCreators, useStateSelector } from "@/stores/hooks";
 import { sidebarActions } from "@/stores/slices/ui/sidebar/sidebar";
 import { useEffect } from "react";
 import { RouterProvider } from "react-router-dom";
-import { router } from "@/lib/router";
+import { router } from "@/helpers/router";
 import { useDocumentTitle } from "@/hooks";
 
 /**

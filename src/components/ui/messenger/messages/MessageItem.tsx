@@ -69,10 +69,10 @@ export const MessageItem: FC<MessageItemProps> = ({
      * Mark Message as Read if it's in Viewport.
      */
     useEffect(() => {
-        if (!inView || isCurrentUser || isRead || !activeDialogId) return;
+        if (!inView || isCurrentUser || isRead || !activeDialogId || !activeDialog?.user.id) return;
 
-        readMessage(activeDialogId, id);
-    }, [activeDialogId, id, inView, isCurrentUser, isRead, readMessage]);
+        readMessage(activeDialogId, activeDialog.user.id, id);
+    }, [activeDialog?.user.id, activeDialogId, id, inView, isCurrentUser, isRead, readMessage]);
 
     /**
      * Message selection effect on `ObserverMessageId` change.

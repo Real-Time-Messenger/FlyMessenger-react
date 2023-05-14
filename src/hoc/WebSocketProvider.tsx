@@ -79,8 +79,8 @@ interface WebSocketContextValue {
     disconnect: () => void;
     isSocketConnected: () => boolean;
     sendMessage: (dialogId: string, recipientId: string, message: SocketMessage) => void;
-    readMessage: (dialogId: string, messageId: string) => void;
-    typing: (dialogId: string, status: boolean) => void;
+    readMessage: (dialogId: string, recipientId: string, messageId: string) => void;
+    typing: (dialogId: string, recipientId: string, status: boolean) => void;
     toggleOnlineStatus: (status: boolean) => void;
     destroySession: (sessionId: string) => void;
 }
@@ -116,8 +116,6 @@ export const WebSocketProvider: FC<ChildrenProps> = ({ children }) => {
     const socketRef = useRef<WebSocket | null>(null);
 
     const currentUser = useStateSelector((state) => state.user.current);
-
-    const dialogs = useStateSelector((state) => state.dialogs.dialogs);
 
     const sidebarStore = useActionCreators(sidebarActions);
     const settingsStore = useActionCreators(settingsActions);
@@ -159,8 +157,9 @@ export const WebSocketProvider: FC<ChildrenProps> = ({ children }) => {
     /**
      * Send a message through WebSocket.
      *
-     * @param {dialogId} dialogId - Dialog ID.
-     * @param {SocketMessage} [message] - Message to send.
+     * @param {string} dialogId - Dialog ID.
+     * @param {string} recipientId - Recipient ID.
+     * @param {SocketMessage} message - Message to send.
      */
     const sendMessage = (dialogId: string, recipientId: string, message: SocketMessage): void => {
         send({
@@ -174,24 +173,27 @@ export const WebSocketProvider: FC<ChildrenProps> = ({ children }) => {
     /**
      * Send read message signal through WebSocket.
      *
-     * @param {dialogId} dialogId - Dialog ID.
-     * @param {messageId} messageId - Message ID.
+     * @param {string} dialogId - Dialog ID.
+     * @param {string} recipientId - Recipient ID.
+     * @param {string} messageId - Message ID.
      */
-    const readMessage = (dialogId: string, messageId: string): void => {
+    const readMessage = (dialogId: string, recipientId: string, messageId: string): void => {
         send({
             type: WebSocketEventType.READ_MESSAGE,
             dialogId,
             messageId,
+            recipientId,
         });
     };
 
     /**
      * Send typing status through WebSocket.
      *
-     * @param {dialogId} dialogId - Dialog ID.
-     * @param {status} status - Typing status.
+     * @param {string} dialogId - Dialog ID.
+     * @param {string} recipientId - Recipient ID.
+     * @param {boolean} status - Typing status.
      */
-    const typing = (dialogId: string, status: boolean): void => {
+    const typing = (dialogId: string, recipientId: string, status: boolean): void => {
         send({
             type: status ? WebSocketEventType.TYPING : WebSocketEventType.UNTYPING,
             dialogId,
@@ -201,7 +203,7 @@ export const WebSocketProvider: FC<ChildrenProps> = ({ children }) => {
     /**
      * Send a destroyed session message through WebSocket.
      *
-     * @param {sessionId} sessionId - Session ID.
+     * @param {string} sessionId - Session ID.
      */
     const destroySession = (sessionId: string): void => {
         send({
@@ -237,6 +239,8 @@ export const WebSocketProvider: FC<ChildrenProps> = ({ children }) => {
     const handleSocketMessage = useCallback(
         (message: string): void => {
             const data = JSON.parse(message);
+
+            console.log(data);
 
             switch (data.type) {
                 case WebSocketResponseType.RECEIVE_MESSAGE:

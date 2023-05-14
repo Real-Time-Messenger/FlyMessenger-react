@@ -85,7 +85,7 @@ export const Input: FC<AuthInputProps> = ({ label, type, errorBoundary, classNam
                 <input
                     type={isPasswordHidden ? inputType : "text"}
                     className={classNames(
-                        "w-full border-b-2 bg-white py-2.5 text-[#161616] outline-none transition-colors placeholder:text-[#69696990] dark:bg-[#151F38] dark:text-[#E3E3FA] dark:placeholder:text-[#64698F]",
+                        "w-full border-b-2 bg-white py-2.5 text-[#161616] outline-none transition-colors placeholder:text-[#69696990] disabled:cursor-not-allowed disabled:opacity-75 dark:bg-[#151F38] dark:text-[#E3E3FA] dark:placeholder:text-[#64698F]",
                         errorBoundary && getErrorByField(errorBoundary, props.name || "")
                             ? "border-[#E86C6C75] focus:border-[#E86C6C]"
                             : "border-[#69696950] focus:border-[#3F3F3F]",

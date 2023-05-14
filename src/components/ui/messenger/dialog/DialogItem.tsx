@@ -102,7 +102,7 @@ export const DialogItem: FC<IDialog> = ({ id, user, lastMessage, isMeBlocked, ..
         dialogStore.setActiveDialog({ id });
         searchStore.setSearchableMessageId(null);
 
-        if (activeDialog?.id) typing(activeDialog.id, false);
+        if (activeDialog?.id) typing(activeDialog.id, activeDialog.user.id, false);
 
         const inputTextarea = document.getElementById("message-footer__textarea");
         if (inputTextarea) inputTextarea.focus();

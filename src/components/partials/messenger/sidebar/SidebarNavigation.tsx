@@ -43,7 +43,7 @@ export const SidebarNavigation: FC = () => {
     const isHovered = useHover(hoverRef);
 
     useEffect(() => {
-        sidebarStore.toggleSidebar({ state: isHovered });
+        sidebarStore.toggleSidebar(isHovered);
     }, [isHovered, sidebarStore]);
 
     return (

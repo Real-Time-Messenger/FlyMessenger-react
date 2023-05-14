@@ -60,8 +60,8 @@ export const MessageHeader: FC = () => {
 
     const dialogs = useStateSelector((state) => state.dialogs.dialogs);
     const activeDialog = useStateSelector((state) => state.dialogs.activeDialog);
-    // const user = dialogs.find((dialog) => dialog.id === activeDialog?.id)?.user;
-    const user = activeDialog?.user;
+    const user = dialogs.find((dialog) => dialog.id === activeDialog?.id)?.user;
+    // const user = activeDialog?.user;
 
     const searchRef = useRef<HTMLInputElement>(null);
 

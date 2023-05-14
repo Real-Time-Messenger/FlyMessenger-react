@@ -81,7 +81,7 @@ export const Dropdown = ({ isOpened, onClose, className, children }: DropdownPro
     const ref = useRef<HTMLDivElement>(null);
     const handler = onClose ?? (() => {});
 
-    // Close the Dropdown when clicking outside of it.
+    // Close the Dropdown when clicking outside it.
     useOnClickOutside<HTMLDivElement>(ref, handler);
 
     return (
@@ -112,8 +112,8 @@ const SwitchItem: FC<SwitchDropdownItemProps> = ({ Icon, checked, label, onClick
     return (
         <div
             className={classNames(
-                "flex cursor-pointer items-center justify-between py-2 px-3",
-                disabled ? "cursor-not-allowed opacity-50" : "hover:bg-[#C1C1C165] dark:hover:bg-[#2F384E65]",
+                "flex cursor-pointer select-none items-center justify-between py-2 px-3",
+                disabled ? "cursor-not-allowed opacity-75" : "hover:bg-[#C1C1C165] dark:hover:bg-[#2F384E65]",
             )}
             onClick={!disabled ? onClick : () => {}}
         >
