@@ -17,4 +17,5 @@ export const $api: KyInstance = ky.create({
         "X-Client-Type": "web",
         "X-Client-Version": import.meta.env.VITE_APP_VERSION,
     },
+    mode: "no-cors",
 });
