@@ -12,11 +12,8 @@ export const API_URL = import.meta.env.VITE_API_URL;
 export const $api: KyInstance = ky.create({
     prefixUrl: API_URL,
     headers: {
-        "Access-Control-Allow-Origin": "*",
-        "Content-Type": "application/json",
         "X-Client-Name": "Fly Messenger",
         "X-Client-Type": "web",
         "X-Client-Version": import.meta.env.VITE_APP_VERSION,
-    },
-    mode: "cors",
+    }
 });
