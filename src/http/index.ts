@@ -1,5 +1,5 @@
 import ky from "ky";
-import { KyInstance } from "ky/distribution/types/ky";
+import {KyInstance} from "ky/distribution/types/ky";
 
 /**
  * The API URL is set in the .env file.
@@ -11,11 +11,12 @@ export const API_URL = import.meta.env.VITE_API_URL;
  */
 export const $api: KyInstance = ky.create({
     prefixUrl: API_URL,
-    credentials: "include",
     headers: {
+        "Access-Control-Allow-Origin": "*",
+        "Content-Type": "application/json",
         "X-Client-Name": "Fly Messenger",
         "X-Client-Type": "web",
         "X-Client-Version": import.meta.env.VITE_APP_VERSION,
     },
-    mode: "no-cors",
+    mode: "cors",
 });

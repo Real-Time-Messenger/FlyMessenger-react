@@ -80,7 +80,6 @@ export const LoginPage = () => {
             .unwrap()
             .then((response) => handleSuccessLogin(response as IAuthResponse))
             .catch((error) => {
-                // alert(error.message);
                 setError(error);
             })
             .finally(() => setIsSubmitting(false));
